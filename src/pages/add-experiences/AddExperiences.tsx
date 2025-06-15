@@ -21,7 +21,7 @@ const AddExperiences = () => {
       title: '',
       category: undefined,
       description: '',
-      price: 0,
+      price: undefined,
       address: '',
       schedules: [] as { date: string; startTime: string; endTime: string }[],
       bannerImageUrl: '',

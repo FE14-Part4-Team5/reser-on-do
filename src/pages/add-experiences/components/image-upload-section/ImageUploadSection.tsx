@@ -46,20 +46,22 @@ const ImageUploadSection = ({
       })
     );
 
-    setPreviews(prev => [...prev, ...newPreviews]);
-
     if (inputName === 'bannerImageUrl') {
+      setPreviews(prev => [...prev, ...newPreviews]);
       setValue(inputName, newPreviews[0]?.url ?? '', {
         shouldValidate: true,
       });
+      e.target.value = '';
     } else if (inputName === 'subImageUrls') {
-      const newUrls = newPreviews.map(p => p.url);
-      setValue(inputName, newUrls, {
-        shouldValidate: true,
+      setPreviews(prev => {
+        const updated = [...prev, ...newPreviews];
+        const updatedUrls = updated.map(p => p.url);
+        setValue(inputName, updatedUrls, { shouldValidate: true });
+        return updated;
       });
+      e.target.value = '';
+      return;
     }
-
-    e.target.value = '';
   };
 
   const handleIconClick = () => {
