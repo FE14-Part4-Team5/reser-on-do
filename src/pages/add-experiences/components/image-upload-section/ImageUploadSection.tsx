@@ -53,8 +53,8 @@ const ImageUploadSection = ({
         shouldValidate: true,
       });
     } else if (inputName === 'subImageUrls') {
-      const newFiles = newPreviews.map(p => p.file);
-      setValue(inputName, newFiles, {
+      const newUrls = newPreviews.map(p => p.url);
+      setValue(inputName, newUrls, {
         shouldValidate: true,
       });
     }
@@ -70,8 +70,8 @@ const ImageUploadSection = ({
     const newPreviews = previews.filter(p => p.id !== id);
     setPreviews(newPreviews);
 
-    const newFiles = newPreviews.map(p => p.file);
-    setValue(inputName as keyof GeneralInfoFormValues, newFiles, {
+    const newUrls = newPreviews.map(p => p.url);
+    setValue(inputName as keyof GeneralInfoFormValues, newUrls, {
       shouldValidate: true,
     });
   };

@@ -1,7 +1,7 @@
 import Button from '@/components/Button/Button';
 
 import { useForm, FormProvider } from 'react-hook-form';
-import type { FieldErrors } from 'react-hook-form';
+import type { SubmitHandler, SubmitErrorHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { generalInfoSchema } from './schema/schema';
 import type { GeneralInfoFormValues } from './schema/schema';
@@ -16,34 +16,34 @@ import { useNavigate } from 'react-router-dom';
 
 const AddExperiences = () => {
   const methods = useForm<GeneralInfoFormValues>({
-    resolver: zodResolver(generalInfoSchema),
+    resolver: zodResolver(generalInfoSchema) as Resolver<GeneralInfoFormValues>,
     defaultValues: {
       title: '',
       category: undefined,
       description: '',
-      price: undefined,
+      price: 0,
       address: '',
       schedules: [] as { date: string; startTime: string; endTime: string }[],
       bannerImageUrl: '',
-      subImageUrls: [] as File[],
+      subImageUrls: [],
     },
     mode: 'onBlur',
     criteriaMode: 'all',
   });
   const { handleSubmit, setFocus } = methods;
   const navigate = useNavigate();
-  const onValid = async (data: GeneralInfoFormValues) => {
+  const onValid: SubmitHandler<GeneralInfoFormValues> = async data => {
     try {
       const response = await activitiesService.createActivity(data);
       console.log('체험 등록 성공:', response);
-      // 성공 시 이동 또는 알림 처리, 예: 목록 페이지로 리디렉트
-      navigate('/my-experiences');
+      // 성공 시 이동 또는 알림 처리, 예: 디테일 페이지로 이동
+      navigate(`/detail/${response.id}`);
     } catch (error) {
       console.error('체험 등록 중 오류:', error);
       // TODO: 사용자에게 오류 알림 UI 표시
     }
   };
-  const onError = (errors: FieldErrors<GeneralInfoFormValues>) => {
+  const onError: SubmitErrorHandler<GeneralInfoFormValues> = errors => {
     console.log('유효성 실패:', errors);
     if (errors.category) setFocus('category');
   };
