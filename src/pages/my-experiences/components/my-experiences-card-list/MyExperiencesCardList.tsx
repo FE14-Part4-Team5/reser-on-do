@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import MyExperienceCard from '@/components/my-experience-card/MyExperienceCard';
-import MyExperiencesButton from '../my-experiences-button/MyExperiencesButton';
+import MyExperiencesButton from '@/pages/my-experiences/components/my-experiences-button/MyExperiencesButton';
 import EmptyState from '@/components/empty-state/EmptyState';
 
 import type { MyExperienceCardProps } from '@/components/my-experience-card/MyExperienceCard';
