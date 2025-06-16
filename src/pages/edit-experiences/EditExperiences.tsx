@@ -17,18 +17,10 @@ import ScheduleSection from '../add-experiences/components/schedule-section/Sche
 import ImageUploadSection from '../add-experiences/components/image-upload-section/ImageUploadSection';
 import Button from '@/components/Button/Button';
 import { myActivitiesService } from '@/apis/myActivities';
+import type { UpdateActivityRequest } from '@/types/api/myActivitiesType';
 import { useEffect, useState } from 'react';
-import type { UpdateActivityResponse } from '@/types/api/myActivitiesType';
-
-interface Preview {
-  id: string;
-  file: File | null;
-  url: string;
-  imageId?: string;
-}
 
 const EditExperiences = () => {
-  const [initialData, setInitialData] = useState<UpdateActivityResponse | null>(null);
   const [subInitialPreviews, setSubInitialPreviews] = useState<
     { id: string; file: File | null; url: string; imageId?: string }[]
   >([]);
@@ -39,7 +31,6 @@ const EditExperiences = () => {
     imageId?: string;
   } | null>(null);
   const [removedSubImageIds, setRemovedSubImageIds] = useState<string[]>([]);
-  const [removedBannerImageId, setRemovedBannerImageId] = useState<string | null>(null);
 
   const methods = useForm<GeneralInfoFormValues>({
     resolver: zodResolver(generalInfoSchema) as Resolver<GeneralInfoFormValues>,
@@ -49,7 +40,7 @@ const EditExperiences = () => {
       description: '',
       price: undefined,
       address: '',
-      schedules: [] as { date: string; startTime: string; endTime: string }[],
+      schedules: [],
       bannerImageUrl: '',
       subImageUrls: [],
     },
@@ -70,29 +61,19 @@ const EditExperiences = () => {
       }
       const existingSubUrls = subInitialPreviews.map(p => p.url);
       const newSubUrls = data.subImageUrls.filter(url => !existingSubUrls.includes(url));
-      const existingBannerUrl = bannerInitialPreview?.url;
-      let bannerToAdd: string | undefined;
-      if (bannerInitialPreview) {
-        if (data.bannerImageUrl !== existingBannerUrl) {
-          if (removedBannerImageId === null) {
-            setRemovedBannerImageId(bannerInitialPreview.imageId || null);
-          }
-          bannerToAdd = data.bannerImageUrl;
-        }
-      } else {
-        bannerToAdd = data.bannerImageUrl;
-      }
-      const payload = {
+      const payload: UpdateActivityRequest = {
         title: data.title,
         category: data.category,
         description: data.description,
         price: data.price,
         address: data.address,
-        schedules: data.schedules,
-        subImageIdsToRemove: removedSubImageIds,
+        // Include bannerImageUrl if required by API; e.g., retain existing or use data.bannerImageUrl
+        bannerImageUrl: data.bannerImageUrl,
+        // Schedules: map to API fields
+        schedulesToAdd: [],
+        scheduleIdsToRemove: [],
+        subImageIdsToRemove: removedSubImageIds.map(id => Number(id)),
         subImageUrlsToAdd: newSubUrls,
-        bannerImageIdToRemove: removedBannerImageId ? [removedBannerImageId] : [],
-        bannerImageUrlToAdd: bannerToAdd || undefined,
       };
       const response = await myActivitiesService.updateActivity(
         { activityId: activityIdNum },
@@ -111,12 +92,10 @@ const EditExperiences = () => {
   };
 
   useEffect(() => {
-    if (!id) return;
     const activityIdNum = Number(id);
     activitiesService
       .getActivityId({ activityId: activityIdNum })
       .then(data => {
-        setInitialData(data);
         methods.reset({
           title: data.title,
           category: data.category,
@@ -132,18 +111,17 @@ const EditExperiences = () => {
           subImageUrls: data.subImages.map(img => img.imageUrl),
         });
         const subPreviews = data.subImages.map(img => ({
-          id: img.id,
+          id: String(img.id),
           file: null,
           url: img.imageUrl,
-          imageId: img.id,
+          imageId: String(img.id),
         }));
         setSubInitialPreviews(subPreviews);
         const bannerPrev = data.bannerImageUrl
           ? {
-              id: String(data.bannerImageId || data.id),
+              id: String(data.id),
               file: null,
               url: data.bannerImageUrl,
-              imageId: String(data.bannerImageId || data.id),
             }
           : null;
         setBannerInitialPreview(bannerPrev);
@@ -163,7 +141,6 @@ const EditExperiences = () => {
           maxCount={1}
           isRequired={true}
           initialPreviews={bannerInitialPreview ? [bannerInitialPreview] : []}
-          onRemoveInitial={(imageId: string) => setRemovedBannerImageId(imageId)}
         />
         <ImageUploadSection
           title="소개이미지"
