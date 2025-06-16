@@ -40,48 +40,59 @@ const NotificationModal = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage]);
 
-  if (isLoading) return null;
-  if (isError) throw new Error('알림을 불러오는 중 에러 발생');
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <p className={styles.title}>알림 {totalCount}개</p>
+        <p className={styles.title}>알림 {isLoading || isError ? 0 : totalCount}개</p>
         <button onClick={() => setVisible(false)} className={styles.closeButton}>
           <IconDelete />
         </button>
       </div>
+      {isLoading ? (
+        <div className={styles.centered}>알람을 불러오는 중...</div>
+      ) : isError ? (
+        <div className={styles.centered}>알람을 불러오는 중 오류가 발생했어요</div>
+      ) : (
+        <>
+          <div className={styles.list}>
+            {notificationList.map(noti => {
+              const isApproved = noti.content.includes('승인');
+              const isRejected = noti.content.includes('거절');
 
-      <div className={styles.list}>
-        {notificationList.map(noti => {
-          const isApproved = noti.content.includes('승인');
-          const isRejected = noti.content.includes('거절');
-
-          return (
-            <div
-              key={noti.id}
-              className={styles.notification}
-              onClick={() => handleDelete(noti.id)}
-            >
-              <div className={styles.topRow}>
-                <span>{isApproved ? '예약 승인' : isRejected ? '예약 거절' : '알림'}</span>
-                <span className={styles.timeAgo}>{getTimeAgo(noti.createdAt)}</span>
-              </div>
-              <div className={styles.description}>
-                <div>{noti.content.replace(/예약이 (승인|거절)되었습니다\./, '')}</div>
-                <div>
-                  예약이{' '}
-                  <span className={isApproved ? styles.textApproved : styles.textRejected}>
-                    {isApproved ? '승인' : '거절'}
-                  </span>
-                  되었어요.
+              return (
+                <div
+                  key={noti.id}
+                  className={styles.notification}
+                  onClick={() => handleDelete(noti.id)}
+                >
+                  <div className={styles.topRow}>
+                    <span>{isApproved ? '예약 승인' : isRejected ? '예약 거절' : '알림'}</span>
+                    <span className={styles.timeAgo}>{getTimeAgo(noti.createdAt)}</span>
+                  </div>
+                  <div className={styles.description}>
+                    <div>{noti.content.replace(/예약이 (승인|거절)되었습니다\./, '')}</div>
+                    <div>
+                      예약이{' '}
+                      <span className={isApproved ? styles.textApproved : styles.textRejected}>
+                        {isApproved ? '승인' : '거절'}
+                      </span>
+                      되었어요.
+                    </div>
+                  </div>
                 </div>
+              );
+            })}
+            <div ref={loadMoreRef} className={styles.loadMoreTrigger}></div>
+            {isFetchingNextPage && (
+              <div className={styles.bounceLoader}>
+                <div className={styles.bounceDot}></div>
+                <div className={styles.bounceDot}></div>
+                <div className={styles.bounceDot}></div>
               </div>
-            </div>
-          );
-        })}
-        <div ref={loadMoreRef} className={styles.loadMoreTrigger}></div>
-      </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };
