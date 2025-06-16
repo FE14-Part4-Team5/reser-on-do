@@ -183,7 +183,7 @@ const ImageUploadSection = ({
       </div>
       <input
         type="file"
-        accept="image/*"
+        accept="image/png, image/jpeg, image/jpg"
         multiple={maxCount > 1}
         name={inputName}
         ref={fileInputRef}
