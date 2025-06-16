@@ -8,6 +8,7 @@ import EmptyState from '@/components/empty-state/EmptyState';
 import type { MyExperienceCardProps } from '@/components/my-experience-card/MyExperienceCard';
 
 import styles from './MyExperiencesCardList.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const MyExperiencesCardList = ({
   userActivities,
@@ -24,6 +25,8 @@ const MyExperiencesCardList = ({
     }
   }, [inView, hasMore, onLoadMore]);
 
+  const navigate = useNavigate();
+
   return (
     <>
       {!userActivities?.activities.length ? (
@@ -31,32 +34,35 @@ const MyExperiencesCardList = ({
       ) : (
         <div className={styles.card}>
           {userActivities?.activities.map((item: MyExperienceCardProps) => (
-            <MyExperienceCard
-              key={item.id}
-              bannerImageUrl={item.bannerImageUrl}
-              title={item.title}
-              rating={item.rating}
-              reviewCount={item.reviewCount}
-              currencySymbol="₩"
-              price={item.price}
-              priceUnit="/인"
-              editButton={
-                <MyExperiencesButton variant="edit" to={`/edit-experiences/${item.id}`}>
-                  수정하기
-                </MyExperiencesButton>
-              }
-              deleteButton={
-                <MyExperiencesButton
-                  variant="delete"
-                  onClick={() => {
-                    if (item.id !== undefined) onDeleteClick(item.id);
-                  }}
-                >
-                  삭제하기
-                </MyExperiencesButton>
-              }
-            />
+            <div onClick={() => navigate(`/detail/${item.id}`)}>
+              <MyExperienceCard
+                key={item.id}
+                bannerImageUrl={item.bannerImageUrl}
+                title={item.title}
+                rating={item.rating}
+                reviewCount={item.reviewCount}
+                currencySymbol="₩"
+                price={item.price}
+                priceUnit="/인"
+                editButton={
+                  <MyExperiencesButton variant="edit" to={`/edit-experiences/${item.id}`}>
+                    수정하기
+                  </MyExperiencesButton>
+                }
+                deleteButton={
+                  <MyExperiencesButton
+                    variant="delete"
+                    onClick={() => {
+                      if (item.id !== undefined) onDeleteClick(item.id);
+                    }}
+                  >
+                    삭제하기
+                  </MyExperiencesButton>
+                }
+              />
+            </div>
           ))}
+
           <div ref={ref} style={{ height: 1 }} />
           {isFetchingNextPage && (
             <div className={styles.spinnerWrapper}>

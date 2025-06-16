@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
@@ -6,7 +7,7 @@ import Input from '@/components/input/Input';
 import ArrowDownIcon from '@/assets/icons/icon_alt arrow_down.svg?react';
 
 import styles from './GeneralInfoSection.module.css';
-import { useRef, useState } from 'react';
+
 import Dropdown from '../dropdown/Dropdown';
 import clsx from 'clsx';
 import useDaumPostcode from '@/hooks/useDaumPostcode';

@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: 3rem;
   margin-bottom: 3rem;
+  cursor: pointer;
 }
 
 .spinnerWrapper {
