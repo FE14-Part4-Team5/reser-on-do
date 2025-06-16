@@ -33,6 +33,7 @@ const ImageUploadSection = ({
   const [previews, setPreviews] = useState<Preview[]>(initialPreviews);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const lastSyncedUrlsRef = useRef<string[]>([]);
+  const isInitialLoadRef = useRef(true);
 
   const {
     setValue,
@@ -43,20 +44,23 @@ const ImageUploadSection = ({
   const watchedValue = watch(inputName as keyof GeneralInfoFormValues);
 
   useEffect(() => {
+    if (!isInitialLoadRef.current) {
+      return;
+    }
     if (initialPreviews && initialPreviews.length > 0) {
       const initialUrls = initialPreviews.map(p => p.url);
       const sameAsLast =
         lastSyncedUrlsRef.current.length === initialUrls.length &&
         lastSyncedUrlsRef.current.every((u, idx) => u === initialUrls[idx]);
-      if (sameAsLast) {
-        return;
+      if (!sameAsLast) {
+        setPreviews(initialPreviews);
+        setValue(inputName as keyof GeneralInfoFormValues, initialUrls, {
+          shouldValidate: true,
+          shouldDirty: false,
+        });
+        lastSyncedUrlsRef.current = initialUrls;
       }
-      setPreviews(initialPreviews);
-      setValue(inputName as keyof GeneralInfoFormValues, initialUrls, {
-        shouldValidate: true,
-        shouldDirty: false,
-      });
-      lastSyncedUrlsRef.current = initialUrls;
+      isInitialLoadRef.current = false;
     }
   }, [initialPreviews, inputName, setValue]);
 
