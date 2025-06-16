@@ -11,7 +11,7 @@ import type {
 
 /*GET activities, 체험 리스트 조회*/
 export interface GetActivitiesParams {
-  teamId: string;
+  teamId?: string;
   method: 'offset' | 'cursor';
   cursorId?: number;
   category?: Category;
