@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Calendar from 'react-calendar';
 
 import { formatDateToYMD } from '@/utils/datetime';
@@ -28,11 +28,23 @@ const ScheduleSection = () => {
   const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
 
   const [schedules, setSchedules] = useState<
-    { date: string; startTime: string; endTime: string }[]
+    { id?: number; date: string; startTime: string; endTime: string }[]
   >([]);
+  const [scheduleIdsToRemove, setScheduleIdsToRemove] = useState<number[]>([]);
 
   const removeSchedule = (indexToRemove: number) => {
-    setSchedules(prev => prev.filter((_, index) => index !== indexToRemove));
+    setSchedules(prev => {
+      const item = prev[indexToRemove];
+      setScheduleIdsToRemove(prevIds => {
+        if (prevIds.includes(item.id!)) {
+          return prevIds;
+        }
+        const nextIds = [...prevIds, item.id!];
+        return nextIds;
+      });
+      const next = prev.filter((_, index) => index !== indexToRemove);
+      return next;
+    });
   };
 
   const handleClickCalendar = () => {
@@ -45,25 +57,83 @@ const ScheduleSection = () => {
     formState: { errors, isSubmitted, submitCount },
   } = useFormContext<GeneralInfoFormValues>();
 
-  // Watch schedules from form to handle async-loaded defaultValues in edit mode
   const watchedSchedules = useWatch<GeneralInfoFormValues>({ name: 'schedules' });
+  const watchedScheduleIdsToRemove = useWatch<GeneralInfoFormValues>({
+    name: 'scheduleIdsToRemove',
+  });
 
-  // Register schedules field
   useEffect(() => {
     register('schedules');
+    register('scheduleIdsToRemove');
   }, [register]);
 
-  // When watchedSchedules changes from parent, initialize local schedules if empty
-  useEffect(() => {
-    if (Array.isArray(watchedSchedules) && watchedSchedules.length > 0 && schedules.length === 0) {
-      setSchedules(watchedSchedules);
-    }
-  }, [watchedSchedules, schedules]);
+  const initializedRef = useRef(false);
 
-  // Always sync schedules to form value
+  useEffect(() => {
+    if (!initializedRef.current && Array.isArray(watchedSchedules) && watchedSchedules.length > 0) {
+      const objectItems = watchedSchedules.filter(
+        (item): item is { id?: number; date: string; startTime: string; endTime: string } =>
+          typeof item === 'object' &&
+          item !== null &&
+          'date' in item &&
+          'startTime' in item &&
+          'endTime' in item
+      );
+      if (objectItems.length > 0) {
+        setSchedules(objectItems);
+        initializedRef.current = true;
+      }
+    }
+  }, [watchedSchedules]);
+  useEffect(() => {
+    if (
+      Array.isArray(watchedScheduleIdsToRemove) &&
+      watchedScheduleIdsToRemove.length > 0 &&
+      scheduleIdsToRemove.length === 0
+    ) {
+      const numericIds: number[] = watchedScheduleIdsToRemove
+        .map(id => {
+          if (typeof id === 'number') return id;
+          if (typeof id === 'string' && !isNaN(Number(id))) return Number(id);
+          return undefined;
+        })
+        .filter((id): id is number => typeof id === 'number');
+      if (numericIds.length > 0) {
+        setScheduleIdsToRemove(numericIds);
+      }
+    }
+  }, [watchedScheduleIdsToRemove, scheduleIdsToRemove.length]);
+
   useEffect(() => {
     setValue('schedules', schedules);
   }, [schedules, setValue]);
+
+  useEffect(() => {
+    setValue('scheduleIdsToRemove', scheduleIdsToRemove);
+  }, [scheduleIdsToRemove, setValue]);
+
+  const timeToMinutes = (time: string): number => {
+    const [hStr, mStr] = time.split(':');
+    const h = parseInt(hStr, 10);
+    const m = parseInt(mStr, 10);
+    return h * 60 + m;
+  };
+
+  const hasOverlap = (intervals: { startTime: string; endTime: string }[]): boolean => {
+    const arr = intervals
+      .map(item => ({
+        start: timeToMinutes(item.startTime),
+        end: timeToMinutes(item.endTime),
+      }))
+      .filter(({ start, end }) => end > start)
+      .sort((a, b) => a.start - b.start);
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i - 1].end > arr[i].start) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <div className={styles.scheduleSection}>
@@ -105,7 +175,7 @@ const ScheduleSection = () => {
             )}
           >
             <div role="button" id="startTime" className={styles.selectStartTime}>
-              {startTime || '0:00'}
+              {startTime || <div style={{ color: 'gray' }}>선택</div>}
             </div>
             <ArrowDownIcon />
             {showDropdownFor === 'start' && (
@@ -134,7 +204,7 @@ const ScheduleSection = () => {
             )}
           >
             <div role="button" id="endTime" className={styles.selectEndTime}>
-              {endTime || '0:00'}
+              {endTime || <div style={{ color: 'gray' }}>선택</div>}
             </div>
             <ArrowDownIcon />
             {showDropdownFor === 'end' && (
@@ -152,14 +222,26 @@ const ScheduleSection = () => {
           <div
             onClick={() => {
               if (!startTime || !endTime || startTime === '23:00') return;
+              const sameDateIntervals = schedules
+                .filter(item => item.date === formattedDate)
+                .map(item => ({ startTime: item.startTime, endTime: item.endTime }));
+              const newInterval = { startTime, endTime };
 
-              const newSchedule = {
-                date: formattedDate,
-                startTime,
-                endTime,
-              };
-
-              setSchedules(prev => [...prev, newSchedule]);
+              if (hasOverlap([...sameDateIntervals, newInterval])) {
+                alert('해당 날짜에 시간대가 겹칩니다. 다른 시간대를 선택해 주세요.');
+                return;
+              }
+              const existsExact = sameDateIntervals.some(
+                item => item.startTime === startTime && item.endTime === endTime
+              );
+              if (existsExact) {
+                alert('이미 동일한 시간대가 존재합니다.');
+                return;
+              }
+              setSchedules(prev => {
+                const next = [...prev, { date: formattedDate, startTime, endTime }];
+                return next;
+              });
               setStartTime('');
               setEndTime('');
             }}

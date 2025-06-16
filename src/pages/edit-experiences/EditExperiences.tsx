@@ -40,7 +40,8 @@ const EditExperiences = () => {
       description: '',
       price: undefined,
       address: '',
-      schedules: [],
+      schedules: [] as { id?: number; date: string; startTime: string; endTime: string }[],
+      scheduleIdsToRemove: [] as number[],
       bannerImageUrl: '',
       subImageUrls: [],
     },
@@ -61,17 +62,20 @@ const EditExperiences = () => {
       }
       const existingSubUrls = subInitialPreviews.map(p => p.url);
       const newSubUrls = data.subImageUrls.filter(url => !existingSubUrls.includes(url));
+      // Prepare schedule payload
+      const schedulesToAdd = (data.schedules || [])
+        .filter(item => item.id === undefined)
+        .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
+      const scheduleIdsToRemove = (data.scheduleIdsToRemove || []).map(id => Number(id));
       const payload: UpdateActivityRequest = {
         title: data.title,
         category: data.category,
         description: data.description,
         price: data.price,
         address: data.address,
-        // Include bannerImageUrl if required by API; e.g., retain existing or use data.bannerImageUrl
         bannerImageUrl: data.bannerImageUrl,
-        // Schedules: map to API fields
-        schedulesToAdd: [],
-        scheduleIdsToRemove: [],
+        schedulesToAdd,
+        scheduleIdsToRemove,
         subImageIdsToRemove: removedSubImageIds.map(id => Number(id)),
         subImageUrlsToAdd: newSubUrls,
       };
@@ -79,15 +83,12 @@ const EditExperiences = () => {
         { activityId: activityIdNum },
         payload
       );
-      console.log('체험 수정 성공', response);
       navigate(`/detail/${response.id}`, { state: { updated: Date.now() } });
     } catch (error) {
       console.error('체험 등록 중 오류:', error);
-      // TODO: 사용자에게 오류 알림 UI 표시
     }
   };
   const onError: SubmitErrorHandler<GeneralInfoFormValues> = errors => {
-    console.log('유효성 실패:', errors);
     if (errors.category) setFocus('category');
   };
 
@@ -103,10 +104,12 @@ const EditExperiences = () => {
           price: data.price,
           address: data.address,
           schedules: data.schedules.map(s => ({
+            id: s.id,
             date: s.date,
             startTime: s.startTime,
             endTime: s.endTime,
           })),
+          scheduleIdsToRemove: [],
           bannerImageUrl: data.bannerImageUrl,
           subImageUrls: data.subImages.map(img => img.imageUrl),
         });

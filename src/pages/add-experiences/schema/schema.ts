@@ -40,12 +40,14 @@ export const generalInfoSchema = z.object({
   schedules: z
     .array(
       z.object({
+        id: z.number().optional(),
         date: z.string().min(1),
         startTime: z.string().min(1),
         endTime: z.string().min(1),
       })
     )
     .min(1, '* 최소 하나 이상의 스케줄을 등록해 주세요'),
+  scheduleIdsToRemove: z.array(z.number()).optional(),
   bannerImageUrl: z.preprocess(val => {
     if (Array.isArray(val)) {
       const first = val[0];
