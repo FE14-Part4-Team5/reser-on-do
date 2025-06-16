@@ -109,10 +109,10 @@ const ImageUploadSection = ({
         onChange={handleFileChange}
         hidden
       />
-      <div className={styles.bannerDescription}>{description}</div>
       {isRequired && errors?.bannerImageUrl && (
         <div className={styles.errorMessage}>{errors.bannerImageUrl.message}</div>
       )}
+      <div className={styles.bannerDescription}>{description}</div>
     </div>
   );
 };

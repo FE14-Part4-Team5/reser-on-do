@@ -34,7 +34,7 @@ const MyExperiencesCardList = ({
       ) : (
         <div className={styles.card}>
           {userActivities?.activities.map((item: MyExperienceCardProps) => (
-            <div onClick={() => navigate(`/detail/${item.id}`)}>
+            <div key={item.id} onClick={() => navigate(`/detail/${item.id}`)}>
               <MyExperienceCard
                 key={item.id}
                 bannerImageUrl={item.bannerImageUrl}
