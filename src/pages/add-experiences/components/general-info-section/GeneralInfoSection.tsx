@@ -34,7 +34,6 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
 
   const loaded = useDaumPostcode();
   const [addr, setAddr] = useState('');
-  // 초기 폼 값(address) 변경 시 local state에 반영
   const watchedAddress = watch('address');
   useEffect(() => {
     if (watchedAddress && watchedAddress !== addr) {
@@ -60,8 +59,8 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
         detailRef.current?.focus();
         setSdkOpen(false);
       },
-      width: container.clientWidth,
-      height: container.clientHeight,
+      width: '100%',
+      height: '100%',
     }).embed(container);
   };
 
