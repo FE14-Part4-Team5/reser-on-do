@@ -1,11 +1,8 @@
 import MainCard from '@/components/main-card/MainCard';
-
 import useViewPortSize from '@/hooks/useViewPortSize';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
-
 import IconRight from '@/assets/icons/icon_arrow_right.svg?react';
 import IconLeft from '@/assets/icons/icon_back.svg?react';
-
 import styles from './HorizontalCardList.module.css';
 
 import type { MainCardProps } from '@/components/main-card/MainCard';

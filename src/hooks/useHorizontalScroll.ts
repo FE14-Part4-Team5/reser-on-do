@@ -9,7 +9,13 @@ export default function useHorizontalScroll<T extends HTMLElement>() {
     const container = scrollRef.current;
     if (!container) return;
 
-    const scrollAmount = container.clientWidth * 1;
+    const cardElement = container.querySelector<HTMLElement>('*');
+    if (!cardElement) return;
+
+    const cardWidth = cardElement.offsetWidth;
+    const gap = parseFloat(getComputedStyle(container).columnGap || '0');
+
+    const scrollAmount = cardWidth + gap;
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
