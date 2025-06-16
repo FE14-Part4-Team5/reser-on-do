@@ -6,8 +6,9 @@
   justify-content: space-between;
   padding: 0.6rem 2.4rem;
   position: fixed;
-  background-color: var(--color-white);
-  z-index: 100;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  z-index: 900;
 }
 
 .gnbLogo {
@@ -76,6 +77,10 @@
   object-fit: contain;
 }
 
+.userName {
+  font-size: var(--fs-14);
+  font-weight: var(--font-weight-medium);
+}
 .dropdownMenu {
   width: 10rem;
   position: absolute;

@@ -7,7 +7,7 @@ const MyExperiencesHeader = ({
   className,
 }: {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   children?: React.ReactElement;
   className?: 'columnRowContents' | 'columnContents';
 }) => {

@@ -1,0 +1,125 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 3rem 2.4rem 7.5rem;
+  padding: 0;
+}
+
+.imageBlock {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  height: 24.5rem;
+}
+
+.mainImage,
+.subImage {
+  height: 100%;
+  border-radius: 2.4rem;
+  flex: 1;
+}
+
+.subImages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.card,
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.cardLine {
+  width: 100%;
+  height: 1.6rem;
+  border-radius: 0.6rem;
+}
+
+.cardTitle {
+  width: 60%;
+  height: 2.4rem;
+  border-radius: 0.6rem;
+}
+
+.cardMeta {
+  width: 100%;
+  height: 3.2rem;
+  border-radius: 0.6rem;
+}
+
+.textLine {
+  height: 1.4rem;
+  width: 100%;
+  border-radius: 0.4rem;
+}
+
+.map {
+  height: 18rem;
+  border-radius: 1.6rem;
+}
+
+@media (min-width: 1024px) {
+  .wrapper {
+    display: grid;
+    grid-template-areas:
+      'images card'
+      'images calendar'
+      'description calendar'
+      'map calendar'
+      'map .';
+    column-gap: 4rem;
+    row-gap: 4rem;
+    padding: 0rem 4rem;
+    max-width: 120rem;
+    margin: 8.8rem auto 18rem;
+  }
+
+  .imageBlock {
+    grid-area: images;
+    height: 40rem;
+  }
+
+  .map {
+    grid-area: map;
+    height: 45rem;
+    border-radius: 2.4rem;
+  }
+
+  .card {
+    grid-area: card;
+  }
+
+  .description {
+    grid-area: description;
+  }
+
+  .calendar {
+    grid-area: calendar;
+    position: static;
+    height: 30rem;
+    width: auto;
+    z-index: 0;
+  }
+}
+
+.skeleton {
+  background-color: #e0e0e0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: #f3f4f6;
+  }
+  50% {
+    background-color: #e0e0e0;
+  }
+  100% {
+    background-color: #f3f4f6;
+  }
+}

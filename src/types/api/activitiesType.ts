@@ -52,7 +52,7 @@ export interface CreateActivityResponse extends ActivityBase {
 
 /*GET activityId, 체험 상세 조회*/
 export interface GetActivityIdParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
 }
 
@@ -73,7 +73,7 @@ export type GetAvailableScheduleResponse = ActivityScheduleWithTime[];
 
 /*GET reviews, 체험 리뷰 조회*/
 export interface GetReviewsParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
   page?: number;
   size?: number;
@@ -97,7 +97,7 @@ export interface GetReviewsResponse {
 
 /*POST reservations, 체험 예약 신청*/
 export interface CreateReservationParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
 }
 

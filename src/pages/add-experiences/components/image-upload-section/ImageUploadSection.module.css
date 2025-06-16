@@ -1,0 +1,113 @@
+.bannerImageSectionTitle {
+  margin-top: 3rem;
+  font-size: var(--fs-16);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 1rem;
+}
+
+.bannerImageAdd {
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.plusIcon {
+  width: 5rem;
+  height: 5rem;
+  color: var(--gray-400);
+}
+
+.bannerDescription {
+  margin-top: 1rem;
+}
+
+.bannerImageAddWrapper {
+  display: flex;
+  gap: 1.4rem;
+  border-radius: 1.6rem;
+}
+
+.bannerImagePreviewWrapper {
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.8rem;
+  position: relative;
+}
+
+.bannerImagePreview {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 0.8rem;
+}
+
+.imageDeleteButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 10rem;
+  background-color: var(--gray-950);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageDeleteButtonIcon {
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.error {
+  border: 1px solid var(--alert-error);
+}
+
+.errorMessage {
+  font-size: var(--fs-12);
+  color: var(--alert-error);
+  margin-top: 0.6rem;
+  margin-left: 0.8rem;
+}
+
+@media (min-width: 768px) {
+  .bannerImageAdd {
+    width: 12.6rem;
+    height: 12.6rem;
+    border-radius: 1.6rem;
+  }
+
+  .plusIcon {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .bannerImagePreviewWrapper {
+    width: 12.6rem;
+    height: 12.6rem;
+    border-radius: 1.6rem;
+  }
+
+  .bannerImagePreview {
+    border-radius: 1.6rem;
+  }
+
+  .imageDeleteButton {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bannerImageAdd {
+    width: 12.8rem;
+    height: 12.8rem;
+  }
+}

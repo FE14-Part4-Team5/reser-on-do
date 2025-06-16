@@ -7,13 +7,16 @@ import gnbLogo from '@/assets/icons/logo_vertical.svg';
 import NotiIcon from '@/assets/icons/icon_bell.svg?react';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
 import { useMyProfileQuery } from '@/hooks/useMyProfile';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const Header = () => {
-  const [auth, setAuth] = useState(false);
+  const { userId, clearTokens, clearUserId } = useAuthStore();
+  const isLoggedIn = !!userId;
   const [isNoticeClick, setIsNoticeClick] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -29,6 +32,7 @@ const Header = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isDropdownOpen]);
+
   const { data: userData } = useMyProfileQuery();
 
   const handleNoticeClick = () => {
@@ -40,7 +44,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    setAuth(false);
+    clearTokens();
+    clearUserId();
     navigate('/login');
   };
 
@@ -55,7 +60,7 @@ const Header = () => {
         </Link>
       </div>
 
-      {auth ? (
+      {!isLoggedIn ? (
         <div className={styles.authWrapper}>
           <Link to="/login" className={styles.authButton}>
             로그인
