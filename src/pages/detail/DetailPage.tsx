@@ -6,6 +6,7 @@ import styles from './DetailPage.module.css';
 import IconStar from '@/assets/icons/icon_star.svg?react';
 import IconMap from '@/assets/icons/icon_map.svg?react';
 import IconMore from '@/assets/icons/icon_more.svg?react';
+import fallbackImage from '@/assets/images/error-image.png';
 
 import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
@@ -139,12 +140,25 @@ const DetailPage = () => {
     <div className={styles.experienceDetail}>
       <div className={styles.wrapper}>
         <div className={styles.images}>
-          <img src={experience.bannerImageUrl} className={styles.mainImage} />
+          <div className={styles.mainImageWrapper}>
+            <img
+              src={experience.bannerImageUrl}
+              className={styles.mainImage}
+              onError={e => (e.currentTarget.src = fallbackImage)}
+            />
+          </div>
           {experience.subImages?.length > 0 && (
-            <div className={styles.subImages}>
+            <div
+              className={`${styles.subImages} ${styles['subImages' + experience.subImages.length]}`}
+            >
               {experience.subImages.map(img => (
                 <div key={img.id} className={styles.subImageWrapper}>
-                  <img src={img.imageUrl} alt="서브 이미지" className={styles.subImage} />
+                  <img
+                    src={img.imageUrl}
+                    alt="서브 이미지"
+                    className={styles.subImage}
+                    onError={e => (e.currentTarget.src = fallbackImage)}
+                  />
                 </div>
               ))}
             </div>
