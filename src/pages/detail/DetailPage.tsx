@@ -12,6 +12,7 @@ import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
 import Pagination from '@/components/Pagination/Pagination';
 import Modal from '@/components/modal/modal';
+import ModalExample from '../my-experiences/example/Modal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
 
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -32,6 +33,7 @@ declare global {
 const DetailPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -69,10 +71,15 @@ const DetailPage = () => {
     );
   };
 
+  const openDeleteConfirmModal = () => {
+    setIsDeleteConfirmOpen(true);
+  };
+
   const handleDelete = () => {
     deleteExperience(undefined, {
-      onSuccess: response => {
-        console.log('삭제 성공:', response);
+      onSuccess: () => {
+        console.log('삭제 성공');
+        setIsDeleteConfirmOpen(false);
         navigate('/');
       },
     });
@@ -180,7 +187,7 @@ const DetailPage = () => {
                 {menuOpen && (
                   <ul className={styles.menuList}>
                     <li onClick={() => navigate(`/edit-experiences/${id}`)}>수정하기</li>
-                    <li onClick={handleDelete}>삭제하기</li>
+                    <li onClick={openDeleteConfirmModal}>삭제하기</li>
                   </ul>
                 )}
               </div>
@@ -255,6 +262,15 @@ const DetailPage = () => {
         <Modal isOpen onClose={() => setIsModalOpen(false)}>
           <p className={styles.modalText}>예약이 완료되었습니다.</p>
         </Modal>
+      )}
+      {isDeleteConfirmOpen && (
+        <ModalExample
+          onConfirm={handleDelete}
+          onClose={() => setIsDeleteConfirmOpen(false)}
+          text="체험을 삭제하시겠습니까?"
+          cancelText="아니요"
+          confirmText="네"
+        />
       )}
     </div>
   );
