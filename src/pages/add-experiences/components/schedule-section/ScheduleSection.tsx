@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 
 import { formatDateToYMD } from '@/utils/datetime';
@@ -13,7 +13,7 @@ import ArrowLeft from '@/assets/icons/icon_alt arrow_left.svg?react';
 import ArrowRight from '@/assets/icons/icon_alt arrow_right.svg?react';
 
 import styles from './ScheduleSection.module.css';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import type { GeneralInfoFormValues } from '../../schema/schema';
 import clsx from 'clsx';
 
@@ -31,8 +31,6 @@ const ScheduleSection = () => {
     { date: string; startTime: string; endTime: string }[]
   >([]);
 
-  const isFirstRender = useRef(true);
-
   const removeSchedule = (indexToRemove: number) => {
     setSchedules(prev => prev.filter((_, index) => index !== indexToRemove));
   };
@@ -44,19 +42,26 @@ const ScheduleSection = () => {
   const {
     register,
     setValue,
-
     formState: { errors, isSubmitted, submitCount },
   } = useFormContext<GeneralInfoFormValues>();
 
+  // Watch schedules from form to handle async-loaded defaultValues in edit mode
+  const watchedSchedules = useWatch<GeneralInfoFormValues>({ name: 'schedules' });
+
+  // Register schedules field
   useEffect(() => {
     register('schedules');
   }, [register]);
 
+  // When watchedSchedules changes from parent, initialize local schedules if empty
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    if (Array.isArray(watchedSchedules) && watchedSchedules.length > 0 && schedules.length === 0) {
+      setSchedules(watchedSchedules);
     }
+  }, [watchedSchedules, schedules]);
+
+  // Always sync schedules to form value
+  useEffect(() => {
     setValue('schedules', schedules);
   }, [schedules, setValue]);
 
@@ -171,29 +176,31 @@ const ScheduleSection = () => {
 
       {schedules.length > 0 && <hr className={styles.hr} />}
 
-      <div className={styles.schedulesWrapper}>
-        {schedules.map((s, idx) => (
-          <div key={idx} className={styles.scheduleTag}>
-            <div className={styles.dateWrapper}>
-              <div className={styles.calendarInputWrapper}>
-                <div className={styles.dateInput}>{s.date}</div>
-              </div>
-              <div className={styles.selectTime}>
-                <div className={styles.selectTimeWrapper}>
-                  <div className={styles.selectStartTime}>{s.startTime}</div>
+      {schedules.length > 0 && (
+        <div className={styles.schedulesWrapper}>
+          {schedules.map((s, idx) => (
+            <div key={idx} className={styles.scheduleTag}>
+              <div className={styles.dateWrapper}>
+                <div className={styles.calendarInputWrapper}>
+                  <div className={styles.dateInput}>{s.date}</div>
                 </div>
-                <div className={styles.selectTimeDash}>-</div>
-                <div className={styles.selectTimeWrapper}>
-                  <div className={styles.selectEndTime}>{s.endTime}</div>
-                </div>
-                <div className={styles.selectTimeButton} onClick={() => removeSchedule(idx)}>
-                  <MinusIcon className={styles.selectTimeButtonIcon} />
+                <div className={styles.selectTime}>
+                  <div className={styles.selectTimeWrapper}>
+                    <div className={styles.selectStartTime}>{s.startTime}</div>
+                  </div>
+                  <div className={styles.selectTimeDash}>-</div>
+                  <div className={styles.selectTimeWrapper}>
+                    <div className={styles.selectEndTime}>{s.endTime}</div>
+                  </div>
+                  <div className={styles.selectTimeButton} onClick={() => removeSchedule(idx)}>
+                    <MinusIcon className={styles.selectTimeButtonIcon} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       {showCalendar && (
         <div className={styles.modalOverlay} onClick={() => setShowCalendar(false)}>
           <div className={styles.modalContent} onClick={e => e.stopPropagation()}>

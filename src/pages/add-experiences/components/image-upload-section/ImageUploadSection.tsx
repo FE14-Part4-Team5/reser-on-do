@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { activitiesService } from '@/apis/activities';
 
@@ -12,23 +12,84 @@ import clsx from 'clsx';
 
 interface Preview {
   id: string;
-  file: File;
+  file: File | null;
   url: string;
+  imageId?: string;
 }
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every(item => typeof item === 'string');
+}
+
 const ImageUploadSection = ({
   title,
   description,
   inputName,
   maxCount,
   isRequired,
+  initialPreviews = [],
+  onRemoveInitial,
 }: ImageUploadSectionProps) => {
-  const [previews, setPreviews] = useState<Preview[]>([]);
+  const [previews, setPreviews] = useState<Preview[]>(initialPreviews);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const lastSyncedUrlsRef = useRef<string[]>([]);
 
   const {
     setValue,
     formState: { errors },
+    watch,
   } = useFormContext<GeneralInfoFormValues>();
+
+  const watchedValue = watch(inputName as keyof GeneralInfoFormValues);
+
+  useEffect(() => {
+    if (initialPreviews && initialPreviews.length > 0) {
+      const initialUrls = initialPreviews.map(p => p.url);
+      const sameAsLast =
+        lastSyncedUrlsRef.current.length === initialUrls.length &&
+        lastSyncedUrlsRef.current.every((u, idx) => u === initialUrls[idx]);
+      if (sameAsLast) {
+        return;
+      }
+      setPreviews(initialPreviews);
+      setValue(inputName as keyof GeneralInfoFormValues, initialUrls, {
+        shouldValidate: true,
+        shouldDirty: false,
+      });
+      lastSyncedUrlsRef.current = initialUrls;
+    }
+  }, [initialPreviews, inputName, setValue]);
+
+  useEffect(() => {
+    let deriveUrls: string[] = [];
+    if (typeof watchedValue === 'string' && watchedValue) {
+      deriveUrls = [watchedValue];
+    } else if (isStringArray(watchedValue)) {
+      deriveUrls = watchedValue;
+    } else {
+      deriveUrls = [];
+    }
+    if (deriveUrls.length === 0) {
+      if (lastSyncedUrlsRef.current.length > 0) {
+        setPreviews([]);
+        lastSyncedUrlsRef.current = [];
+      }
+      return;
+    }
+    const isSame =
+      deriveUrls.length === lastSyncedUrlsRef.current.length &&
+      deriveUrls.every((u, idx) => u === lastSyncedUrlsRef.current[idx]);
+    if (!isSame) {
+      setPreviews(prevPreviews => {
+        const initPreviews: Preview[] = deriveUrls.map(url => {
+          const existing = prevPreviews.find(p => p.url === url);
+          return existing ? existing : { id: `${url}-init`, file: null, url };
+        });
+        return initPreviews;
+      });
+      lastSyncedUrlsRef.current = deriveUrls;
+    }
+  }, [watchedValue]);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -53,12 +114,10 @@ const ImageUploadSection = ({
       });
       e.target.value = '';
     } else if (inputName === 'subImageUrls') {
-      setPreviews(prev => {
-        const updated = [...prev, ...newPreviews];
-        const updatedUrls = updated.map(p => p.url);
-        setValue(inputName, updatedUrls, { shouldValidate: true });
-        return updated;
-      });
+      const updated = [...previews, ...newPreviews];
+      setPreviews(updated);
+      const updatedUrls = updated.map(p => p.url);
+      setValue(inputName as keyof GeneralInfoFormValues, updatedUrls, { shouldValidate: true });
       e.target.value = '';
       return;
     }
@@ -69,13 +128,27 @@ const ImageUploadSection = ({
   };
 
   const handleRemoveImage = (id: string) => {
+    const removedPreview = previews.find(p => p.id === id);
+    if (removedPreview) {
+      if (removedPreview.file === null && removedPreview.imageId && onRemoveInitial) {
+        onRemoveInitial(removedPreview.imageId);
+      }
+    }
     const newPreviews = previews.filter(p => p.id !== id);
-    setPreviews(newPreviews);
-
-    const newUrls = newPreviews.map(p => p.url);
-    setValue(inputName as keyof GeneralInfoFormValues, newUrls, {
-      shouldValidate: true,
-    });
+    if (inputName === 'bannerImageUrl') {
+      setPreviews([]);
+      setValue(inputName as keyof GeneralInfoFormValues, '', {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    } else {
+      setPreviews(newPreviews);
+      const newUrls = newPreviews.map(p => p.url);
+      setValue(inputName as keyof GeneralInfoFormValues, newUrls, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
   };
 
   return (
@@ -94,7 +167,11 @@ const ImageUploadSection = ({
         {previews.map(({ id, url }, i) => (
           <div key={id} className={styles.bannerImagePreviewWrapper}>
             <img src={url} alt={`미리보기 이미지 ${i + 1}`} className={styles.bannerImagePreview} />
-            <button onClick={() => handleRemoveImage(id)} className={styles.imageDeleteButton}>
+            <button
+              type="button"
+              onClick={() => handleRemoveImage(id)}
+              className={styles.imageDeleteButton}
+            >
               <DeleteIcon className={styles.imageDeleteButtonIcon} />
             </button>
           </div>
@@ -125,4 +202,6 @@ type ImageUploadSectionProps = {
   inputName: string;
   maxCount: number;
   isRequired: boolean;
+  initialPreviews?: Preview[];
+  onRemoveInitial?: (imageId: string) => void;
 };

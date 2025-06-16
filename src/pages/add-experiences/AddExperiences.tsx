@@ -51,7 +51,7 @@ const AddExperiences = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onValid, onError)} className={styles.root}>
-        <GeneralInfoSection />
+        <GeneralInfoSection title="내 체험 등록" />
         <ScheduleSection />
         <ImageUploadSection
           title="배너이미지"

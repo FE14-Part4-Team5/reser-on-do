@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
@@ -13,11 +13,12 @@ import clsx from 'clsx';
 import useDaumPostcode from '@/hooks/useDaumPostcode';
 import type { GeneralInfoFormValues } from '../../schema/schema';
 
-const GeneralInfoSection = () => {
+const GeneralInfoSection = ({ title }: { title: string }) => {
   const {
     register,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext<GeneralInfoFormValues>();
 
@@ -33,6 +34,14 @@ const GeneralInfoSection = () => {
 
   const loaded = useDaumPostcode();
   const [addr, setAddr] = useState('');
+  // 초기 폼 값(address) 변경 시 local state에 반영
+  const watchedAddress = watch('address');
+  useEffect(() => {
+    if (watchedAddress && watchedAddress !== addr) {
+      setAddr(watchedAddress);
+    }
+  }, [watchedAddress, addr]);
+
   const detailRef = useRef<HTMLInputElement | null>(null);
 
   const openPostcode = () => {
@@ -58,7 +67,7 @@ const GeneralInfoSection = () => {
 
   return (
     <div className={styles.formFields}>
-      <MyExperiencesHeader title="내 체험 등록" />
+      <MyExperiencesHeader title={title} />
       <div className={styles.input}>
         <Input
           {...register('title')}
