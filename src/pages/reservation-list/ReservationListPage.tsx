@@ -10,7 +10,8 @@ import Modal from '../../components/modal/modal';
 import WarningIcon from '../../assets/icons/modalwarning.svg';
 import Button from '../../components/Button/Button';
 import emptyImg from '@/assets/images/img_empty.png';
-import { getReservations, cancelReservation } from './reservationList';
+import { getReservations, cancelReservation } from './components/loading/reservationlist';
+import type { MyReservation } from '@/types/api/myReservationsType';
 
 const handleProfileImageUpload = (file: File) => {
   console.log('이미지 업로드:', file);
@@ -21,21 +22,21 @@ const ReservationList: React.FC = () => {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [reservations, setReservations] = useState<Reservation[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
+  const [reservations, setReservations] = useState<MyReservation[]>([]);
   const navigate = useNavigate();
   const { data: userData } = useMyProfileQuery();
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        setIsLoading(true);
+        // setIsLoading(true);
         const response = await getReservations('14-5');
         setReservations(response.reservations);
       } catch (error) {
         console.error('예약 목록 조회 실패:', error);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     };
 
@@ -143,26 +144,29 @@ const ReservationList: React.FC = () => {
                       headCount={reservation.headCount}
                       headCountUnit="명"
                       reviewSubmitted={reservation.reviewSubmitted}
+                      cancelReservationButton={
+                        <Button
+                          variant="ghost"
+                          isActive={true}
+                          onClick={() => {
+                            setSelectedReservation(reservation);
+                            setIsCancelModalOpen(true);
+                          }}
+                          className={styles.cancelButton}
+                          style={{ color: 'var(--gray-800)' }}
+                        >
+                          예약 취소
+                        </Button>
+                      }
                       editReservationButton={
-                        <div className={styles.buttonContainer}>
-                          <Button
-                            variant="secondary"
-                            isActive={true}
-                            className={styles.editButton}
-                            style={{ color: 'var(--gray-600)' }}
-                          >
-                            예약 변경
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            isActive={true}
-                            onClick={() => setIsCancelModalOpen(true)}
-                            className={styles.cancelButton}
-                            style={{ color: 'var(--gray-800)' }}
-                          >
-                            예약 취소
-                          </Button>
-                        </div>
+                        <Button
+                          variant="secondary"
+                          isActive={true}
+                          className={styles.editButton}
+                          style={{ color: 'var(--gray-600)' }}
+                        >
+                          예약 변경
+                        </Button>
                       }
                       reviewSubmittedButton={
                         <Button
@@ -217,9 +221,10 @@ const ReservationList: React.FC = () => {
           isOpen={isCancelModalOpen}
           onClose={() => setIsCancelModalOpen(false)}
           isSecondary={true}
+          onActionClick={() => handleCancelReservation(selectedReservation?.id as number)}
         >
           <img src={WarningIcon} className={styles.warningIcon} alt="warning" />
-          <h2>예약을 취소하시겠습니까?</h2>
+          <h2>예약을 취소하시겠습니까? </h2>
         </Modal>
       </div>
     </div>
