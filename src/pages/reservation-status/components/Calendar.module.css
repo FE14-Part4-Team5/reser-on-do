@@ -45,10 +45,55 @@
   border-top: 1px solid var(--gray-50);
 }
 
+.dateNumberWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dot {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.4rem;
+  gap: 0.2rem;
+}
+
+.badge {
+  font-size: var(--fs-14);
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.completed {
+  background-color: #e4e4e7;
+  color: #333;
+}
+
+.pending {
+  background-color: #e0efff;
+  color: #0074d9;
+}
+
+.confirmed {
+  background-color: #fff1c9;
+  color: #d68800;
+}
+
 @media (min-width: 768px) {
   .wrapper {
     background-color: white;
-    border-radius: 24px;
+    border-radius: 2.4rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
   .dayLabel {

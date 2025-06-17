@@ -31,6 +31,27 @@
   margin-bottom: 1rem;
 }
 
+.dropdownContainer {
+  width: 100%;
+  margin-top: 1.6rem;
+}
+
+.dropdown {
+  width: 100%;
+  border: 1px solid var(--gray-100);
+  border-radius: 1.6rem;
+  font-size: var(--fs-14);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-950);
+  padding: 1.4rem;
+  appearance: none;
+
+  background-image: url('/src/assets/icons/icon_alt\ arrow_down.svg');
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 2.5rem;
+}
+
 @media (min-width: 768px) {
   .container {
     gap: 3rem;
@@ -47,6 +68,10 @@
     font-size: var(--fs-20);
   }
   .explanation {
+    font-size: var(--fs-16);
+  }
+
+  .dropdown {
     font-size: var(--fs-16);
   }
 }
