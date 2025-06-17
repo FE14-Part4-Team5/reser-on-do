@@ -1,9 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import Calendar from 'react-calendar';
+
+import Dropdown from '../dropdown/Dropdown';
 
 import { formatDateToYMD } from '@/utils/datetime';
 
-import Dropdown from '../dropdown/Dropdown';
+import type { GeneralInfoFormValues } from '../../schema/schema';
 
 import ArrowDownIcon from '@/assets/icons/icon_alt arrow_down.svg?react';
 import CalendarIcon from '@/assets/icons/icon_calendar.svg?react';
@@ -12,10 +15,8 @@ import MinusIcon from '@/assets/icons/icon_minus.svg?react';
 import ArrowLeft from '@/assets/icons/icon_alt arrow_left.svg?react';
 import ArrowRight from '@/assets/icons/icon_alt arrow_right.svg?react';
 
-import styles from './ScheduleSection.module.css';
-import { useFormContext, useWatch } from 'react-hook-form';
-import type { GeneralInfoFormValues } from '../../schema/schema';
 import clsx from 'clsx';
+import styles from './ScheduleSection.module.css';
 
 const ScheduleSection = () => {
   const [date, setDate] = useState<Date>(new Date());

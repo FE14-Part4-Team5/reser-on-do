@@ -3,16 +3,17 @@ import Button from '@/components/Button/Button';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { SubmitHandler, SubmitErrorHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { generalInfoSchema } from './schema/schema';
-import type { GeneralInfoFormValues } from './schema/schema';
+import { generalInfoSchema } from '../schema/schema';
+import type { GeneralInfoFormValues } from '../schema/schema';
 
-import GeneralInfoSection from './components/general-info-section/GeneralInfoSection';
-import ScheduleSection from './components/schedule-section/ScheduleSection';
+import GeneralInfoSection from '../components/general-info-section/GeneralInfoSection';
+import ScheduleSection from '../components/schedule-section/ScheduleSection';
 
 import styles from './AddExperiences.module.css';
-import ImageUploadSection from './components/image-upload-section/ImageUploadSection';
+import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
 import { activitiesService } from '@/apis/activities';
 import { useNavigate } from 'react-router-dom';
+import Modal from '@/components/modal/modal';
 
 const AddExperiences = () => {
   const methods = useForm<GeneralInfoFormValues>({
@@ -37,6 +38,7 @@ const AddExperiences = () => {
       const response = await activitiesService.createActivity(data);
       console.log('체험 등록 성공:', response);
       // 성공 시 이동 또는 알림 처리, 예: 디테일 페이지로 이동
+      <Modal>asd</Modal>;
       navigate(`/detail/${response.id}`);
     } catch (error) {
       console.error('체험 등록 중 오류:', error);

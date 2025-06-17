@@ -7,14 +7,14 @@ import {
   type Resolver,
 } from 'react-hook-form';
 import styles from './EditExperiences.module.css';
-import { generalInfoSchema, type GeneralInfoFormValues } from '../add-experiences/schema/schema';
+import { generalInfoSchema, type GeneralInfoFormValues } from '../schema/schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { activitiesService } from '@/apis/activities';
-import GeneralInfoSection from '../add-experiences/components/general-info-section/GeneralInfoSection';
-import ScheduleSection from '../add-experiences/components/schedule-section/ScheduleSection';
-import ImageUploadSection from '../add-experiences/components/image-upload-section/ImageUploadSection';
+import GeneralInfoSection from '../components/general-info-section/GeneralInfoSection';
+import ScheduleSection from '../components/schedule-section/ScheduleSection';
+import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
 import Button from '@/components/Button/Button';
 import { myActivitiesService } from '@/apis/myActivities';
 import type { UpdateActivityRequest } from '@/types/api/myActivitiesType';

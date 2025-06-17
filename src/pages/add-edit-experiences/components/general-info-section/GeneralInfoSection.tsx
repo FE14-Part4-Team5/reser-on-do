@@ -1,17 +1,18 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import Input from '@/components/input/Input';
+import Dropdown from '../dropdown/Dropdown';
+
+import useDaumPostcode from '@/hooks/useDaumPostcode';
+
+import type { GeneralInfoFormValues } from '../../schema/schema';
 
 import ArrowDownIcon from '@/assets/icons/icon_alt arrow_down.svg?react';
 
-import styles from './GeneralInfoSection.module.css';
-
-import Dropdown from '../dropdown/Dropdown';
 import clsx from 'clsx';
-import useDaumPostcode from '@/hooks/useDaumPostcode';
-import type { GeneralInfoFormValues } from '../../schema/schema';
+import styles from './GeneralInfoSection.module.css';
 
 const GeneralInfoSection = ({ title }: { title: string }) => {
   const {
@@ -21,40 +22,25 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
     watch,
     formState: { errors },
   } = useFormContext<GeneralInfoFormValues>();
-
-  const CATEGORY_OPTIONS = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
-
   const [showDropdown, setShowDropdown] = useState(false);
-
   const [sdkOpen, setSdkOpen] = useState(false);
-
+  const watchedAddress = watch('address');
   const handleClickDropdown = () => {
     setShowDropdown(prev => !prev);
   };
 
+  const postcodeRef = useRef<HTMLDivElement | null>(null);
   const loaded = useDaumPostcode();
-  const [addr, setAddr] = useState('');
-  const watchedAddress = watch('address');
-  useEffect(() => {
-    if (watchedAddress && watchedAddress !== addr) {
-      setAddr(watchedAddress);
-    }
-  }, [watchedAddress, addr]);
-
   const detailRef = useRef<HTMLInputElement | null>(null);
-
   const openPostcode = () => {
     if (!loaded) return;
-
     setSdkOpen(true);
-
-    const container = document.getElementById('postcode-modal');
+    const container = postcodeRef.current;
     if (!container) return;
 
     new window.daum.Postcode({
       oncomplete: data => {
         const selected = data.roadAddress || data.jibunAddress;
-        setAddr(selected);
         setValue('address', selected, { shouldValidate: true });
         detailRef.current?.focus();
         setSdkOpen(false);
@@ -93,8 +79,8 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
                 field.value && styles.selected,
                 errors.category && styles.error
               )}
+              ref={field.ref}
               onClick={handleClickDropdown}
-              {...field}
             >
               <div
                 className={clsx(styles.categoryPlaceholder, {
@@ -154,17 +140,23 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
           name="address"
           title="주소"
           placeholder="주소를 입력해 주세요"
-          value={addr}
+          value={watchedAddress}
           readOnly
+          role="button"
+          aria-label="주소 검색 열기"
           onClick={openPostcode}
-          style={{ cursor: 'pointer' }}
         />
         <div
           className={styles.sdkWrapper}
           style={{ display: sdkOpen ? 'flex' : 'none' }}
           onClick={() => setSdkOpen(false)}
         >
-          <div id="postcode-modal" className={styles.sdk} onClick={e => e.stopPropagation()}></div>
+          <div
+            id="postcode-modal"
+            ref={postcodeRef}
+            className={styles.sdk}
+            onClick={e => e.stopPropagation()}
+          ></div>
         </div>
       </div>
     </div>
@@ -172,3 +164,5 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
 };
 
 export default GeneralInfoSection;
+
+const CATEGORY_OPTIONS = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
