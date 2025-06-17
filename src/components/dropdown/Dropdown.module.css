@@ -1,6 +1,8 @@
 .dropdownButton {
   font-size: var(--fs-16);
   color: var(--gray-950);
+  width: 10rem;
+  text-align: end;
   cursor: pointer;
   background: none;
   border: none;
@@ -8,6 +10,7 @@
 
 .dropdownMenu {
   position: absolute;
+  width: 10rem;
   margin-top: 0.5rem;
   list-style: none;
   background: var(--color-white);
