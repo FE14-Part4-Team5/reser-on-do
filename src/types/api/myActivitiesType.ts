@@ -110,7 +110,7 @@ export interface UpdateReservationResponse extends ReservationDetail {
 
 /*DELETE activityId, 내 체험 삭제*/
 export interface DeleteActivityParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
 }
 

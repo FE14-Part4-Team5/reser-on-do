@@ -120,7 +120,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse extends TokenPair {
-  user: UserSummary[];
+  user: UserSummary;
 }
 
 export type TokenResponse = TokenPair;

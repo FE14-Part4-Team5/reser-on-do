@@ -1,11 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
-import {
-  getExperienceDetail,
-  getExperienceReviews,
-  reserveExperience,
-  deleteExperience,
-} from '@/pages/detail/example/example';
+import { activitiesService } from '@/apis/activities';
+import { myActivitiesService } from '@/apis/myActivities';
 
 export interface SubImage {
   id: number;
@@ -19,7 +15,7 @@ export interface Schedule {
   endTime: string;
 }
 
-export interface ExperienceDetailProps {
+export interface ExperienceResponse {
   id: number;
   userId: number;
   title: string;
@@ -60,29 +56,31 @@ export interface ReviewResponse {
   totalCount: number;
   reviews: Review[];
 }
-export const useExperienceDetail = (teamId: string, activityId: number) => {
-  return useQuery<ExperienceDetailProps>({
-    queryKey: ['experienceDetail', teamId, activityId],
-    queryFn: () => getExperienceDetail(teamId, activityId),
+
+export const useExperienceDetail = (activityId: number) => {
+  return useQuery<ExperienceResponse>({
+    queryKey: ['experienceDetail', activityId],
+    queryFn: () => activitiesService.getActivityId({ activityId }),
   });
 };
 
-export const useReserveExperience = (teamId: string, activityId: number) => {
+export const useReserveExperience = (activityId: number) => {
   return useMutation({
     mutationFn: (payload: ReserveExperiencePayload) =>
-      reserveExperience(teamId, activityId, payload),
+      activitiesService.createReservations({ activityId }, payload),
   });
 };
 
-export const useDeleteExperience = (teamId: string, activityId: number) => {
+export const useDeleteExperience = (activityId: number) => {
   return useMutation({
-    mutationFn: () => deleteExperience(teamId, activityId),
+    mutationFn: () => myActivitiesService.deleteActivity({ activityId }),
   });
 };
 
-export const useExperienceReviews = (teamId: string, activityId: number, page = 1, size = 3) => {
+export const useExperienceReviews = (activityId: number, page = 1, size = 3) => {
   return useQuery<ReviewResponse>({
-    queryKey: ['experienceReviews', teamId, activityId, page, size],
-    queryFn: () => getExperienceReviews(teamId, activityId, page, size),
+    queryKey: ['experienceReviews', activityId, page, size],
+    queryFn: () => activitiesService.getReviews({ activityId, page, size }),
+    placeholderData: keepPreviousData,
   });
 };

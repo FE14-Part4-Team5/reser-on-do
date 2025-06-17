@@ -2,6 +2,7 @@
   color: var(--gray-950);
   margin-bottom: 1rem;
   font-size: var(--fs-16);
+  font-weight: var(--font-weight-bold);
 }
 
 .inputContainer {
@@ -20,6 +21,10 @@
 .input:focus {
   border-color: var(--primary-500);
   outline: none;
+}
+
+.input::placeholder {
+  color: var(--gray-400);
 }
 
 .eyeIconWrraper {

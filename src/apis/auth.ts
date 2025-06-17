@@ -25,10 +25,11 @@ const tokens = async (refreshToken: string): Promise<AuthType.TokenResponse> => 
   try {
     const response = await axios.post<AuthType.TokenResponse>(
       `${BASE_URL}/auth/tokens`,
-      { refreshToken },
+      {},
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${refreshToken}`,
         },
       }
     );

@@ -46,3 +46,19 @@ export const getScheduledTileClass = (
 
   return scheduledDates.has(ymd) ? className : undefined;
 };
+/**
+ * 주어진 타임스탬프로부터 현재까지의 시간 차이를 계산해
+ * '방금 전', 'N분 전', 'N시간 전', 'N일 전' 형식의 문자열로 반환합니다.
+ * @param timestamp - ISO 형식의 날짜 문자열 (예: '2025-06-12T10:00:00Z')
+ * @returns 현재 시각 기준 상대적인 시간 문자열
+ */
+export const getTimeAgo = (timestamp: string) => {
+  const diff = Date.now() - new Date(timestamp).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 1) return '방금 전';
+  if (minutes < 60) return `${minutes}분 전`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}시간 전`;
+  const days = Math.floor(hours / 24);
+  return `${days}일 전`;
+};

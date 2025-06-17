@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import Login from '@/pages/login/components/Login';
 import { authService } from '@/apis/auth';
 import { useNavigate } from 'react-router-dom';
@@ -62,6 +62,7 @@ const LoginPage = () => {
       console.log('로그인 성공:', response);
 
       useAuthStore.getState().setTokens(response.accessToken, response.refreshToken);
+      useAuthStore.getState().setUserId(response.user.id);
       navigate('/');
     } catch (error: unknown) {
       const err = error as AxiosError;

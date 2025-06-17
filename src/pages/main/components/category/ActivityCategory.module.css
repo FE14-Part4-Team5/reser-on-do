@@ -1,0 +1,41 @@
+.categoryWrapper {
+  display: flex;
+  align-items: center;
+  overflow-y: visible;
+  gap: 0.8rem;
+  flex-wrap: nowrap;
+}
+
+.mobileScroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.mobileScroll::-webkit-scrollbar {
+  display: none;
+}
+
+.category {
+  padding: 1rem 1.4rem;
+  color: var(--color-black);
+  border-radius: 10rem;
+  font-size: var(--fs-14);
+  font-weight: var(--font-weight-medium);
+}
+.category.active {
+  background-color: var(--color-black);
+  color: var(--color-white);
+}
+.btnIcon.active path {
+  fill: var(--color-white);
+}
+
+@media (min-width: 768px) {
+  .categoryWrapper {
+    gap: 2rem;
+  }
+  .category {
+    padding: 1rem 1.6rem;
+    font-size: var(--fs-16);
+  }
+}

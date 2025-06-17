@@ -1,0 +1,133 @@
+.mainWrapper {
+  min-height: 100vh;
+  margin-top: -4.8rem;
+  padding-top: 4.8rem;
+  background-image: url('../../assets/images/main_background.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-repeat: top center;
+}
+
+.container {
+  padding: 7.4rem 2.4rem;
+  max-width: 37.5rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.bannerWrapper {
+  background-color: aliceblue;
+  width: 32.7rem;
+  height: 18.1rem;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.7rem;
+}
+
+.title {
+  font-size: var(--fs-18);
+  font-weight: var(--font-weight-bold);
+}
+
+.searchContainer {
+  margin-bottom: 4rem;
+}
+
+.horizontalCardListContainer {
+  margin-bottom: 4rem;
+}
+
+.experiencesCardListContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.activities {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2.4rem;
+}
+
+.titleAndFilter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dropdownWrapper {
+  width: 10rem;
+  text-align: center;
+}
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.4rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 10.3rem 3rem;
+    max-width: 74.4rem;
+  }
+
+  .bannerWrapper {
+    width: 68.4rem;
+    height: 37.5rem;
+    border-radius: 1.8rem;
+    margin: 0 auto 3rem;
+  }
+
+  .title {
+    font-size: var(--fs-32);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .searchContainer {
+    margin-bottom: 6rem;
+  }
+
+  .horizontalCardListContainer {
+    margin-bottom: 8rem;
+  }
+
+  .activities {
+    gap: 1.6rem;
+    margin-bottom: 3rem;
+  }
+
+  .paginationWrapper {
+    margin-top: 3rem;
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    padding: 10.3rem 4rem;
+    max-width: 120rem;
+  }
+  .bannerWrapper {
+    max-width: 112rem;
+    width: 100%;
+    height: 50rem;
+    border-radius: 1.8rem;
+    margin-bottom: 5rem;
+  }
+
+  .activities {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    position: relative;
+  }
+  .dropdownWrapper {
+    position: absolute;
+    width: 10rem;
+    text-align: center;
+    bottom: 1.1rem;
+    right: 2rem;
+  }
+}

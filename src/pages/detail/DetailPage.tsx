@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import styles from './DetailPage.module.css';
 
@@ -11,6 +11,9 @@ import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
 import Pagination from '@/components/Pagination/Pagination';
 import Modal from '@/components/modal/modal';
+import DetailSkeleton from './components/loading/DetailSkeleton';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 
 import {
   useExperienceDetail,
@@ -29,56 +32,49 @@ const DetailPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // TODO: 하드코딩된 값, 추후 동적 값으로 교체 필요
-  const teamId = '14-5';
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
+
+  const userId = useAuthStore(state => state.userId);
+
+  const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
 
   const {
     data: experience,
     isLoading: isDetailLoading,
     isError: isDetailError,
-  } = useExperienceDetail(teamId, Number(id));
+  } = useExperienceDetail(Number(id));
   const {
     data: reviews,
     isLoading: isReviewLoading,
     isError: isReviewError,
-  } = useExperienceReviews(teamId, Number(id));
+  } = useExperienceReviews(Number(id), currentPage, 3);
 
-  const { mutateAsync: reserveExperience } = useReserveExperience(teamId, Number(id));
-  const { mutateAsync: deleteExperience } = useDeleteExperience(teamId, Number(id));
+  const { mutate: reserveExperience } = useReserveExperience(Number(id));
+  const { mutate: deleteExperience } = useDeleteExperience(Number(id));
 
-  const handleReserve = async ({
-    scheduleId,
-    headCount,
-  }: {
-    scheduleId: number;
-    headCount: number;
-  }) => {
-    try {
-      const response = await reserveExperience({ scheduleId, headCount });
-      console.log('예약 성공:', response);
-      setIsModalOpen(true);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error('예약 실패:', e.message);
-      } else {
-        console.error('알 수 없는 에러:', e);
+  const handleReserve = ({ scheduleId, headCount }: { scheduleId: number; headCount: number }) => {
+    reserveExperience(
+      { scheduleId, headCount },
+      {
+        onSuccess: response => {
+          console.log('예약 성공:', response);
+          setIsModalOpen(true);
+        },
       }
-    }
+    );
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await deleteExperience();
-      console.log('삭제 성공:', response);
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error('삭제 실패:', e.message);
-      } else {
-        console.error('알 수 없는 에러:', e);
-      }
-    }
+  const handleDelete = () => {
+    deleteExperience(undefined, {
+      onSuccess: response => {
+        console.log('삭제 성공:', response);
+        navigate('/');
+      },
+    });
   };
 
   const onLoadKakaoMap = (address: string) => {
@@ -113,7 +109,7 @@ const DetailPage = () => {
     } else {
       if (!document.querySelector(`script[src*="dapi.kakao.com"]`)) {
         const script = document.createElement('script');
-        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=6e287159105f0af608f766ff304b9d17&libraries=services&autoload=false`;
+        script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&libraries=services&autoload=false`;
         script.onload = () => {
           if (window.kakao?.maps?.load) {
             window.kakao.maps.load(loadMap);
@@ -133,13 +129,14 @@ const DetailPage = () => {
     }
   }, [experience]);
 
-  if (isDetailLoading || isReviewLoading) return <p>로딩 중...</p>;
-  if (isDetailError || isReviewError) return <p>데이터 로드 중 오류가 발생했습니다.</p>;
-  if (!experience) return <p>데이터 없음</p>;
-  if (!reviews) return <p>리뷰 없음</p>;
+  if (isDetailLoading || isReviewLoading || !experience || !reviews) {
+    return <DetailSkeleton />;
+  }
+  if (isDetailError) throw new Error('체험 상세 정보를 불러오는 중 에러 발생');
+  if (isReviewError) throw new Error('리뷰를 불러오는 중 에러 발생');
 
   return (
-    <>
+    <div className={styles.experienceDetail}>
       <div className={styles.wrapper}>
         <div className={styles.images}>
           <img src={experience.bannerImageUrl} className={styles.mainImage} />
@@ -158,7 +155,7 @@ const DetailPage = () => {
           <div className={styles.category}>{experience.category}</div>
           <div className={styles.titleRow}>
             <h3 className={styles.title}>{experience.title}</h3>
-            {true && (
+            {userId === experience.userId && (
               <div className={styles.menu}>
                 <IconMore
                   width={28}
@@ -231,7 +228,7 @@ const DetailPage = () => {
           </div>
         </section>
         <section className={styles.calendarWrapper}>
-          <div className={false ? styles.invisibleBox : ''}>
+          <div className={userId === experience.userId ? styles.invisibleBox : ''}>
             <Reservation
               price={experience.price}
               schedules={experience.schedules}
@@ -245,7 +242,7 @@ const DetailPage = () => {
           <p className={styles.modalText}>예약이 완료되었습니다.</p>
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 

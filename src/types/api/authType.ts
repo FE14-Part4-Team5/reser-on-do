@@ -7,7 +7,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse extends TokenPair {
-  user: UserSummary[];
+  user: UserSummary;
 }
 
 /*POST tokens, 토큰 재발급*/

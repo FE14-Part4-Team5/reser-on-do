@@ -1,3 +1,7 @@
+.experienceDetail {
+  margin: 3rem 2.4rem 7.5rem;
+}
+
 .wrapper {
   padding-bottom: 30rem;
   display: flex;
@@ -330,6 +334,11 @@
 }
 
 @media (min-width: 1024px) {
+  .experienceDetail {
+    margin: 8.8rem auto 18rem;
+    max-width: 120rem;
+  }
+
   .wrapper {
     display: grid;
     grid-template-areas:
@@ -373,6 +382,7 @@
     width: auto;
     left: auto;
     bottom: auto;
+    z-index: 0;
     grid-area: calendar;
   }
 
