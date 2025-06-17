@@ -45,14 +45,14 @@ const MainPage = () => {
   const dropDownLabels =
     sort === 'latest' ? DROPDOWN_OPTIONS : [DEFAULT_OPTION, ...DROPDOWN_OPTIONS];
 
-  const { data } = useGetActivitiesQuery({
+  const { data: activitiesData } = useGetActivitiesQuery({
     page: currentPage,
     size: itemsPerPage,
     sort,
     category: isSelectedCategory ?? undefined,
     keyword: submittedKeyword || undefined,
   });
-  const pagedCardData = (data?.activities ?? []).map(activity => ({
+  const pagedCardData = (activitiesData?.activities ?? []).map(activity => ({
     ...activity,
     onClick: () => {
       navigate(`/detail/${activity.id}`);
@@ -61,10 +61,10 @@ const MainPage = () => {
     priceUnit: '/ 인',
     currencySymbol: '₩',
   }));
-  const totalItem = data?.totalCount ?? 0;
+  const totalItem = activitiesData?.totalCount ?? 0;
 
   const {
-    data: popularData,
+    data: popularActivitiesData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -73,7 +73,7 @@ const MainPage = () => {
     size: 12,
   });
   const popularCardList =
-    popularData?.pages.flatMap(page =>
+    popularActivitiesData?.pages.flatMap(page =>
       page.activities.map(activity => ({
         ...activity,
         onClick: () => navigate(`/detail/${activity.id}`),

@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { activitiesService } from '@/apis/activities';
 import type { GetActivitiesParams, GetActivitiesResponse } from '@/types/api/activitiesType';
 
@@ -8,7 +8,7 @@ export const useGetActivitiesQuery = (params: Omit<GetActivitiesParams, 'method'
     ...params,
     method: 'offset',
   };
-  return useQuery<GetActivitiesResponse>({
+  return useSuspenseQuery<GetActivitiesResponse>({
     queryKey: ['activities', queryParams],
     queryFn: () => activitiesService.getActivities(queryParams),
     staleTime: 1000 * 60,
@@ -25,7 +25,7 @@ export const usePopularActivitiesInfiniteQuery = ({
   size = 6,
   sort = 'most_reviewed',
 }: UsePopularActivitiesInfiniteQueryParams = {}) => {
-  return useInfiniteQuery({
+  return useSuspenseInfiniteQuery({
     queryKey: ['popularActivities', sort, size],
     queryFn: async ({ pageParam }) => {
       const params: GetActivitiesParams = {
