@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import styles from './Search.module.css';
 import Button from '../button/Button';
 import SearchIcon from '../../assets/icons/icon_search.svg';
+
 interface SearchProps {
   explaination?: string;
   placeholder?: string;
-  onSearch?: (query: string) => void; // 검색 버튼 클릭 시 호출되는 함수
+  onSearch?: (query: string) => void;
   buttonText?: string;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const Search = ({
@@ -14,18 +17,24 @@ const Search = ({
   placeholder = '내가 원하는 체험은 ',
   onSearch,
   buttonText = '검색하기',
+  value,
+  onChange,
 }: SearchProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [internalValue, setInternalValue] = useState('');
+  const searchQuery = value ?? internalValue;
+  const setSearchQuery = onChange ?? setInternalValue;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
   const handleSearchClick = () => {
-    if (searchQuery.trim() && onSearch) {
-      onSearch(searchQuery);
+    const trimmed = searchQuery.trim();
+    if (trimmed && onSearch) {
+      onSearch(trimmed);
     }
   };
+
   return (
     <div className={styles.searchContainer}>
       <div className={styles.explainationContainer}>{explaination}</div>
