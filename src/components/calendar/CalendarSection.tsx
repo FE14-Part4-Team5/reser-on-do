@@ -18,7 +18,7 @@ export const CalendarSection = ({ selectedDate, onChange, scheduledDates }: Cale
         value={selectedDate}
         minDate={new Date()}
         locale="ko-KR"
-        formatDay={(locale, date) => String(date.getDate())}
+        formatDay={(_, date) => String(date.getDate())}
         calendarType="gregory"
         prevLabel={<img src={ArrowLeft} alt="이전" style={{ width: 24, height: 24 }} />}
         nextLabel={<img src={ArrowRight} alt="다음" style={{ width: 24, height: 24 }} />}
@@ -28,9 +28,7 @@ export const CalendarSection = ({ selectedDate, onChange, scheduledDates }: Cale
           date.toLocaleString('ko-KR', { year: 'numeric', month: 'long' })
         }
         showNeighboringMonth={true}
-        formatShortWeekday={(locale, date) =>
-          ['일', '월', '화', '수', '목', '금', '토'][date.getDay()]
-        }
+        formatShortWeekday={(_, date) => ['일', '월', '화', '수', '목', '금', '토'][date.getDay()]}
         tileClassName={({ date, view }) =>
           getScheduledTileClass(date, view, scheduledDates, styles.scheduledDate)
         }

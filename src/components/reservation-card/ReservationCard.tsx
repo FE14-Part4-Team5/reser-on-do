@@ -23,49 +23,48 @@ const ReservationCard = ({
   return (
     <div>
       <div className={styles.card}>
-        <div>
-          <div className={styles.dateTabletMobile}>{date}</div>
-          <div className={styles.contentsImageCard}>
-            <div className={styles.contents}>
-              <div>
-                <StateBadge status={status} label={statusLabelMap[status]} />
-              </div>
-              <div className={styles.title}>{activity.title}</div>
-              <div className={styles.time}>
-                <div className={styles.datePc}>{date}</div>
-                <div className={styles.dateDotPc}>{dateDot}</div>
-                <div>{startTime}</div>
-                <div>{timedash}</div>
-                <div>{endTime}</div>
-              </div>
-              <div className={styles.priceGroup}>
-                <div className={styles.priceUnit}>
-                  <div className={styles.currencySymbol}>{currencySymbol}</div>
-                  <div className={styles.totalPrice}>{totalPrice}</div>
-                  <div className={styles.headCount}>{headCount}</div>
-                  <div className={styles.headCountUnit}>{headCountUnit}</div>
-                </div>
-                <div className={styles.buttonsPc}>
-                  {status === 'pending' ? (
-                    <div className={styles.editCancleButton}>
-                      <div>{editReservationButton}</div>
-                      <div>{cancelReservationButton}</div>
-                    </div>
-                  ) : null}
-                  {!reviewSubmitted && status === 'completed' ? reviewSubmittedButton : null}
-                </div>
-              </div>
+        <div className={styles.dateTabletMobile}>{date}</div>
+        <div className={styles.contentsImageCard}>
+          <div className={styles.contents}>
+            <div>
+              <StateBadge status={status} label={statusLabelMap[status]} />
             </div>
-            <div className={styles.imageParents}>
-              <img
-                src={activity.bannerImageUrl}
-                alt={`배너 이미지- ${activity.title}`}
-                className={styles.image}
-                onError={e => (e.currentTarget.src = fallbackImage)}
-              />
+            <div className={styles.title}>{activity.title}</div>
+            <div className={styles.time}>
+              <div className={styles.datePc}>{date}</div>
+              <div className={styles.dateDotPc}>{dateDot}</div>
+              <div>{startTime}</div>
+              <div>{timedash}</div>
+              <div>{endTime}</div>
+            </div>
+            <div className={styles.priceGroup}>
+              <div className={styles.priceUnit}>
+                <div className={styles.currencySymbol}>{currencySymbol}</div>
+                <div className={styles.totalPrice}>{totalPrice.toLocaleString()}</div>
+                <div className={styles.headCount}>{headCount}</div>
+                <div className={styles.headCountUnit}>{headCountUnit}</div>
+              </div>
+              <div className={styles.buttonsPc}>
+                {status === 'pending' ? (
+                  <div className={styles.editCancleButton}>
+                    <div>{editReservationButton}</div>
+                    <div>{cancelReservationButton}</div>
+                  </div>
+                ) : null}
+                {!reviewSubmitted && status === 'completed' ? reviewSubmittedButton : null}
+              </div>
             </div>
           </div>
+          <div className={styles.imageParents}>
+            <img
+              src={activity.bannerImageUrl}
+              alt={`배너 이미지- ${activity.title}`}
+              className={styles.image}
+              onError={e => (e.currentTarget.src = fallbackImage)}
+            />
+          </div>
         </div>
+
         <div className={styles.buttonsTabletMobile}>
           {status === 'pending' ? (
             <div className={styles.editCancleButton}>

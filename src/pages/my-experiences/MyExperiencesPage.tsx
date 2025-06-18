@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import SideNavigation from '@/components/side-navigation/SideNavigation';
+import { LoadingSideNavigation } from './components/loading/Loading';
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import MyExperiencesCardList from './components/my-experiences-card-list/MyExperiencesCardList';
 import Modal from './example/Modal';
@@ -14,7 +15,6 @@ import { myActivitiesService } from '@/apis/myActivities';
 import type { MyExperienceCardProps } from '@/components/my-experience-card/MyExperienceCard';
 
 import styles from './MyExperiencesPage.module.css';
-import { LoadingSideNavigation } from './components/loading/Loading';
 
 const MyExperiences = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

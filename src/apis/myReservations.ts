@@ -9,11 +9,8 @@ const getMyReservations = async (
   try {
     const response = await axiosInstance.get<MyReservationsType.GetMyReservationsResponse>(
       '/my-reservations',
-      {
-        params,
-      }
+      { params }
     );
-
     return response.data;
   } catch (error: unknown) {
     const err = error as AxiosError<{ message?: string }>;
@@ -28,12 +25,10 @@ const updateMyReservation = async (
 ): Promise<MyReservationsType.UpdateMyReservationResponse> => {
   try {
     const { reservationId } = params;
-
     const response = await axiosInstance.patch<MyReservationsType.UpdateMyReservationResponse>(
       `/my-reservations/${reservationId}`,
-      {}
+      { status: 'canceled' }
     );
-
     return response.data;
   } catch (error: unknown) {
     const err = error as AxiosError<{ message?: string }>;

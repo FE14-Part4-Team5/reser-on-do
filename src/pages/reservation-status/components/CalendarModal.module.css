@@ -1,0 +1,138 @@
+.modalContainer {
+  background-color: white;
+  border-radius: 20px;
+  padding: 24px;
+  width: 360px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modalHeader h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modalHeader button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tabContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tabContainer button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  color: #999;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+
+.tabContainer button:hover {
+  color: #333;
+}
+
+.activeTab {
+  color: #000;
+  border-bottom: 2px solid #2196f3;
+  font-weight: 600;
+}
+
+.modalSection {
+  margin-bottom: 16px;
+}
+
+.modalSection strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.modalSection select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  appearance: none;
+  background: #f9f9f9 url('/icons/arrow-down.svg') no-repeat right 10px center;
+  background-size: 16px;
+}
+
+.reservationItem {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fafafa;
+}
+
+.reservationItem div {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #333;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.actionButtons button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.actionButtons button:first-of-type {
+  background-color: #e6f4f1;
+  color: #0a9486;
+}
+
+.actionButtons button:last-of-type {
+  background-color: #fdeeee;
+  color: #d23f3f;
+}
+
+.statusTag {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.confirmed {
+  background-color: #e6f4f1;
+  color: #0a9486;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.declined {
+  background-color: #fdeeee;
+  color: #d23f3f;
+  padding: 6px 10px;
+  border-radius: 8px;
+}

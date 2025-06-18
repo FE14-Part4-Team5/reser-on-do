@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import IconDelete from '@/assets/icons/icon_delete.svg?react';
@@ -11,9 +11,12 @@ import { useInfiniteNotification, useDeleteNotification } from '@/hooks/useNotif
 
 import { useQueryClient } from '@tanstack/react-query';
 
-const NotificationModal = () => {
-  const [visible, setVisible] = useState(true);
-  if (!visible) return null;
+interface NotificationModalProps {
+  onClose: () => void;
+}
+
+const NotificationModal = ({ onClose }: NotificationModalProps) => {
+  // const [visible, setVisible] = useState(true);
 
   const queryClient = useQueryClient();
   const { ref: loadMoreRef, inView } = useInView();
@@ -21,6 +24,14 @@ const NotificationModal = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteNotification();
   const { mutate: deleteNotification } = useDeleteNotification();
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage]);
+
+  // if (!visible) return null;
 
   const notificationList = data?.pages.flatMap(page => page.notifications) || [];
   const totalCount = data?.pages[0]?.totalCount ?? notificationList.length;
@@ -34,17 +45,11 @@ const NotificationModal = () => {
     });
   };
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage]);
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <p className={styles.title}>알림 {isLoading || isError ? 0 : totalCount}개</p>
-        <button onClick={() => setVisible(false)} className={styles.closeButton}>
+        <button onClick={onClose} className={styles.closeButton}>
           <IconDelete />
         </button>
       </div>

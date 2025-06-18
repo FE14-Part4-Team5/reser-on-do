@@ -8,6 +8,8 @@ import NotiIcon from '@/assets/icons/icon_bell.svg?react';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
 import { useMyProfileQuery } from '@/hooks/useMyProfile';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useInfiniteNotification } from '@/hooks/useNotification';
+import NotificationModal from '@/components/modal/NotificationModal';
 
 const Header = () => {
   const { data: userData } = useMyProfileQuery();
@@ -15,8 +17,15 @@ const Header = () => {
   const isLoggedIn = !!userId && !!userData;
   const [isNoticeClick, setIsNoticeClick] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hasNewNoti, setHasNewNoti] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { data } = useInfiniteNotification();
+
+  useEffect(() => {
+    const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+    setHasNewNoti(totalCount > 0);
+  }, [data]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +48,11 @@ const Header = () => {
   };
 
   const handleNoticeClick = () => {
-    setIsNoticeClick(!isNoticeClick);
+    const totalCount = data?.pages?.[0]?.totalCount ?? 0;
+    setIsNoticeClick(prev => !prev);
+    if (!isNoticeClick && totalCount === 0) {
+      setHasNewNoti(false);
+    }
   };
 
   const handleDropdownToggle = () => {
@@ -74,11 +87,17 @@ const Header = () => {
         </div>
       ) : (
         <div className={styles.userContainer}>
-          <NotiIcon
-            className={clsx(styles.notice, { [styles.active]: isNoticeClick })}
-            type="button"
-            onClick={handleNoticeClick}
-          />
+          <div className={styles.noticeWrapper}>
+            <NotiIcon
+              className={clsx(styles.notice, {
+                [styles.newNoti]: hasNewNoti,
+                [styles.active]: isNoticeClick,
+              })}
+              type="button"
+              onClick={handleNoticeClick}
+            />
+            {isNoticeClick && <NotificationModal onClose={() => setIsNoticeClick(false)} />}
+          </div>
           <div className={styles.divider}></div>
           <div className={styles.userWrapper} ref={dropdownRef}>
             <div className={styles.userProfile}>

@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.calendarWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.navContainer {
+  display: none;
+  margin-top: 4.8rem;
+}
+
+.header {
+  margin: 3rem 2.4rem 1.8rem;
+}
+
+.title {
+  color: var(--gray-950);
+  font-size: var(--fs-18);
+  font-weight: var(--font-weight-bold);
+  margin: 1rem 0;
+}
+
+.explanation {
+  color: #84858c;
+  font-size: var(--fs-14);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 1rem;
+}
+
+.dropdownContainer {
+  width: 100%;
+  margin-top: 1.6rem;
+}
+
+.dropdown {
+  width: 100%;
+  border: 1px solid var(--gray-100);
+  border-radius: 1.6rem;
+  font-size: var(--fs-14);
+  font-weight: var(--font-weight-medium);
+  color: var(--gray-950);
+  padding: 1.4rem;
+  appearance: none;
+
+  background-image: url('/src/assets/icons/icon_alt\ arrow_down.svg');
+  background-repeat: no-repeat;
+  background-position: right 1.2rem center;
+  background-size: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    gap: 3rem;
+  }
+
+  .header {
+    margin: 3rem 0 1.8rem;
+  }
+
+  .navContainer {
+    display: block;
+  }
+  .title {
+    font-size: var(--fs-20);
+  }
+  .explanation {
+    font-size: var(--fs-16);
+  }
+
+  .dropdown {
+    font-size: var(--fs-16);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    gap: 5rem;
+  }
+}

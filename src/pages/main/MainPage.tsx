@@ -5,7 +5,7 @@ import goBackIcon from '@/assets/icons/icon_arrow-left.svg';
 import defaultBannerImg from '@/assets/images/img_rectangle2.png';
 import Search from '@/components/search/Search';
 import Dropdown from '@/components/dropdown/Dropdown';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/pagination/Pagination';
 import Banner from './components/banner/Banner';
 import ActivityCategory from './components/category/ActivityCategory';
 import ExperiencesCardList from './components/experience-card-list/ExperiencesCardList';
