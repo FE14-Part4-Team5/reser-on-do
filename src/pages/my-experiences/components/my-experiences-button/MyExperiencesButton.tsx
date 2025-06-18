@@ -16,14 +16,29 @@ const MyExperiencesButton = ({ children, variant, onClick, to }: Props) => {
 
   if (to) {
     return (
-      <Link to={to} role="button" className={buttonClass}>
+      <Link
+        to={to}
+        role="button"
+        className={buttonClass}
+        onClick={e => {
+          e.stopPropagation();
+          onClick?.();
+        }}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button className={buttonClass} onClick={onClick} type="button">
+    <button
+      className={buttonClass}
+      onClick={e => {
+        e.stopPropagation();
+        onClick?.();
+      }}
+      type="button"
+    >
       {children}
     </button>
   );

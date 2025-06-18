@@ -24,7 +24,7 @@ export interface MyActivitiesResponse {
 
 /*GET reservation-dashboard, 내 체험 월별 예약 현황 조회*/
 export interface ReservationDashboardParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
   year: string;
   month: string;
@@ -43,7 +43,7 @@ export interface ReservationDashboardResponse {
 
 /*GET reserved-schedule, 날짜별 예약 상태 요약*/
 export interface ReservedScheduleParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
   date: string;
 }
@@ -63,7 +63,7 @@ export interface ReservedScheduleResponse {
 
 /*GET reservations, 시간대별 예약 내역*/
 export interface ReservationsParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
   cursorId?: number;
   size?: number;
@@ -74,7 +74,7 @@ export interface ReservationsParams {
 export interface ReservationDetail extends BaseEntity {
   nickname: string;
   userId: number;
-  teamId: string;
+  teamId?: string;
   activityId: number;
   scheduleId: number;
   status: string;
@@ -95,7 +95,7 @@ export interface GetReservationsResponse {
 
 /*PATCH 예약 상태 변경*/
 export interface UpdateReservationParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
   reservationId: number;
 }
@@ -116,7 +116,7 @@ export interface DeleteActivityParams {
 
 /*PATCH activityId, 내 체험 수정*/
 export interface UpdateActivityParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
 }
 

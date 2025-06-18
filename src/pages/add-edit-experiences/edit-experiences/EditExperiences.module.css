@@ -1,0 +1,27 @@
+.root {
+  min-width: 32.7rem;
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.4rem;
+}
+
+@media (min-width: 768px) {
+  .root {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 1.7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .root {
+    padding: 3rem 0;
+  }
+}

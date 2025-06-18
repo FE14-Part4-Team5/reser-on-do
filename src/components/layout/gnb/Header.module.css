@@ -41,14 +41,22 @@
   gap: 2rem;
 }
 
+.noticeWrapper {
+  position: relative;
+}
+
 .notice path {
   fill: var(--gray-600);
 }
 .notice.active path {
   fill: var(--primary-500);
 }
-.notice.active rect {
+.notice rect {
   display: none;
+}
+
+.notice.newNoti rect {
+  display: block;
 }
 
 .divider {

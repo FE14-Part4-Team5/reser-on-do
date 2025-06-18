@@ -1,63 +1,58 @@
+import { useRef, useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import Input from '@/components/input/Input';
+import Dropdown from '../dropdown/Dropdown';
+
+import useDaumPostcode from '@/hooks/useDaumPostcode';
+
+import type { GeneralInfoFormValues } from '../../schema/schema';
 
 import ArrowDownIcon from '@/assets/icons/icon_alt arrow_down.svg?react';
 
-import styles from './GeneralInfoSection.module.css';
-import { useRef, useState } from 'react';
-import Dropdown from '../dropdown/Dropdown';
 import clsx from 'clsx';
-import useDaumPostcode from '@/hooks/useDaumPostcode';
-import type { GeneralInfoFormValues } from '../../schema/schema';
+import styles from './GeneralInfoSection.module.css';
 
-const GeneralInfoSection = () => {
+const GeneralInfoSection = ({ title }: { title: string }) => {
   const {
     register,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext<GeneralInfoFormValues>();
-
-  const CATEGORY_OPTIONS = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
-
   const [showDropdown, setShowDropdown] = useState(false);
-
   const [sdkOpen, setSdkOpen] = useState(false);
-
+  const watchedAddress = watch('address');
   const handleClickDropdown = () => {
     setShowDropdown(prev => !prev);
   };
 
+  const postcodeRef = useRef<HTMLDivElement | null>(null);
   const loaded = useDaumPostcode();
-  const [addr, setAddr] = useState('');
   const detailRef = useRef<HTMLInputElement | null>(null);
-
   const openPostcode = () => {
     if (!loaded) return;
-
     setSdkOpen(true);
-
-    const container = document.getElementById('postcode-modal');
+    const container = postcodeRef.current;
     if (!container) return;
 
     new window.daum.Postcode({
       oncomplete: data => {
         const selected = data.roadAddress || data.jibunAddress;
-        setAddr(selected);
         setValue('address', selected, { shouldValidate: true });
         detailRef.current?.focus();
         setSdkOpen(false);
       },
-      width: container.clientWidth,
-      height: container.clientHeight,
+      width: '100%',
+      height: '100%',
     }).embed(container);
   };
 
   return (
     <div className={styles.formFields}>
-      <MyExperiencesHeader title="내 체험 등록" />
+      <MyExperiencesHeader title={title} />
       <div className={styles.input}>
         <Input
           {...register('title')}
@@ -74,7 +69,7 @@ const GeneralInfoSection = () => {
         control={control}
         render={({ field }) => (
           <div>
-            <div className={styles.categoryLable}>카테고리</div>
+            <div className={styles.categoryLabel}>카테고리</div>
             <div
               role="button"
               tabIndex={-1}
@@ -84,8 +79,8 @@ const GeneralInfoSection = () => {
                 field.value && styles.selected,
                 errors.category && styles.error
               )}
+              ref={field.ref}
               onClick={handleClickDropdown}
-              {...field}
             >
               <div
                 className={clsx(styles.categoryPlaceholder, {
@@ -145,17 +140,23 @@ const GeneralInfoSection = () => {
           name="address"
           title="주소"
           placeholder="주소를 입력해 주세요"
-          value={addr}
+          value={watchedAddress}
           readOnly
+          role="button"
+          aria-label="주소 검색 열기"
           onClick={openPostcode}
-          style={{ cursor: 'pointer' }}
         />
         <div
           className={styles.sdkWrapper}
           style={{ display: sdkOpen ? 'flex' : 'none' }}
           onClick={() => setSdkOpen(false)}
         >
-          <div id="postcode-modal" className={styles.sdk} onClick={e => e.stopPropagation()}></div>
+          <div
+            id="postcode-modal"
+            ref={postcodeRef}
+            className={styles.sdk}
+            onClick={e => e.stopPropagation()}
+          ></div>
         </div>
       </div>
     </div>
@@ -163,3 +164,5 @@ const GeneralInfoSection = () => {
 };
 
 export default GeneralInfoSection;
+
+const CATEGORY_OPTIONS = ['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'];
