@@ -9,7 +9,7 @@ interface ModalProps {
   onClose?: () => void;
   children: React.ReactNode;
   isSecondary?: boolean;
-  isThird?: boolean; // 세 번째 모달을 위한 prop 추가
+  onActionClick?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -18,6 +18,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
   isSecondary = false,
   isThird = false,
+  onActionClick = () => {},
 }) => {
   const [ratings, setRatings] = useState<boolean[]>(Array(5).fill(false));
   const [commentLength, setCommentLength] = useState(0); // 추가
@@ -51,12 +52,24 @@ const Modal: React.FC<ModalProps> = ({
             <button className={styles.modalClose3} onClick={onClose}>
               아니오
             </button>
-            <button className={styles.modalClose2} onClick={onClose}>
+            <button
+              className={styles.modalClose2}
+              onClick={() => {
+                onActionClick();
+                onClose();
+              }}
+            >
               취소하기
             </button>
           </>
         ) : isThird ? (
-          <button className={styles.modalClose4} onClick={onClose}>
+          <button
+            className={styles.modalClose4}
+            onClick={() => {
+              onActionClick();
+              onClose();
+            }}
+          >
             작성하기
           </button>
         ) : (

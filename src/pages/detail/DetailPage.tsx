@@ -6,11 +6,13 @@ import styles from './DetailPage.module.css';
 import IconStar from '@/assets/icons/icon_star.svg?react';
 import IconMap from '@/assets/icons/icon_map.svg?react';
 import IconMore from '@/assets/icons/icon_more.svg?react';
+import fallbackImage from '@/assets/images/error-image.png';
 
 import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
 import Pagination from '@/components/Pagination/Pagination';
 import Modal from '@/components/modal/modal';
+import ModalExample from '../my-experiences/example/Modal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
 
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -31,6 +33,7 @@ declare global {
 const DetailPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -64,58 +67,73 @@ const DetailPage = () => {
           console.log('예약 성공:', response);
           setIsModalOpen(true);
         },
+        onError: (error: any) => alert(error),
       }
     );
   };
 
+  const openDeleteConfirmModal = () => {
+    setIsDeleteConfirmOpen(true);
+  };
+
   const handleDelete = () => {
     deleteExperience(undefined, {
-      onSuccess: response => {
-        console.log('삭제 성공:', response);
+      onSuccess: () => {
+        console.log('삭제 성공');
+        setIsDeleteConfirmOpen(false);
         navigate('/');
       },
     });
   };
 
   const onLoadKakaoMap = (address: string) => {
-    const container = document.getElementById('map') as HTMLElement;
+    const container = document.getElementById('map');
+    if (!container) {
+      requestAnimationFrame(() => onLoadKakaoMap(address));
+      return;
+    }
+
     const geocoder = new window.kakao.maps.services.Geocoder();
 
-    geocoder.addressSearch(address, function (result: any, status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-        const map = new window.kakao.maps.Map(container, {
-          center: coords,
-          level: 2,
-        });
+    geocoder.addressSearch(
+      address,
+      function (result: KakaoAddressSearchResult[], status: KakaoStatus) {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+          const map = new window.kakao.maps.Map(container, {
+            center: coords,
+            level: 2,
+          });
 
-        new window.kakao.maps.Marker({
-          map,
-          position: coords,
-        });
-      } else {
-        console.error('주소를 좌표로 변환할 수 없습니다.');
+          new window.kakao.maps.Marker({
+            map,
+            position: coords,
+          });
+        } else {
+          console.error('주소를 좌표로 변환할 수 없습니다.');
+        }
       }
-    });
+    );
   };
 
   useEffect(() => {
     if (!experience?.address) return;
 
-    const loadMap = () => onLoadKakaoMap(experience.address);
+    const loadMap = () => {
+      window.kakao.maps.load(() => {
+        requestAnimationFrame(() => onLoadKakaoMap(experience.address));
+      });
+    };
 
     if (window.kakao && window.kakao.maps) {
       loadMap();
     } else {
-      if (!document.querySelector(`script[src*="dapi.kakao.com"]`)) {
+      const scriptAlreadyExists = document.querySelector(`script[src*="dapi.kakao.com"]`);
+      if (!scriptAlreadyExists) {
         const script = document.createElement('script');
         script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&libraries=services&autoload=false`;
         script.onload = () => {
-          if (window.kakao?.maps?.load) {
-            window.kakao.maps.load(loadMap);
-          } else {
-            console.error('카카오 맵 로더를 찾을 수 없습니다.');
-          }
+          loadMap();
         };
         document.head.appendChild(script);
       } else {
@@ -129,22 +147,34 @@ const DetailPage = () => {
     }
   }, [experience]);
 
-  if (isDetailLoading || isReviewLoading || !experience || !reviews) {
+  if (isDetailLoading || isReviewLoading) {
     return <DetailSkeleton />;
   }
   if (isDetailError) throw new Error('체험 상세 정보를 불러오는 중 에러 발생');
-  if (isReviewError) throw new Error('리뷰를 불러오는 중 에러 발생');
 
   return (
     <div className={styles.experienceDetail}>
       <div className={styles.wrapper}>
         <div className={styles.images}>
-          <img src={experience.bannerImageUrl} className={styles.mainImage} />
+          <div className={styles.mainImageWrapper}>
+            <img
+              src={experience.bannerImageUrl}
+              className={styles.mainImage}
+              onError={e => (e.currentTarget.src = fallbackImage)}
+            />
+          </div>
           {experience.subImages?.length > 0 && (
-            <div className={styles.subImages}>
+            <div
+              className={`${styles.subImages} ${styles['subImages' + experience.subImages.length]}`}
+            >
               {experience.subImages.map(img => (
                 <div key={img.id} className={styles.subImageWrapper}>
-                  <img src={img.imageUrl} alt="서브 이미지" className={styles.subImage} />
+                  <img
+                    src={img.imageUrl}
+                    alt="서브 이미지"
+                    className={styles.subImage}
+                    onError={e => (e.currentTarget.src = fallbackImage)}
+                  />
                 </div>
               ))}
             </div>
@@ -166,7 +196,7 @@ const DetailPage = () => {
                 {menuOpen && (
                   <ul className={styles.menuList}>
                     <li onClick={() => navigate(`/edit-experiences/${id}`)}>수정하기</li>
-                    <li onClick={handleDelete}>삭제하기</li>
+                    <li onClick={openDeleteConfirmModal}>삭제하기</li>
                   </ul>
                 )}
               </div>
@@ -202,30 +232,39 @@ const DetailPage = () => {
 
         <section className={styles.reviewBox}>
           <h3 className={styles.title}>
-            체험 후기<span className={styles.reviewCount}>{experience.reviewCount}개</span>
+            체험 후기
+            <span className={styles.reviewCount}>
+              {isReviewError ? 0 : experience.reviewCount}개
+            </span>
           </h3>
-          <div className={styles.reviewSummary}>
-            <div className={styles.reviewScore}>{experience.rating}</div>
-            <div className={styles.reviewSatisfaction}>만족도</div>
-            <div className={styles.reviewStars}>
-              <IconStar className={styles.starIcon} />
-              <span>{experience.reviewCount} 후기</span>
-            </div>
-          </div>
-          <div className={styles.reviewList}>
-            {reviews.reviews.map(review => (
-              <ReviewCard
-                key={review.id}
-                name={review.user.nickname}
-                date={new Date(review.createdAt).toLocaleDateString('ko-KR')}
-                rating={review.rating}
-                content={review.content}
-              />
-            ))}
-          </div>
-          <div className={styles.paginationWrapper}>
-            <Pagination totalItems={experience.reviewCount} itemsPerPage={3} />
-          </div>
+          {isReviewError ? (
+            <p>리뷰를 불러오지 못했습니다.</p>
+          ) : (
+            <>
+              <div className={styles.reviewSummary}>
+                <div className={styles.reviewScore}>{experience.rating}</div>
+                <div className={styles.reviewSatisfaction}>만족도</div>
+                <div className={styles.reviewStars}>
+                  <IconStar className={styles.starIcon} />
+                  <span>{experience.reviewCount} 후기</span>
+                </div>
+              </div>
+              <div className={styles.reviewList}>
+                {reviews?.reviews.map(review => (
+                  <ReviewCard
+                    key={review.id}
+                    name={review.user.nickname}
+                    date={new Date(review.createdAt).toLocaleDateString('ko-KR')}
+                    rating={review.rating}
+                    content={review.content}
+                  />
+                ))}
+              </div>
+              <div className={styles.paginationWrapper}>
+                <Pagination totalItems={experience.reviewCount} itemsPerPage={3} />
+              </div>
+            </>
+          )}
         </section>
         <section className={styles.calendarWrapper}>
           <div className={userId === experience.userId ? styles.invisibleBox : ''}>
@@ -242,8 +281,31 @@ const DetailPage = () => {
           <p className={styles.modalText}>예약이 완료되었습니다.</p>
         </Modal>
       )}
+      {isDeleteConfirmOpen && (
+        <ModalExample
+          onConfirm={handleDelete}
+          onClose={() => setIsDeleteConfirmOpen(false)}
+          text="체험을 삭제하시겠습니까?"
+          cancelText="아니요"
+          confirmText="네"
+        />
+      )}
     </div>
   );
 };
 
 export default DetailPage;
+
+type KakaoAddressSearchResult = {
+  address_name: string;
+  address_type: string;
+  x: string;
+  y: string;
+  road_address?: {
+    address_name: string;
+    building_name: string;
+    zone_no: string;
+  };
+};
+
+type KakaoStatus = 'OK' | 'ZERO_RESULT' | 'ERROR';

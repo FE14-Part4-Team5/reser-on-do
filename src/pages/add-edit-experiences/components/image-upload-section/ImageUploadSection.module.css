@@ -24,6 +24,7 @@
 
 .bannerDescription {
   margin-top: 1rem;
+  margin-left: 0.1rem;
 }
 
 .bannerImageAddWrapper {
@@ -74,7 +75,6 @@
   font-size: var(--fs-12);
   color: var(--alert-error);
   margin-top: 0.6rem;
-  margin-left: 0.8rem;
 }
 
 @media (min-width: 768px) {

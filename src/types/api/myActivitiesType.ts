@@ -116,7 +116,7 @@ export interface DeleteActivityParams {
 
 /*PATCH activityId, 내 체험 수정*/
 export interface UpdateActivityParams {
-  teamId: string;
+  teamId?: string;
   activityId: number;
 }
 

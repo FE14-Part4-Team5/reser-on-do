@@ -6,6 +6,7 @@
   background-color: var(--color-white);
   border-radius: 2.4rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
 }
 
 .contents {
@@ -50,19 +51,19 @@
 }
 
 .currencySymbol {
-  font-size: var(--fs-16);
+  font-size: var(--fs-18);
   font-weight: var(--font-weight-bold);
   color: var(--gray-950);
 }
 
 .price {
-  font-size: var(--fs-16);
+  font-size: var(--fs-18);
   font-weight: var(--font-weight-bold);
   color: var(--gray-950);
 }
 
 .priceUnit {
-  font-size: var(--fs-14);
+  font-size: var(--fs-16);
   color: var(--gray-400);
 }
 

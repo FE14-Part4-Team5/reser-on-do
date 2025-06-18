@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery, keepPreviousData } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 import { activitiesService } from '@/apis/activities';
 import { myActivitiesService } from '@/apis/myActivities';
@@ -58,7 +58,7 @@ export interface ReviewResponse {
 }
 
 export const useExperienceDetail = (activityId: number) => {
-  return useQuery<ExperienceResponse>({
+  return useSuspenseQuery<ExperienceResponse>({
     queryKey: ['experienceDetail', activityId],
     queryFn: () => activitiesService.getActivityId({ activityId }),
   });
