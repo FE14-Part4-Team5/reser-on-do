@@ -1,0 +1,17 @@
+.toast {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.6rem 2rem;
+  gap: 0.8rem;
+  border-radius: 1.2rem;
+  font-size: 1.5rem;
+  background-color: white;
+  color: var(--gray-800);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
