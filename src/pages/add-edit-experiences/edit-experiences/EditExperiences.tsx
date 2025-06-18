@@ -15,7 +15,7 @@ import { activitiesService } from '@/apis/activities';
 import GeneralInfoSection from '../components/general-info-section/GeneralInfoSection';
 import ScheduleSection from '../components/schedule-section/ScheduleSection';
 import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
-import Button from '@/components/Button/Button';
+import Button from '@/components/button/Button';
 import { myActivitiesService } from '@/apis/myActivities';
 import type { UpdateActivityRequest } from '@/types/api/myActivitiesType';
 import { useEffect, useState } from 'react';

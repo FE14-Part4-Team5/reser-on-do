@@ -1,4 +1,4 @@
-import Button from '@/components/Button/Button';
+import Button from '@/components/button/Button';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import type { SubmitHandler, SubmitErrorHandler, Resolver } from 'react-hook-form';
