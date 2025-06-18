@@ -10,7 +10,7 @@ import fallbackImage from '@/assets/images/error-image.png';
 
 import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
-import Pagination from '@/components/Pagination/Pagination';
+import Pagination from '@/components/pagination/Pagination';
 import Modal from '@/components/modal/modal';
 import ModalExample from '../my-experiences/example/Modal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
