@@ -1,27 +1,24 @@
 import clsx from 'clsx';
 import styles from './ActivityCategory.module.css';
-import { useState } from 'react';
 import Button from '@/components/Button/Button';
 import useViewPortSize from '@/hooks/useViewPortSize';
 import type { Category } from '@/types/api/sharedType';
 import { CATEGORY_LIST } from './CategoryList';
 
 interface ActivityCategoryProps {
+  selectedCategory: Category | null;
   onSelectCategory: (category: Category | null) => void;
 }
 
-const ActivityCategory = ({ onSelectCategory }: ActivityCategoryProps) => {
+const ActivityCategory = ({ selectedCategory, onSelectCategory }: ActivityCategoryProps) => {
   const { viewportSize } = useViewPortSize();
-  const [selectCategory, setSelectCategory] = useState<Category | null>(null);
 
   const handleCategoryClick = (category: Category) => {
-    const newCategory = selectCategory === category ? null : category;
-    setSelectCategory(newCategory);
-    console.log(`선택된 카테고리 : ${category}`);
+    const newCategory = selectedCategory === category ? null : category;
     onSelectCategory(newCategory);
   };
 
-  const isSelected = (category: Category) => selectCategory === category;
+  const isSelected = (category: Category) => selectedCategory === category;
 
   return (
     <div

@@ -2,7 +2,7 @@ import type { NotificationBase } from './sharedType';
 
 /*GET my-notifications, 내 알림 리스트 조회*/
 export interface MyNotificationsParams {
-  teamId: string;
+  teamId?: string;
   cursorId?: number;
   size?: number;
 }
@@ -17,6 +17,6 @@ export interface GetMyNotificationsResponse {
 
 /*DELETE notificationId, 내 알림 삭제*/
 export interface DeleteNotificationParams {
-  teamId: string;
+  teamId?: string;
   notificationId: number;
 }

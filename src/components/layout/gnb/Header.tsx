@@ -10,8 +10,9 @@ import { useMyProfileQuery } from '@/hooks/useMyProfile';
 import { useAuthStore } from '@/stores/useAuthStore';
 
 const Header = () => {
+  const { data: userData } = useMyProfileQuery();
   const { userId, clearTokens, clearUserId } = useAuthStore();
-  const isLoggedIn = !!userId;
+  const isLoggedIn = !!userId && !!userData;
   const [isNoticeClick, setIsNoticeClick] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,9 @@ const Header = () => {
     };
   }, [isDropdownOpen]);
 
-  const { data: userData } = useMyProfileQuery();
+  const handleLogoClick = () => {
+    navigate('/');
+  };
 
   const handleNoticeClick = () => {
     setIsNoticeClick(!isNoticeClick);
@@ -52,7 +55,7 @@ const Header = () => {
   return (
     <div className={styles.container}>
       <div className={styles.gnbLogo}>
-        <Link to="/">
+        <Link to="/" type="button" onClick={handleLogoClick}>
           <picture>
             <source srcSet={gnbLogo} media="(min-width:768px)" />
             <img src={smallLogo} alt="logo" className={styles.gnbLogoIcon} />

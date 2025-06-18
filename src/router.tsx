@@ -16,13 +16,23 @@ import ReservationStatus from './pages/reservation-status/ReservationStatus';
 import OAuthKakaoCallback from './pages/oauthkakaocallback/OAuthKakaoCallback';
 import LoadingUI from './pages/my-experiences/components/loading/Loading';
 import MainPage from './pages/main/MainPage';
+import MainLoadingUI from './pages/main/components/loding/MainLodingUI';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: '', element: <MainPage /> },
+      {
+        path: '',
+        element: (
+          <ErrorBoundary FallbackComponent={ErrorUI}>
+            <Suspense fallback={<MainLoadingUI />}>
+              <MainPage />
+            </Suspense>
+          </ErrorBoundary>
+        ),
+      },
       { path: '/my-profile', element: <MyProfilePage /> },
       {
         path: 'detail/:id',
