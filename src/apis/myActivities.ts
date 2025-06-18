@@ -26,10 +26,10 @@ const getMyActivities = async (
 /*내 체험 월별 예약 현황 조회*/
 const getReservationDashboard = async (
   params: MyActivitiesType.ReservationDashboardParams
-): Promise<MyActivitiesType.ReservationDashboardResponse> => {
+): Promise<MyActivitiesType.ReservationDashboardResponse[]> => {
   try {
     const { activityId, ...query } = params;
-    const response = await axiosInstance.get<MyActivitiesType.ReservationDashboardResponse>(
+    const response = await axiosInstance.get<MyActivitiesType.ReservationDashboardResponse[]>(
       `/my-activities/${activityId}/reservation-dashboard`,
       {
         params: query,

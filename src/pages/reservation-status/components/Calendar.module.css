@@ -1,0 +1,119 @@
+.wrapper {
+  margin: 0 auto;
+  background-color: var(--color-white);
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: var(--fs-16);
+  color: #1b1b1b;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.8rem;
+  padding: 1.25rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.dayLabel {
+  font-size: var(--fs-13);
+  font-weight: var(--font-weight-bold);
+  color: var(--gray-900);
+  border-bottom: 1px solid var(--gray-100);
+  padding: 1.2rem 2.2rem;
+}
+
+.dateCell {
+  padding: 1rem 2rem 8rem;
+  font-size: var(--fs-12);
+  color: var(--gray-900);
+  font-weight: var(--font-weight-medium);
+  border-top: 1px solid var(--gray-50);
+}
+
+.adjacentMonthCell {
+  padding: 1rem 2rem 8rem;
+  font-size: var(--fs-12);
+  color: var(--gray-400);
+  font-weight: var(--font-weight-medium);
+  border-top: 1px solid var(--gray-50);
+}
+
+.dateNumberWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dot {
+  position: absolute;
+  top: -1rem;
+  right: -1rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.4rem;
+  gap: 0.2rem;
+}
+
+.badge {
+  font-size: var(--fs-14);
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.completed {
+  background-color: #e4e4e7;
+  color: #333;
+}
+
+.pending {
+  background-color: #e0efff;
+  color: #0074d9;
+}
+
+.confirmed {
+  background-color: #fff1c9;
+  color: #d68800;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    background-color: white;
+    border-radius: 2.4rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  .dayLabel {
+    font-size: var(--fs-16);
+    padding-bottom: 2.4rem;
+  }
+  .dateCell,
+  .adjacentMonthCell {
+    font-size: var(--fs-16);
+  }
+
+  .header {
+    padding: 1rem 0;
+    margin: 2rem 0 3rem;
+    gap: 3rem;
+    font-size: var(--fs-20);
+  }
+
+  .dateCell,
+  .adjacentMonthCell {
+    padding: 1.8rem 3rem 8.7rem;
+  }
+}
