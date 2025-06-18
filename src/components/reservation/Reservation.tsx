@@ -10,7 +10,7 @@ import { formatDateToYMD } from '@/utils/datetime';
 import styles from './Reservation.module.css';
 import CalendarSection from '../calendar/CalendarSection';
 import ReservationFooter from './ReservationFooter';
-import Button from '../button/Button';
+import Button from '@/components/button/Button';
 
 interface ScheduleSlot {
   id: number;
