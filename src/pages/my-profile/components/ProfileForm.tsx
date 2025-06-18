@@ -30,6 +30,7 @@ const ProfileForm = ({ onClick, onSubmit, userData, isProfileChanged }: MyProfil
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputWrapper}>
           <Input
+            autoComplete="off"
             title="닉네임"
             placeholder={userData?.nickname || ''}
             isError={!!errors.nickname}
@@ -38,11 +39,12 @@ const ProfileForm = ({ onClick, onSubmit, userData, isProfileChanged }: MyProfil
           />
         </div>
         <div className={styles.inputWrapper}>
-          <Input title="이메일" placeholder={userData?.email || ''} disabled />
+          <Input title="이메일" autoComplete="email" placeholder={userData?.email || ''} disabled />
         </div>
         <div className={styles.inputWrapper}>
           <Input
             type="password"
+            autoComplete="new-password"
             title="비밀번호"
             placeholder="8자 이상 입력해주세요"
             isError={!!errors.newPassword}
@@ -54,6 +56,7 @@ const ProfileForm = ({ onClick, onSubmit, userData, isProfileChanged }: MyProfil
         <div className={styles.inputWrapper}>
           <Input
             type="password"
+            autoComplete="new-password"
             title="비밀번호 확인"
             placeholder="비밀번호를 한번 더 입력해주세요"
             isError={!!errors.newConfirmPassword}
