@@ -1,9 +1,8 @@
-
 .title {
   font-size: var(--fs-14);
   font-weight: var(--font-weight-bold);
   color: var(--gray-950);
-  margin-top: 0.8rem;
+  margin-top: 1rem;
 }
 
 .time {
@@ -90,11 +89,13 @@
 
 .time {
   display: flex;
+  margin-top: 1rem;
 }
 
 .priceGroup {
   display: flex;
-  margin-top: 0.8rem;
+  align-items: center;
+  margin-top: 1rem;
 }
 
 .editCancelButton {
@@ -117,9 +118,6 @@
 }
 
 @media (min-width: 768px) {
-
-
-
   .contents {
     width: 36rem;
   }
@@ -137,6 +135,7 @@
   .contents {
     width: 48.5rem;
     height: 18.1rem;
+    padding: 3rem;
   }
 
   .image {
@@ -176,7 +175,7 @@
   }
 
   .priceGroup {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     justify-content: space-between;
   }
 
