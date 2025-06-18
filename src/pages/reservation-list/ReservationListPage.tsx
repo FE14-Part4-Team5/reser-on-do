@@ -1,12 +1,18 @@
-import SideNavigation from '../../components/side-navigation/SideNavigation.tsx';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMyProfileQuery } from '@/hooks/useMyProfile';
+import { myReservationsService } from '@/apis/myReservations';
+import SideNavigation from '@/components/side-navigation/SideNavigation';
+import { LoadingSideNavigation } from '../my-experiences/components/loading/Loading';
 import styles from './ReservationListPage.module.css';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
-import { useState } from 'react';
 import ReservationCard from '../../components/reservation-card/ReservationCard';
 import Modal from '../../components/modal/modal';
 import WarningIcon from '../../assets/icons/modalwarning.svg';
 import Button from '../../components/Button/Button';
 import emptyImg from '@/assets/images/img_empty.png';
+import type { MyReservation } from '@/types/api/myReservationsType';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const handleProfileImageUpload = (file: File) => {
   console.log('이미지 업로드:', file);
@@ -18,6 +24,43 @@ const ReservationList: React.FC = () => {
   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+  const { data: userData } = useMyProfileQuery();
+
+  // 예약 목록 조회 API 호출
+  const {
+    data: reservationsData,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['myReservations'],
+    queryFn: () => myReservationsService.getMyReservations({}),
+  });
+
+  // 예약 취소 API 호출
+  const cancelReservationMutation = useMutation({
+    mutationFn: (reservationId: number) =>
+      myReservationsService.updateMyReservation({ reservationId }),
+    onSuccess: () => {
+      refetch(); // 예약 목록 갱신
+      setIsCancelModalOpen(false);
+    },
+    onError: error => {
+      console.error('예약 취소 실패:', error);
+    },
+  });
+
+  // 예약 취소 핸들러
+  const handleCancelReservation = (reservationId: number) => {
+    cancelReservationMutation.mutate(reservationId);
+  };
+
+  const reservations = reservationsData?.reservations || [];
+
+  const handleExploreClick = () => {
+    navigate('/');
+  };
+
   const handleBadgeClick = (state: string) => {
     // 현재 선택된 상태와 동일한 배지를 클릭하면 선택 해제
     if (activeState === state) {
@@ -27,45 +70,16 @@ const ReservationList: React.FC = () => {
     }
   };
 
-  const reservations: MyReservation[] = [
-    // 체험 완료 카드 추가(테스트용)
-    {
-      activity: {
-        id: 2,
-        bannerImageUrl: '이미지URL2',
-        title: '맛있는 김치 만들기 체험',
-      },
-      status: 'completed',
-      date: '2024.06.01',
-      startTime: '10:00',
-      endTime: '12:00',
-      totalPrice: 45000,
-      headCount: 3,
-      headCountUnit: '명',
-      reviewSubmitted: false,
-    },
-    {
-      activity: {
-        id: 2,
-        bannerImageUrl: '이미지URL2',
-        title: '맛있는 김치 만들기 체험',
-      },
-      status: 'pending',
-      date: '2024.06.01',
-      startTime: '10:00',
-      endTime: '12:00',
-      totalPrice: 45000,
-      headCount: 3,
-      headCountUnit: '명',
-      reviewSubmitted: false,
-    },
-  ];
-
   return (
     <div className={styles.container}>
       <div className={styles.navigationWrapper}>
-        <SideNavigation defaultImage={profileImg} />
+        {userData ? (
+          <SideNavigation defaultImage={userData.profileImageUrl as string} />
+        ) : (
+          <LoadingSideNavigation />
+        )}
       </div>
+
       <div className={styles.contentWrapper}>
         <div className={styles.titleSection}>
           <h1 className={styles.title}>예약 내역</h1>
@@ -132,26 +146,29 @@ const ReservationList: React.FC = () => {
                       headCount={reservation.headCount}
                       headCountUnit="명"
                       reviewSubmitted={reservation.reviewSubmitted}
+                      cancelReservationButton={
+                        <Button
+                          variant="ghost"
+                          isActive={true}
+                          onClick={() => {
+                            setSelectedReservation(reservation);
+                            setIsCancelModalOpen(true);
+                          }}
+                          className={styles.cancelButton}
+                          style={{ color: 'var(--gray-800)' }}
+                        >
+                          예약 취소
+                        </Button>
+                      }
                       editReservationButton={
-                        <div className={styles.buttonContainer}>
-                          <Button
-                            variant="secondary"
-                            isActive={true}
-                            className={styles.editButton}
-                            style={{ color: 'var(--gray-600)' }}
-                          >
-                            예약 변경
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            isActive={true}
-                            onClick={() => setIsCancelModalOpen(true)}
-                            className={styles.cancelButton}
-                            style={{ color: 'var(--gray-800)' }}
-                          >
-                            예약 취소
-                          </Button>
-                        </div>
+                        <Button
+                          variant="secondary"
+                          isActive={true}
+                          className={styles.editButton}
+                          style={{ color: 'var(--gray-600)' }}
+                        >
+                          예약 변경
+                        </Button>
                       }
                       reviewSubmittedButton={
                         <Button
@@ -175,7 +192,12 @@ const ReservationList: React.FC = () => {
             <div className={styles.emptyState}>
               <img src={emptyImg} alt="아직 예약한 체험이 없어요" />
               <p>아직 예약한 체험이 없어요</p>
-              <Button variant="primary" isActive={true} className={styles.exploreButton}>
+              <Button
+                variant="primary"
+                isActive={true}
+                className={styles.exploreButton}
+                onClick={handleExploreClick}
+              >
                 둘러보기
               </Button>
             </div>
@@ -201,9 +223,10 @@ const ReservationList: React.FC = () => {
           isOpen={isCancelModalOpen}
           onClose={() => setIsCancelModalOpen(false)}
           isSecondary={true}
+          onActionClick={() => handleCancelReservation(selectedReservation?.id as number)}
         >
           <img src={WarningIcon} className={styles.warningIcon} alt="warning" />
-          <h2>예약을 취소하시겠습니까?</h2>
+          <h2>예약을 취소하시겠습니까? </h2>
         </Modal>
       </div>
     </div>

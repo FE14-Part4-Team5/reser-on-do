@@ -15,7 +15,12 @@ const MainCard = ({
 }: MainCardProps) => {
   return (
     <div role="button" className={styles.mainCard} onClick={onClick}>
-      <img src={bannerImageUrl} alt={`체험 배너 - ${title}`} className={styles.img} />
+      <img
+        src={bannerImageUrl || fallbackImage}
+        alt={`체험 배너 - ${title}`}
+        className={styles.img}
+        onError={e => (e.currentTarget.src = fallbackImage)}
+      />
       <div className={styles.contentBox}>
         <div className={styles.title}>{title}</div>
         <div className={styles.ratingReview}>

@@ -4,19 +4,18 @@ import styles from './Dropdown.module.css';
 interface DropdownProps {
   label: string;
   options: string[];
+  selected?: string;
   onSelect: (value: string) => void;
 }
 
-const Dropdown = ({ label, options, onSelect }: DropdownProps) => {
+const Dropdown = ({ label, options, selected, onSelect }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
   const toggleDropdown = () => {
     setIsOpen(prev => !prev);
   };
 
   const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
     setIsOpen(false);
     onSelect(option);
   };
@@ -24,7 +23,7 @@ const Dropdown = ({ label, options, onSelect }: DropdownProps) => {
   return (
     <div>
       <button onClick={toggleDropdown} className={styles.dropdownButton}>
-        {selectedOption || label} ▼
+        {selected || label} ▼
       </button>
       {isOpen && (
         <ul className={styles.dropdownMenu}>
