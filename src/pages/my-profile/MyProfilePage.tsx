@@ -10,22 +10,30 @@ import {
 import { useMyProfileUpdateForm, type MyProfileFormValues } from '@/hooks/useMyProfileUpdateForm';
 import useViewPortSize from '@/hooks/useViewPortSize';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
-import ProfileForm from './components/ProfileForm';
+import ProfileForm from './components/profile-form/ProfileForm';
 import defaultProfileImg from '@/assets/icons/profile_size=lg.svg';
 import styles from './MyProfilePage.module.css';
-import MyProfileLoadingUI from './components/loading/MyProfileLoadingUI';
+import { useToast } from '@/hooks/useToast';
+import IconEarth from '@/assets/icons/logo_earth.svg';
+import IconWarning from '@/assets/icons/modalwarning.svg';
 
 const MyProfilePage = () => {
-  const methods = useMyProfileUpdateForm();
   const queryClient = useQueryClient();
-  const [isEdit, setIsEdit] = useState(false);
   const location = useLocation();
+  const { viewportSize } = useViewPortSize();
+  const { showToast } = useToast();
+  const methods = useMyProfileUpdateForm();
+  const [isEdit, setIsEdit] = useState(false);
+  const { data: userData } = useMyProfileQuery();
+  console.log('🔥 userData:', userData);
+  const { profileImageUrl: initialProfileImageUrl } = userData;
+  console.log('❗여기까지 오면 throw 안 된 것!');
+
+  const [profileImageUrl, setProfileImageUrl] = useState(initialProfileImageUrl);
+  // const [profileImageUrl, setProfileImageUrl] = useState(userData?.profileImageUrl || '');
+  const isProfileChanged = !!profileImageUrl && profileImageUrl !== userData?.profileImageUrl;
   const { mutate: updateMutate } = useUpdateMyProfileMutation();
   const { mutate: createMutate } = useCreateImageUrlMutation();
-  const { viewportSize } = useViewPortSize();
-  const { data: userData, isLoading } = useMyProfileQuery();
-  const [profileImageUrl, setProfileImageUrl] = useState(userData?.profileImageUrl || '');
-  const isProfileChanged = !!profileImageUrl && profileImageUrl !== userData?.profileImageUrl;
   useEffect(() => {
     if (location.pathname === '/my-profile' && viewportSize === 'mobile') {
       setIsEdit(false);
@@ -47,7 +55,11 @@ const MyProfilePage = () => {
       },
       {
         onSuccess: async () => {
-          //toast 기능 추가 고민중
+          showToast({
+            label: '수정 성공!',
+            iconSrc: IconEarth,
+          });
+
           await queryClient.invalidateQueries({ queryKey: ['myProfile'] });
           methods.reset({
             nickname: '',
@@ -57,7 +69,10 @@ const MyProfilePage = () => {
           setIsEdit(prev => !prev);
         },
         onError: () => {
-          //toast 기능 추가 고민중
+          showToast({
+            label: '수정 실패!',
+            iconSrc: IconWarning,
+          });
           console.error();
         },
       }
@@ -79,7 +94,6 @@ const MyProfilePage = () => {
     );
   };
 
-  if (isLoading) return <MyProfileLoadingUI />;
   return (
     <FormProvider {...methods}>
       <div className={styles.container}>
