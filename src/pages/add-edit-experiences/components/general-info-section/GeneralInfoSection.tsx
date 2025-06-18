@@ -69,7 +69,7 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
         control={control}
         render={({ field }) => (
           <div>
-            <div className={styles.categoryLable}>카테고리</div>
+            <div className={styles.categoryLabel}>카테고리</div>
             <div
               role="button"
               tabIndex={-1}

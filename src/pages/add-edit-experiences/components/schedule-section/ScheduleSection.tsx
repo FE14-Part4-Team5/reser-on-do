@@ -26,7 +26,6 @@ const ScheduleSection = () => {
   const [showDropdownFor, setShowDropdownFor] = useState<'start' | 'end' | null>(null);
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
 
   const [schedules, setSchedules] = useState<
     { id?: number; date: string; startTime: string; endTime: string }[]
@@ -262,7 +261,7 @@ const ScheduleSection = () => {
       {schedules.length > 0 && (
         <div className={styles.schedulesWrapper}>
           {schedules.map((s, idx) => (
-            <div key={idx} className={styles.scheduleTag}>
+            <div key={`${s.date}-${s.startTime}-${s.endTime}`} className={styles.scheduleTag}>
               <div className={styles.dateWrapper}>
                 <div className={styles.calendarInputWrapper}>
                   <div className={styles.dateInput}>{s.date}</div>
@@ -310,3 +309,5 @@ const ScheduleSection = () => {
 };
 
 export default ScheduleSection;
+
+const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`);
