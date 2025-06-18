@@ -9,6 +9,7 @@ interface ModalProps {
   onClose?: () => void;
   children: React.ReactNode;
   isSecondary?: boolean;
+  isThird?: boolean;
   onActionClick?: () => void;
 }
 

@@ -2,21 +2,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMyProfileQuery } from '@/hooks/useMyProfile';
 import { myReservationsService } from '@/apis/myReservations';
+import type { MyReservation } from '@/types/api/myReservationsType';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
 import { LoadingSideNavigation } from '../my-experiences/components/loading/Loading';
 import styles from './ReservationListPage.module.css';
-import profileImg from '@/assets/icons/profile_size=lg.svg';
+import ProfileImage from '@/assets/icons/profile_size=lg.svg';
 import ReservationCard from '../../components/reservation-card/ReservationCard';
 import Modal from '../../components/modal/modal';
 import WarningIcon from '../../assets/icons/modalwarning.svg';
 import Button from '../../components/Button/Button';
 import emptyImg from '@/assets/images/img_empty.png';
-import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';
-
-const handleProfileImageUpload = (file: File) => {
-  console.log('이미지 업로드:', file);
-};
 
 const ReservationList: React.FC = () => {
   const [activeState, setActiveState] = useState<string | null>(null);
@@ -27,10 +23,12 @@ const ReservationList: React.FC = () => {
   const navigate = useNavigate();
   const { data: userData } = useMyProfileQuery();
 
+  <SideNavigation defaultImage={userData?.profileImageUrl || ProfileImage} />;
+
   // 예약 목록 조회 API 호출
   const {
     data: reservationsData,
-    isLoading,
+    // isLoading,
     refetch,
   } = useQuery({
     queryKey: ['myReservations'],
