@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMyprofile } from '@/pages/my-experiences/example/example';
 import { usersService } from '@/apis/users';
 import type {
@@ -10,7 +10,7 @@ import type {
 } from '@/types/api/usersType';
 
 export const useMyProfile = (teamId: string) => {
-  return useQuery<GetMeResponse>({
+  return useSuspenseQuery<GetMeResponse>({
     queryKey: ['myProfile', teamId],
     queryFn: () => getMyprofile(teamId),
   });
@@ -20,7 +20,7 @@ export const useMyProfile = (teamId: string) => {
 // 위의 쿼리 다른 분들도 사용하고 있는 이유로 임의로 지우거나 수정할수가 없어서 따로 만듭니다:)
 // 아래부분으로 수정할 것 다 수정되면 나중에 위의 쿼리는 삭제하겠습니다!
 export const useMyProfileQuery = () => {
-  return useQuery<GetMeResponse>({
+  return useSuspenseQuery<GetMeResponse>({
     queryKey: ['myProfile'],
     queryFn: () => usersService.getMe(),
   });

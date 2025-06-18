@@ -9,11 +9,11 @@ import {
 } from '@/hooks/useMyProfile';
 import { useMyProfileUpdateForm, type MyProfileFormValues } from '@/hooks/useMyProfileUpdateForm';
 import useViewPortSize from '@/hooks/useViewPortSize';
-import ExampleLogin from '@/pages/my-experiences/example/ExampleLogin';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
 import ProfileForm from './components/ProfileForm';
 import defaultProfileImg from '@/assets/icons/profile_size=lg.svg';
 import styles from './MyProfilePage.module.css';
+import MyProfileLoadingUI from './components/loading/MyProfileLoadingUI';
 
 const MyProfilePage = () => {
   const methods = useMyProfileUpdateForm();
@@ -23,21 +23,16 @@ const MyProfilePage = () => {
   const { mutate: updateMutate } = useUpdateMyProfileMutation();
   const { mutate: createMutate } = useCreateImageUrlMutation();
   const { viewportSize } = useViewPortSize();
-  const {
-    data: userData,
-    isLoading: isProfileLoading,
-    isError: isProfileError,
-  } = useMyProfileQuery();
+  const { data: userData, isLoading } = useMyProfileQuery();
   const [profileImageUrl, setProfileImageUrl] = useState(userData?.profileImageUrl || '');
   const isProfileChanged = !!profileImageUrl && profileImageUrl !== userData?.profileImageUrl;
-
   useEffect(() => {
     if (location.pathname === '/my-profile' && viewportSize === 'mobile') {
-      setIsEdit(prev => !prev);
+      setIsEdit(false);
+    } else {
+      setIsEdit(true);
     }
   }, [location.pathname, viewportSize]);
-  if (isProfileLoading) return <ExampleLogin />;
-  if (isProfileError) return <ExampleLogin />;
 
   const handleCancelUpdate = () => {
     setIsEdit(prev => !prev);
@@ -84,6 +79,7 @@ const MyProfilePage = () => {
     );
   };
 
+  if (isLoading) return <MyProfileLoadingUI />;
   return (
     <FormProvider {...methods}>
       <div className={styles.container}>
