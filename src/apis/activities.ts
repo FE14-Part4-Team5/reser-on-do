@@ -9,6 +9,9 @@ const getActivities = async (
   try {
     const response = await axiosInstance.get<ActivitiesType.GetActivitiesResponse>('/activities', {
       params,
+      headers: {
+        'x-require-auth': 'false',
+      },
     });
     return response.data;
   } catch (error: unknown) {
