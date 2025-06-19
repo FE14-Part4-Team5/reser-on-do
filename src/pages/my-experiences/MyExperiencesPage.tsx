@@ -5,14 +5,18 @@ import SideNavigation from '@/components/side-navigation/SideNavigation';
 import { LoadingSideNavigation } from './components/loading/Loading';
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import MyExperiencesCardList from './components/my-experiences-card-list/MyExperiencesCardList';
-import Modal from './example/Modal';
+import Modal from '../../components/modal/ConfirmModal';
 import MyExperiencesButton from './components/my-experiences-button/MyExperiencesButton';
+import type { MyExperienceCardProps } from '@/components/my-experience-card/MyExperienceCard';
+
+import { myActivitiesService } from '@/apis/myActivities';
 
 import { useInfiniteMyActivities } from '@/hooks/useInfiniteMyActivities';
 import { useMyProfileQuery } from '@/hooks/useMyProfile';
-import { myActivitiesService } from '@/apis/myActivities';
+import { useToast } from '@/hooks/useToast';
 
-import type { MyExperienceCardProps } from '@/components/my-experience-card/MyExperienceCard';
+import IconEarth from '@/assets/icons/logo_earth.svg';
+import IconError from '@/assets/icons/modalwarning.svg';
 
 import styles from './MyExperiencesPage.module.css';
 
@@ -25,15 +29,23 @@ const MyExperiences = () => {
     setIsModalOpen(true);
   };
 
+  const { showToast } = useToast();
+
   const handleConfirmDelete = async () => {
     try {
       if (activityId === null) return;
       await myActivitiesService.deleteActivity({ teamId: '14-5', activityId });
       refetch();
-      //토스트 띄우기 고려
-    } catch (error) {
-      console.log(error);
-      throw new Error();
+      showToast({
+        label: '체험 삭제 성공!',
+        iconSrc: IconEarth,
+      });
+    } catch {
+      showToast({
+        label: '체험 삭제 실패!',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
     } finally {
       setIsModalOpen(false);
     }

@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   useForm,
   FormProvider,
@@ -6,19 +7,27 @@ import {
   type SubmitErrorHandler,
   type Resolver,
 } from 'react-hook-form';
-import styles from './EditExperiences.module.css';
-import { generalInfoSchema, type GeneralInfoFormValues } from '../schema/schema';
-
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
-import { activitiesService } from '@/apis/activities';
+
+import { generalInfoSchema, type GeneralInfoFormValues } from '../schema/schema';
+import ConfirmModal from '@/components/modal/ConfirmModal';
 import GeneralInfoSection from '../components/general-info-section/GeneralInfoSection';
 import ScheduleSection from '../components/schedule-section/ScheduleSection';
 import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
 import Button from '@/components/button/Button';
+
+import { activitiesService } from '@/apis/activities';
 import { myActivitiesService } from '@/apis/myActivities';
+
+import { useToast } from '@/hooks/useToast';
+import useBackBlocker from '@/hooks/useBackBlocker';
+
 import type { UpdateActivityRequest } from '@/types/api/myActivitiesType';
-import { useEffect, useState } from 'react';
+
+import IconEarth from '@/assets/icons/logo_earth.svg';
+import IconError from '@/assets/icons/modalwarning.svg';
+
+import styles from './EditExperiences.module.css';
 
 const EditExperiences = () => {
   const [subInitialPreviews, setSubInitialPreviews] = useState<
@@ -51,6 +60,7 @@ const EditExperiences = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { handleSubmit, setFocus } = methods;
+  const { showToast } = useToast();
 
   const onValid: SubmitHandler<GeneralInfoFormValues> = async data => {
     try {
@@ -62,7 +72,6 @@ const EditExperiences = () => {
       }
       const existingSubUrls = subInitialPreviews.map(p => p.url);
       const newSubUrls = data.subImageUrls.filter(url => !existingSubUrls.includes(url));
-      // Prepare schedule payload
       const schedulesToAdd = (data.schedules || [])
         .filter(item => item.id === undefined)
         .map(({ date, startTime, endTime }) => ({ date, startTime, endTime }));
@@ -84,8 +93,16 @@ const EditExperiences = () => {
         payload
       );
       navigate(`/detail/${response.id}`, { state: { updated: Date.now() } });
-    } catch (error) {
-      console.error('체험 등록 중 오류:', error);
+      showToast({
+        label: '체험 수정 성공!',
+        iconSrc: IconEarth,
+      });
+    } catch {
+      showToast({
+        label: '체험 수정을 실패했어요.',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
     }
   };
   const onError: SubmitErrorHandler<GeneralInfoFormValues> = errors => {
@@ -132,8 +149,19 @@ const EditExperiences = () => {
       .catch(err => console.error(err));
   }, [id, methods]);
 
+  const { isModalOpen, closeModal, confirmNavigation } = useBackBlocker();
+
   return (
     <FormProvider {...methods}>
+      {isModalOpen && (
+        <ConfirmModal
+          text="저장되지 않았습니다. 정말 뒤로 가시겠습니까?"
+          cancelText="아나오"
+          confirmText="네"
+          onConfirm={confirmNavigation}
+          onClose={closeModal}
+        />
+      )}
       <form onSubmit={handleSubmit(onValid, onError)} className={styles.root}>
         <GeneralInfoSection title="내 체험 수정" />
         <ScheduleSection />
