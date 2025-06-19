@@ -5,21 +5,18 @@ import { myReservationsService } from '@/apis/myReservations';
 import SideNavigation from '@/components/side-navigation/SideNavigation';
 import { LoadingSideNavigation } from '../my-experiences/components/loading/Loading';
 import styles from './ReservationListPage.module.css';
-// import profileImg from '@/assets/icons/profile_size=lg.svg';
 import ReservationCard from '../../components/reservation-card/ReservationCard';
 import Modal from '../../components/modal/modal';
 import WarningIcon from '../../assets/icons/modalwarning.svg';
-import Button from '../../components/button/Button';
+import Button from '../../components/Button/Button';
 import emptyImg from '@/assets/images/img_empty.png';
 import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-// const handleProfileImageUpload = (file: File) => {
-//   console.log('이미지 업로드:', file);
-// };
+import type { ReservationStatus } from '@/types/api/sharedType';
 
 const ReservationList: React.FC = () => {
-  const [activeState, setActiveState] = useState<string | null>(null);
+  const [activeState, setActiveState] = useState<ReservationStatus | undefined>(undefined);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -34,7 +31,7 @@ const ReservationList: React.FC = () => {
     refetch,
   } = useQuery({
     queryKey: ['myReservations'],
-    queryFn: () => myReservationsService.getMyReservations({}),
+    queryFn: () => myReservationsService.getMyReservations({ status: activeState }),
   });
 
   // 예약 취소 API 호출
@@ -50,21 +47,63 @@ const ReservationList: React.FC = () => {
     },
   });
 
+  // 후기 작성 API 호출
+  const createReviewMutation = useMutation({
+    mutationFn: ({
+      reservationId,
+      teamId,
+      rating,
+      content,
+    }: {
+      reservationId: number;
+      teamId: string;
+      rating: number;
+      content: string;
+    }) =>
+      myReservationsService.createMyReservationReview({
+        reservationId,
+        teamId,
+        rating,
+        content,
+      }),
+    onSuccess: () => {
+      refetch();
+      setIsReviewModalOpen(false);
+    },
+    onError: error => {
+      console.error('리뷰 작성 실패:', error);
+    },
+  });
+
   // 예약 취소 핸들러
   const handleCancelReservation = (reservationId: number) => {
     cancelReservationMutation.mutate(reservationId);
   };
 
+  const handleReviewSubmit = (payload?: { rating: number; content: string }) => {
+    if (!payload || !selectedReservation?.teamId) return;
+
+    const { rating, content } = payload;
+
+    createReviewMutation.mutate({
+      reservationId: selectedReservation.id,
+      teamId: selectedReservation.teamId,
+      rating,
+      content,
+    });
+  };
+
   const reservations = reservationsData?.reservations || [];
 
+  // 메인페이지 이동
   const handleExploreClick = () => {
     navigate('/');
   };
 
-  const handleBadgeClick = (state: string) => {
+  const handleBadgeClick = (state: ReservationStatus) => {
     // 현재 선택된 상태와 동일한 배지를 클릭하면 선택 해제
     if (activeState === state) {
-      setActiveState(null);
+      setActiveState(undefined);
     } else {
       setActiveState(state);
     }
@@ -130,7 +169,7 @@ const ReservationList: React.FC = () => {
               </div>
               <div className={styles.cardContainer}>
                 {reservations
-                  .filter(reservation => activeState === null || reservation.status === activeState)
+                  .filter(reservation => !activeState || reservation.status === activeState)
                   .map((reservation, index) => (
                     <ReservationCard
                       key={index}
@@ -160,16 +199,7 @@ const ReservationList: React.FC = () => {
                           예약 취소
                         </Button>
                       }
-                      editReservationButton={
-                        <Button
-                          variant="secondary"
-                          isActive={true}
-                          className={styles.editButton}
-                          style={{ color: 'var(--gray-600)' }}
-                        >
-                          예약 변경
-                        </Button>
-                      }
+                      editReservationButton={<div></div>}
                       reviewSubmittedButton={
                         <Button
                           variant="primary"
@@ -209,6 +239,7 @@ const ReservationList: React.FC = () => {
           isOpen={isReviewModalOpen}
           onClose={() => setIsReviewModalOpen(false)}
           isThird={true}
+          onActionClick={handleReviewSubmit}
         >
           <div className={styles.modalHeader}>
             <h3>{selectedReservation?.activity.title}</h3>

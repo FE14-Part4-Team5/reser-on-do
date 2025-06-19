@@ -5,7 +5,7 @@ export interface MyReservationsParams {
   teamId?: string;
   cursorId?: number;
   size?: number;
-  status: ReservationBase['status'];
+  status?: ReservationBase['status'];
 }
 
 export interface MyReservation extends ReservationBase {
