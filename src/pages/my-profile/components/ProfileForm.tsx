@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useFormContext } from 'react-hook-form';
 import styles from './ProfileForm.module.css';
 import Input from '@/components/input/Input';
-import Button from '@/components/Button/Button';
+import Button from '@/components/button/Button';
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import { useFormChangeChecker } from '@/hooks/useFormChangeChecker';
 import type { MyProfileFormValues } from '@/hooks/useMyProfileUpdateForm';

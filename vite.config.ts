@@ -17,4 +17,5 @@ export default defineConfig({
   resolve: {
     alias: aliases,
   },
+  base: '/',
 });

@@ -22,9 +22,9 @@ export interface ReservationsResponse {
 
 // 예약 생성
 export const createReservation = async (
-  teamId?: string,
-  activityId?: number,
-  data?: { scheduleId: number; headCount: number }
+  teamId: string,
+  activityId: number,
+  data: { scheduleId: number; headCount: number }
 ): Promise<Reservation> => {
   const accessToken = localStorage.getItem('accessToken') ?? '';
 

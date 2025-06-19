@@ -2,7 +2,7 @@ import type { ReservationBase, ReservationActivitySummary } from './sharedType';
 
 /*GET my-reservations, 내 예약 리스트 조회*/
 export interface MyReservationsParams {
-  teamId: string;
+  teamId?: string;
   cursorId?: number;
   size?: number;
   status: ReservationBase['status'];
@@ -20,7 +20,7 @@ export interface GetMyReservationsResponse {
 
 /*PATCH reservationId, 내 예약 수정(취소)*/
 export interface UpdateMyReservationParams {
-  teamId: string;
+  teamId?: string;
   reservationId: number;
 }
 
