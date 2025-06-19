@@ -47,7 +47,10 @@ const NotificationModal = ({ onClose }: NotificationModalProps) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.header}>
+      <div
+        className={styles.header}
+        style={{ borderBottom: notificationList.length === 0 ? 'none' : undefined }}
+      >
         <p className={styles.title}>알림 {isLoading || isError ? 0 : totalCount}개</p>
         <button onClick={onClose} className={styles.closeButton}>
           <IconDelete />

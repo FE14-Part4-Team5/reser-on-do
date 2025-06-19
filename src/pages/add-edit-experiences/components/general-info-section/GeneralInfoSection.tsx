@@ -72,7 +72,7 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
             <div className={styles.categoryLabel}>카테고리</div>
             <div
               role="button"
-              tabIndex={-1}
+              tabIndex={0}
               aria-invalid={!!errors.category}
               className={clsx(
                 styles.category,
