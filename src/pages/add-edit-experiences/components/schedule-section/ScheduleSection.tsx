@@ -4,6 +4,8 @@ import Calendar from 'react-calendar';
 
 import Dropdown from '../dropdown/Dropdown';
 
+import { useToast } from '@/hooks/useToast';
+
 import { formatDateToYMD } from '@/utils/datetime';
 
 import type { GeneralInfoFormValues } from '../../schema/schema';
@@ -14,6 +16,7 @@ import PlusIcon from '@/assets/icons/icon_plus.svg?react';
 import MinusIcon from '@/assets/icons/icon_minus.svg?react';
 import ArrowLeft from '@/assets/icons/icon_alt arrow_left.svg?react';
 import ArrowRight from '@/assets/icons/icon_alt arrow_right.svg?react';
+import IconError from '@/assets/icons/modalwarning.svg';
 
 import clsx from 'clsx';
 import styles from './ScheduleSection.module.css';
@@ -135,6 +138,8 @@ const ScheduleSection = () => {
     return false;
   };
 
+  const { showToast } = useToast();
+
   return (
     <div className={styles.scheduleSection}>
       <div className={styles.scheduleSectionTitle}>예약 가능한 시간대</div>
@@ -228,14 +233,11 @@ const ScheduleSection = () => {
               const newInterval = { startTime, endTime };
 
               if (hasOverlap([...sameDateIntervals, newInterval])) {
-                alert('해당 날짜에 시간대가 겹칩니다. 다른 시간대를 선택해 주세요.');
-                return;
-              }
-              const existsExact = sameDateIntervals.some(
-                item => item.startTime === startTime && item.endTime === endTime
-              );
-              if (existsExact) {
-                alert('이미 동일한 시간대가 존재합니다.');
+                showToast({
+                  label: '해당 날짜에 시간대가 겹칩니다. 다른 시간대를 선택해 주세요.',
+                  iconSrc: IconError,
+                  style: { color: 'pink' },
+                });
                 return;
               }
               setSchedules(prev => {
