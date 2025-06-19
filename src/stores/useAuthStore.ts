@@ -13,6 +13,8 @@ interface AuthState {
   setProfileImageUrl: (image: string | undefined) => void;
   clearUserId: () => void;
   clearTokens: () => void;
+  clearNickname: () => void;
+  clearProfileImageUrl: () => void;
 }
 
 export const useAuthStore = create(
@@ -29,6 +31,8 @@ export const useAuthStore = create(
       clearUserId: () => set({ userId: null }),
       setNickname: nickname => set({ userNickname: nickname }),
       setProfileImageUrl: image => set({ userProfileImage: image }),
+      clearProfileImageUrl: () => set({ userProfileImage: null }),
+      clearNickname: () => set({ userNickname: null }),
     }),
     {
       name: 'auth-storage',
