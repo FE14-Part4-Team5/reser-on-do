@@ -22,7 +22,7 @@
   .myExperiences {
     width: 68.4rem;
     margin: 0 auto;
-    margin-top: 4rem;
+    margin-top: 3rem;
     gap: 4rem;
   }
 
@@ -43,5 +43,6 @@
   .myExperiences {
     width: 98rem;
     gap: 5rem;
+    margin-top: 4rem;
   }
 }

@@ -5,7 +5,7 @@ export interface MyReservationsParams {
   teamId?: string;
   cursorId?: number;
   size?: number;
-  status: ReservationBase['status'];
+  status?: ReservationBase['status'];
 }
 
 export interface MyReservation extends ReservationBase {
@@ -34,8 +34,10 @@ export interface UpdateMyReservationResponse extends ReservationBase {
 
 /*POST reviews, 내 예약 리뷰 작성*/
 export interface CreateMyReservationReviewParams {
-  teamId: string;
+  teamId?: string;
   reservationId: number;
+  rating: number;
+  content: string;
 }
 
 export interface CreateMyReservationReviewRequest {
@@ -51,6 +53,6 @@ export interface CreateMyReservationReviewResponse {
   rating: number;
   userId: number;
   activityId: number;
-  teamId: string;
+  teamId?: string;
   id: number;
 }
