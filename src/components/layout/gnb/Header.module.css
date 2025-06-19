@@ -43,6 +43,7 @@
 
 .noticeWrapper {
   position: relative;
+  cursor: pointer;
 }
 
 .notice path {
@@ -65,9 +66,6 @@
 }
 
 .userWrapper {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
   position: relative;
 }
 
@@ -85,7 +83,10 @@
   object-fit: contain;
 }
 
-.userName {
+.user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   font-size: var(--fs-14);
   font-weight: var(--font-weight-medium);
 }
@@ -93,7 +94,7 @@
   width: 10rem;
   position: absolute;
   top: 3.5rem;
-  right: 0;
+  right: 0rem;
   background-color: white;
   border: 1px solid var(--gray-200);
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);

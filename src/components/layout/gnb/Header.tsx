@@ -112,20 +112,21 @@ const Header = () => {
           </div>
           <div className={styles.divider}></div>
           <div className={styles.userWrapper} ref={dropdownRef}>
-            <div className={styles.userProfile}>
-              <img
-                src={userProfileImage || profileImg}
-                alt="프로필"
-                className={styles.userProfileIcon}
-              />
-            </div>
-            <button className={styles.userName} type="button" onClick={handleDropdownToggle}>
+            <button className={styles.user} type="button" onClick={handleDropdownToggle}>
+              <div className={styles.userProfile}>
+                <img
+                  src={userProfileImage || profileImg}
+                  alt="프로필"
+                  className={styles.userProfileIcon}
+                />
+              </div>
+
               {userNickname}
             </button>
             <div className={clsx(styles.dropdownMenu, isDropdownOpen && styles.open)}>
-              <Link to="/my-profile" className={styles.dropdownItem}>
+              <button onClick={() => navigate('/my-profile')} className={styles.dropdownItem}>
                 마이페이지
-              </Link>
+              </button>
               <button type="button" className={styles.dropdownItem} onClick={handleLogout}>
                 로그아웃
               </button>
