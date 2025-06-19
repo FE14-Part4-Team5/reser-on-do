@@ -1,6 +1,6 @@
 import WarningIcon from '@/assets/icons/modalwarning.svg';
 
-import styles from './Modal.module.css';
+import styles from './ConfirmModal.module.css';
 
 type Props = {
   onConfirm: () => void;
@@ -10,7 +10,7 @@ type Props = {
   confirmText: string;
 };
 
-const Modal = ({ onConfirm, onClose, text, cancelText, confirmText }: Props) => {
+const ConfirmModal = ({ onConfirm, onClose, text, cancelText, confirmText }: Props) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
@@ -29,4 +29,4 @@ const Modal = ({ onConfirm, onClose, text, cancelText, confirmText }: Props) => 
   );
 };
 
-export default Modal;
+export default ConfirmModal;

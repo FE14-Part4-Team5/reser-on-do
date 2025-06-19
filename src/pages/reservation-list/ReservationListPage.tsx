@@ -13,75 +13,46 @@ import emptyImg from '@/assets/images/img_empty.png';
 import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-import type { ReservationStatus } from '@/types/api/sharedType';
+// // const handleProfileImageUpload = (file: File) => {
+// //   console.log('이미지 업로드:', file);
+// // };
 
-const ReservationList: React.FC = () => {
-  const [activeState, setActiveState] = useState<ReservationStatus | undefined>(undefined);
-  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
-  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+// const ReservationList: React.FC = () => {
+//   const [activeState, setActiveState] = useState<string | null>(null);
+//   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+//   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
+//   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
-  const navigate = useNavigate();
-  const { data: userData } = useMyProfileQuery();
+//   const navigate = useNavigate();
+//   const { data: userData } = useMyProfileQuery();
 
-  // 예약 목록 조회 API 호출
-  const {
-    data: reservationsData,
-    // isLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ['myReservations'],
-    queryFn: () => myReservationsService.getMyReservations({ status: activeState }),
-  });
+//   // 예약 목록 조회 API 호출
+//   const {
+//     data: reservationsData,
+//     // isLoading,
+//     refetch,
+//   } = useQuery({
+//     queryKey: ['myReservations'],
+//     queryFn: () => myReservationsService.getMyReservations({}),
+//   });
 
-  // 예약 취소 API 호출
-  const cancelReservationMutation = useMutation({
-    mutationFn: (reservationId: number) =>
-      myReservationsService.updateMyReservation({ reservationId }),
-    onSuccess: () => {
-      refetch(); // 예약 목록 갱신
-      setIsCancelModalOpen(false);
-    },
-    onError: error => {
-      console.error('예약 취소 실패:', error);
-    },
-  });
+//   // 예약 취소 API 호출
+//   const cancelReservationMutation = useMutation({
+//     mutationFn: (reservationId: number) =>
+//       myReservationsService.updateMyReservation({ reservationId }),
+//     onSuccess: () => {
+//       refetch(); // 예약 목록 갱신
+//       setIsCancelModalOpen(false);
+//     },
+//     onError: error => {
+//       console.error('예약 취소 실패:', error);
+//     },
+//   });
 
-  // 후기 작성 API 호출
-  const createReviewMutation = useMutation({
-    mutationFn: ({
-      reservationId,
-      teamId,
-      rating,
-      content,
-    }: {
-      reservationId: number;
-      teamId: string;
-      rating: number;
-      content: string;
-    }) =>
-      myReservationsService.createMyReservationReview({
-        reservationId,
-        teamId,
-        rating,
-        content,
-      }),
-    onSuccess: () => {
-      refetch();
-      setIsReviewModalOpen(false);
-    },
-    onError: error => {
-      console.error('리뷰 작성 실패:', error);
-    },
-  });
-
-  // 예약 취소 핸들러
-  const handleCancelReservation = (reservationId: number) => {
-    cancelReservationMutation.mutate(reservationId);
-  };
-
-  const handleReviewSubmit = (payload?: { rating: number; content: string }) => {
-    if (!payload || !selectedReservation?.teamId) return;
+//   // 예약 취소 핸들러
+//   const handleCancelReservation = (reservationId: number) => {
+//     cancelReservationMutation.mutate(reservationId);
+//   };
 
     const { rating, content } = payload;
 

@@ -369,6 +369,7 @@
   .card {
     grid-area: card;
     margin: 0;
+    border-bottom: 0;
   }
 
   .menuList li {

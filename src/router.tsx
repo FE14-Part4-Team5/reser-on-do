@@ -17,6 +17,7 @@ import OAuthKakaoCallback from './pages/oauthkakaocallback/OAuthKakaoCallback';
 import LoadingUI from './pages/my-experiences/components/loading/Loading';
 import MainPage from './pages/main/MainPage';
 import MainLoadingUI from './pages/main/components/loding/MainLodingUI';
+import MyProfileLoadingUI from './pages/my-profile/components/loading/MyProfileLoadingUI';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,16 @@ const router = createBrowserRouter([
           </ErrorBoundary>
         ),
       },
-      { path: '/my-profile', element: <MyProfilePage /> },
+      {
+        path: '/my-profile',
+        element: (
+          <ErrorBoundary FallbackComponent={ErrorUI}>
+            <Suspense fallback={<MyProfileLoadingUI />}>
+              <MyProfilePage />
+            </Suspense>
+          </ErrorBoundary>
+        ),
+      },
       {
         path: 'detail/:id',
         element: (
