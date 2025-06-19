@@ -63,6 +63,8 @@ const LoginPage = () => {
 
       useAuthStore.getState().setTokens(response.accessToken, response.refreshToken);
       useAuthStore.getState().setUserId(response.user.id);
+      useAuthStore.getState().setNickname(response.user.nickname);
+      useAuthStore.getState().setProfileImageUrl(response.user.profileImageUrl);
       navigate('/');
     } catch (error: unknown) {
       const err = error as AxiosError;
