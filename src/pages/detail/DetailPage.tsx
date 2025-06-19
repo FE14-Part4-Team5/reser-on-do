@@ -7,6 +7,7 @@ import IconStar from '@/assets/icons/icon_star.svg?react';
 import IconMap from '@/assets/icons/icon_map.svg?react';
 import IconMore from '@/assets/icons/icon_more.svg?react';
 import fallbackImage from '@/assets/images/error-image.png';
+import IconWarning from '@/assets/icons/modalwarning.svg';
 
 import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
@@ -16,6 +17,7 @@ import ModalExample from '../../components/modal/ConfirmModal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
 
 import { useAuthStore } from '@/stores/useAuthStore';
+import { useToast } from '@/hooks/useToast';
 
 import {
   useExperienceDetail,
@@ -42,6 +44,7 @@ const DetailPage = () => {
   const currentPage = Number(searchParams.get('page')) || 1;
 
   const userId = useAuthStore(state => state.userId);
+  const { showToast } = useToast();
 
   const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
 
@@ -67,7 +70,12 @@ const DetailPage = () => {
           console.log('예약 성공:', response);
           setIsModalOpen(true);
         },
-        onError: (error: any) => alert(error),
+        onError: (error: any) =>
+          showToast({
+            label: typeof error === 'string' ? error : '예약 중 오류가 발생했습니다.',
+            iconSrc: IconWarning,
+            style: { color: 'pink' },
+          }),
       }
     );
   };
@@ -83,6 +91,12 @@ const DetailPage = () => {
         setIsDeleteConfirmOpen(false);
         navigate('/');
       },
+      onError: (error: any) =>
+        showToast({
+          label: typeof error === 'string' ? error : '삭제 중 오류가 발생했습니다.',
+          iconSrc: IconWarning,
+          style: { color: 'pink' },
+        }),
     });
   };
 

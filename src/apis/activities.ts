@@ -106,7 +106,7 @@ const createReservations = async (
   } catch (error: unknown) {
     const err = error as AxiosError<{ message?: string }>;
     console.error('체험 예약 신청 실패:', err);
-    throw new Error(err.response?.data?.message || '체험 예약 신청 중 오류가 발생했습니다.');
+    throw err.response?.data?.message || '체험 예약 신청 중 오류가 발생했습니다.';
   }
 };
 

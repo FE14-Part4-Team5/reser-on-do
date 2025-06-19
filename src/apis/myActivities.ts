@@ -123,7 +123,7 @@ const deleteActivity = async (params: MyActivitiesType.DeleteActivityParams): Pr
   } catch (error: unknown) {
     const err = error as AxiosError<{ message?: string }>;
     console.error('내 체험 삭제 실패:', err);
-    throw new Error(err.response?.data?.message || '내 체험 삭제 중 오류가 발생했습니다.');
+    throw err.response?.data?.message || '내 체험 삭제 중 오류가 발생했습니다.';
   }
 };
 
