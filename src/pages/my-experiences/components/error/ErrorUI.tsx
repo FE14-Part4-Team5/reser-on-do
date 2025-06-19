@@ -16,7 +16,7 @@ const ErrorUI = ({
       <div className={styles.errorText}>{error.message}</div>
       <img src={cryImage} alt="슬퍼하는 구름 이미지" className={styles.cryImage} />
       <div className={styles.button}>
-        <Link to={'/'} className={styles.errorRetry}>
+        <Link onClick={resetErrorBoundary} to={'/'} className={styles.errorRetry}>
           홈으로
         </Link>
         <button onClick={resetErrorBoundary} className={styles.errorRetry}>
