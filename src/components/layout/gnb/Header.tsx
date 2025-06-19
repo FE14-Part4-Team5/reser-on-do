@@ -124,7 +124,13 @@ const Header = () => {
               {userNickname}
             </button>
             <div className={clsx(styles.dropdownMenu, isDropdownOpen && styles.open)}>
-              <button onClick={() => navigate('/my-profile')} className={styles.dropdownItem}>
+              <button
+                onClick={() => {
+                  navigate('/my-profile');
+                  setIsDropdownOpen(false);
+                }}
+                className={styles.dropdownItem}
+              >
                 마이페이지
               </button>
               <button type="button" className={styles.dropdownItem} onClick={handleLogout}>
