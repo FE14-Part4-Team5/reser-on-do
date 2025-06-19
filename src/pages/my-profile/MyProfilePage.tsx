@@ -32,6 +32,7 @@ const MyProfilePage = () => {
   const { mutate: createMutate } = useCreateImageUrlMutation();
   const methods = useMyProfileUpdateForm();
   const { setNickname, setProfileImageUrl } = useAuthStore();
+
   useEffect(() => {
     if (location.pathname === '/my-profile' && viewportSize === 'mobile') {
       setIsEdit(false);
@@ -72,6 +73,7 @@ const MyProfilePage = () => {
           showToast({
             label: '수정 실패!',
             iconSrc: IconWarning,
+            style: { color: 'pink' },
           });
           console.error();
         },
