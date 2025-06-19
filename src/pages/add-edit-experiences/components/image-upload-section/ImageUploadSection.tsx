@@ -117,15 +117,14 @@ const ImageUploadSection = ({
       setValue(inputName, newPreviews[0]?.url ?? '', {
         shouldValidate: true,
       });
-      e.target.value = '';
     } else if (inputName === 'subImageUrls') {
       const updated = [...previews, ...newPreviews];
       setPreviews(updated);
       const updatedUrls = updated.map(p => p.url);
       setValue(inputName as keyof GeneralInfoFormValues, updatedUrls, { shouldValidate: true });
-      e.target.value = '';
       return;
     }
+    e.target.value = '';
   };
 
   const handleIconClick = () => {

@@ -68,7 +68,7 @@ const AddExperiences = () => {
       {isModalOpen && (
         <ConfirmModal
           text="저장되지 않았습니다. 정말 뒤로 가시겠습니까?"
-          cancelText="아나오"
+          cancelText="아니요"
           confirmText="네"
           onConfirm={confirmNavigation}
           onClose={closeModal}
@@ -100,7 +100,6 @@ const AddExperiences = () => {
             등록하기
           </Button>
         </div>
-        {}
       </form>
     </FormProvider>
   );
