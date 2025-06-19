@@ -13,7 +13,7 @@ import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
 import Pagination from '@/components/pagination/Pagination';
 import Modal from '@/components/modal/modal';
-import ModalExample from '../my-experiences/example/Modal';
+import ModalExample from '../../components/modal/ConfirmModal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
 
 import { useAuthStore } from '@/stores/useAuthStore';

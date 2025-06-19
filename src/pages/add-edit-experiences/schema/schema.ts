@@ -13,7 +13,8 @@ export const generalInfoSchema = z.object({
   description: z
     .string()
     .min(1, '* 설명을 입력해 주세요')
-    .min(10, '* 설명은 10글자 이상 입력해 주세요'),
+    .min(10, '* 설명은 10글자 이상 입력해 주세요')
+    .max(1000, '설명은 1000자 이내로 입력해 주세요'),
   price: z.preprocess(
     val => {
       if (typeof val === 'string') {
