@@ -14,6 +14,9 @@ import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
 import type { ReservationStatus } from '@/types/api/sharedType';
+import { useToast } from '@/hooks/useToast';
+import IconEarth from '@/assets/icons/logo_earth.svg';
+import IconError from '@/assets/icons/modalwarning.svg';
 
 const ReservationList: React.FC = () => {
   const [activeState, setActiveState] = useState<ReservationStatus | undefined>(undefined);
@@ -23,6 +26,7 @@ const ReservationList: React.FC = () => {
 
   const navigate = useNavigate();
   const { data: userData } = useMyProfileQuery();
+  const { showToast } = useToast();
 
   // 예약 목록 조회 API 호출
   const {
@@ -39,11 +43,19 @@ const ReservationList: React.FC = () => {
     mutationFn: (reservationId: number) =>
       myReservationsService.updateMyReservation({ reservationId }),
     onSuccess: () => {
-      refetch(); // 예약 목록 갱신
+      refetch();
       setIsCancelModalOpen(false);
+      showToast({
+        label: '예약 취소 성공!',
+        iconSrc: IconEarth,
+      });
     },
-    onError: error => {
-      console.error('예약 취소 실패:', error);
+    onError: () => {
+      showToast({
+        label: '예약 취소가 실패됐어요.',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
     },
   });
 
@@ -69,9 +81,17 @@ const ReservationList: React.FC = () => {
     onSuccess: () => {
       refetch();
       setIsReviewModalOpen(false);
+      showToast({
+        label: '후기 작성 완료!',
+        iconSrc: IconEarth,
+      });
     },
-    onError: error => {
-      console.error('리뷰 작성 실패:', error);
+    onError: () => {
+      showToast({
+        label: '후기 작성을 실패했어요.',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
     },
   });
 
