@@ -1,14 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+
+import type { GeneralInfoFormValues } from '../../schema/schema';
 
 import { activitiesService } from '@/apis/activities';
 
 import PlusIcon from '@/assets/icons/icon_plus.svg?react';
 import DeleteIcon from '@/assets/icons/icon_delete.svg?react';
 
-import styles from './ImageUploadSection.module.css';
-import { useFormContext } from 'react-hook-form';
-import type { GeneralInfoFormValues } from '../../schema/schema';
 import clsx from 'clsx';
+import styles from './ImageUploadSection.module.css';
 
 interface Preview {
   id: string;
@@ -116,15 +117,14 @@ const ImageUploadSection = ({
       setValue(inputName, newPreviews[0]?.url ?? '', {
         shouldValidate: true,
       });
-      e.target.value = '';
     } else if (inputName === 'subImageUrls') {
       const updated = [...previews, ...newPreviews];
       setPreviews(updated);
       const updatedUrls = updated.map(p => p.url);
       setValue(inputName as keyof GeneralInfoFormValues, updatedUrls, { shouldValidate: true });
-      e.target.value = '';
       return;
     }
+    e.target.value = '';
   };
 
   const handleIconClick = () => {
