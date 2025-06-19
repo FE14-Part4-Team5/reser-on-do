@@ -41,8 +41,10 @@ const Login = ({
         onSubmit();
       }}
     >
-      <img src={Logo_horizontal} alt="로고" className={styles.logoDesktop} />
-      <img src={Logo_mobile} alt="로고" className={styles.logoMobile} />
+      <Link to="/">
+        <img src={Logo_horizontal} alt="로고" className={styles.logoDesktop} />
+        <img src={Logo_mobile} alt="로고" className={styles.logoMobile} />
+      </Link>
       <div className={styles.inputWrapper}>
         <Input
           title="이메일"

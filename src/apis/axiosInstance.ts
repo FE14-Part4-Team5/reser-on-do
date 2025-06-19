@@ -22,6 +22,8 @@ axiosInstance.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
 
+    const requireAuth = originalRequest.headers?.['x-require-auth'] !== 'false';
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -37,7 +39,9 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         console.error('토큰 갱신 실패:', refreshError);
         useAuthStore.getState().clearTokens();
-        window.location.href = '/login';
+        if (requireAuth) {
+          window.location.href = '/login';
+        }
       }
     }
 
