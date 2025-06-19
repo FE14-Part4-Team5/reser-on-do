@@ -42,8 +42,7 @@ const MainPage = () => {
     CATEGORY_LIST.find(item => item.key === isSelectedCategory)?.title ?? '🛼 모든 체험';
 
   const currentSortLabel = Object.keys(sortMap).find(label => sortMap[label] === sort);
-  const dropDownLabels =
-    sort === 'latest' ? DROPDOWN_OPTIONS : [DEFAULT_OPTION, ...DROPDOWN_OPTIONS];
+  const dropDownLabels = [DEFAULT_OPTION, ...DROPDOWN_OPTIONS];
 
   const { data: activitiesData } = useGetActivitiesQuery({
     page: currentPage,
