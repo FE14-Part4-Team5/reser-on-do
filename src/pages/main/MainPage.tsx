@@ -173,7 +173,8 @@ const MainPage = () => {
                   width={24}
                   height={24}
                 />
-                <span className={styles.SearchItem}>{keyword}</span>(으)로 검색 결과 입니다.
+                <span className={styles.SearchItem}>{submittedKeyword}</span>(으)로 검색 결과
+                입니다.
               </div>
               <div className={styles.ResultTotalCount}>총 {totalItem}의 결과</div>
             </div>
