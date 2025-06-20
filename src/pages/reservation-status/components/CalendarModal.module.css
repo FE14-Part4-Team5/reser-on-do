@@ -136,3 +136,10 @@
   padding: 6px 10px;
   border-radius: 8px;
 }
+
+.completed {
+  background-color: #e9e9f9;
+  color: #4445aa;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
