@@ -14,7 +14,6 @@ interface Props {
     pending: number;
     confirmed: number;
     declined: number;
-    completed: number;
   };
 }
 
