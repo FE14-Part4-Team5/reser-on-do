@@ -6,15 +6,23 @@ import smallLogo from '@/assets/icons/logo_earth.svg';
 import gnbLogo from '@/assets/icons/logo_vertical.svg';
 import NotiIcon from '@/assets/icons/icon_bell.svg?react';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
-import { useMyProfileQuery } from '@/hooks/useMyProfile';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useInfiniteNotification } from '@/hooks/useNotification';
 import NotificationModal from '@/components/modal/NotificationModal';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Header = () => {
-  const { data: userData } = useMyProfileQuery();
-  const { userId, clearTokens, clearUserId } = useAuthStore();
-  const isLoggedIn = !!userId && !!userData;
+  const queryClient = useQueryClient();
+  const {
+    userId,
+    userNickname,
+    userProfileImage,
+    clearTokens,
+    clearUserId,
+    clearNickname,
+    clearProfileImageUrl,
+  } = useAuthStore();
+  const isLoggedIn = !!userId;
   const [isNoticeClick, setIsNoticeClick] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasNewNoti, setHasNewNoti] = useState(false);
@@ -56,12 +64,16 @@ const Header = () => {
   };
 
   const handleDropdownToggle = () => {
+    console.log(userId, userNickname, userProfileImage);
     setIsDropdownOpen(prev => !prev);
   };
 
   const handleLogout = () => {
     clearTokens();
     clearUserId();
+    clearNickname();
+    clearProfileImageUrl();
+    queryClient.removeQueries({ queryKey: ['myProfile'] });
     navigate('/login');
   };
 
@@ -102,13 +114,13 @@ const Header = () => {
           <div className={styles.userWrapper} ref={dropdownRef}>
             <div className={styles.userProfile}>
               <img
-                src={userData?.profileImageUrl || profileImg}
+                src={userProfileImage || profileImg}
                 alt="프로필"
                 className={styles.userProfileIcon}
               />
             </div>
             <button className={styles.userName} type="button" onClick={handleDropdownToggle}>
-              {userData?.nickname}
+              {userNickname}
             </button>
             <div className={clsx(styles.dropdownMenu, isDropdownOpen && styles.open)}>
               <Link to="/my-profile" className={styles.dropdownItem}>

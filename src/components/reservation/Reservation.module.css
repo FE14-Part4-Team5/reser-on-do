@@ -26,6 +26,8 @@
   border-top-right-radius: 2.4rem;
   padding: 2.4rem 2.4rem 1.8rem 2.4rem;
   z-index: 2;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .contentBox {
@@ -185,6 +187,7 @@
   .container {
     flex-direction: row;
     bottom: 10rem;
+    max-height: none;
   }
 
   .contentBox {

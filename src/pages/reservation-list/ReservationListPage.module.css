@@ -1,19 +1,3 @@
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-    padding: 0;
-    justify-content: center;
-    gap: 3rem;
-  }
-
-  .mainContent {
-    margin-left: 0;
-    padding: 1.6rem;
-    box-shadow: none;
-    justify-content: center;
-  }
-}
-
 .container {
   display: flex;
   justify-content: center;
@@ -39,31 +23,6 @@
   color: var(--gray-600);
   margin-top: 1rem;
   padding-left: 2.4rem;
-}
-
-@media (min-width: 768px) {
-  .title {
-    padding-left: 0;
-    font-size: var(--fs-20);
-  }
-  .subtitle {
-    padding-left: 0;
-    font-size: var(--fs-16);
-  }
-}
-
-@media (min-width: 768px) {
-  .titleSection {
-    position: flex;
-    gap: 1.6rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .titleSection {
-    position: flex;
-    gap: 1.6rem;
-  }
 }
 
 .badgeCommon {
@@ -92,12 +51,6 @@
   padding-bottom: 1rem; /* 스크롤바 공간 확보 */
 }
 
-@media (min-width: 768px) {
-  .badgeWrapper {
-    padding-left: 0;
-    overflow-x: visible; /* 태블릿 이상에서는 스크롤바 제거 */
-  }
-}
 .active {
   background-color: var(--gray-900);
 }
@@ -158,33 +111,6 @@
   margin-top: 2rem;
 }
 
-@media (min-width: 768px) {
-  .cardContainer {
-    gap: 1rem;
-    padding-left: 0;
-  }
-
-  .cardContainer > * {
-    position: relative;
-    padding-bottom: 7rem; /* 버튼 + 구분선을 위한 여백 */
-  }
-}
-
-@media (min-width: 1024px) {
-  .cardContainer {
-    gap: 0;
-    padding-left: 0;
-  }
-
-  .cardContainer > * {
-    padding: 1.2rem 0; /* 카드 위아래 패딩 추가 */
-  }
-
-  .cardContainer > *::after {
-    width: 64rem; /* PC에서의 카드 너비 */
-  }
-}
-
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -210,44 +136,6 @@
   border-radius: 0.8rem;
   font-size: var(--fs-16);
   color: var(--color-white);
-}
-
-@media (min-width: 768px) {
-  .emptyState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-  }
-
-  .emptyState img {
-    width: 12rem;
-    height: 12rem;
-  }
-
-  .emptyState p {
-    color: var(--gray-600);
-    font-size: var(--fs-20);
-  }
-}
-
-@media (min-width: 1024px) {
-  .emptyState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-  }
-
-  .emptyState img {
-    width: 12rem;
-    height: 12rem;
-  }
-
-  .emptyState p {
-    color: var(--gray-600);
-    font-size: var(--fs-18);
-  }
 }
 
 .modalHeader {
@@ -281,7 +169,7 @@
 
 .editButton,
 .cancelButton {
-  width: 15.75rem;
+  width: 100%;
   height: 3.7rem;
   border-radius: 0.1rem;
   font-size: var(--fs-14);
@@ -293,10 +181,100 @@
   font-size: var(--fs-14);
 }
 
+.navigationWrapper {
+  display: none;
+}
+
+.contentWrapper {
+  max-width: 37.5rem;
+  width: 100%;
+  gap: 12rem;
+}
+
+.loadingMore {
+  width: 100%;
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--gray-600);
+  font-size: var(--fs-14);
+}
+
 @media (min-width: 768px) {
+  .cardContainer {
+    gap: 1rem;
+    padding-left: 0;
+  }
+
+  .cardContainer > * {
+    position: relative;
+    padding-bottom: 7rem; /* 버튼 + 구분선을 위한 여백 */
+  }
+
+  .container {
+    flex-direction: row;
+    padding: 0;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .mainContent {
+    margin-left: 0;
+    padding: 1.6rem;
+    box-shadow: none;
+    justify-content: center;
+  }
+
+  .badgeWrapper {
+    padding-left: 0;
+    overflow-x: visible; /* 태블릿 이상에서는 스크롤바 제거 */
+  }
+
+  .title {
+    padding-left: 0;
+    font-size: var(--fs-20);
+  }
+  .subtitle {
+    padding-left: 0;
+    font-size: var(--fs-16);
+  }
+
+  .titleSection {
+    position: flex;
+    gap: 1.6rem;
+  }
+
+  .emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .emptyState img {
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .emptyState p {
+    color: var(--gray-600);
+    font-size: var(--fs-20);
+  }
+
+  .container {
+    gap: 3rem;
+  }
+  .navigationWrapper {
+    display: block;
+  }
+  .contentWrapper {
+    max-width: 47.6rem;
+  }
+  .navigationWrapper {
+    display: block;
+  }
   .editButton,
   .cancelButton {
-    width: 23.2rem;
+    width: 100%;
     height: 3.7rem;
     border-radius: 0.1rem;
     font-size: var(--fs-14);
@@ -310,6 +288,19 @@
 }
 
 @media (min-width: 1024px) {
+  .container {
+    gap: 5rem;
+    margin: 4rem auto;
+  }
+  .contentWrapper {
+    max-width: 64rem;
+  }
+
+  .titleSection {
+    position: flex;
+    gap: 1.6rem;
+  }
+
   .editButton,
   .cancelButton,
   .reviewButton {
@@ -318,50 +309,34 @@
     border-radius: 0.4rem;
     font-size: var(--fs-14);
   }
-}
 
-.navigationWrapper {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .navigationWrapper {
-    display: block;
+  .cardContainer {
+    gap: 0;
+    padding-left: 0;
   }
-}
 
-.contentWrapper {
-  max-width: 37.5rem;
-  width: 100%;
-  gap: 12rem;
-}
+  .cardContainer > * {
+    padding: 1.2rem 0; /* 카드 위아래 패딩 추가 */
+  }
 
-@media (min-width: 768px) {
-  .container {
+  .cardContainer > *::after {
+    width: 64rem; /* PC에서의 카드 너비 */
+  }
+
+  .emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 3rem;
   }
-  .navigationWrapper {
-    display: block;
-  }
-  .contentWrapper {
-    max-width: 47.6rem;
-  }
-}
 
-@media (min-width: 1024px) {
-  .container {
-    gap: 5rem;
-    margin: 4rem auto;
+  .emptyState img {
+    width: 12rem;
+    height: 12rem;
   }
-  .contentWrapper {
-    max-width: 64rem;
-  }
-}
 
-.loadingMore {
-  width: 100%;
-  text-align: center;
-  padding: 2rem 0;
-  color: var(--gray-600);
-  font-size: var(--fs-14);
+  .emptyState p {
+    color: var(--gray-600);
+    font-size: var(--fs-18);
+  }
 }
