@@ -1,3 +1,19 @@
+## 프로젝트 아키텍쳐
+
+![프로젝트 구조화](https://github.com/user-attachments/assets/60469d14-49a0-43ef-8d18-ebffc14ed91f)
+
+
+## 🛠️ 기술 스택
+| 구분                     | 기술 | 참고 |
+|--------------------------|------|------|
+| **언어 및 프레임워크**        | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | [우리가 Next.js를 사용하지 않은 이유](우리가%20Next.js를%20사용하지%20않은%20이유) |
+| **상태 관리 & 데이터 페칭** | ![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=react-query&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=react&logoColor=white) |  |
+| **폼 / 유효성 / 인증**     | ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white) ![Zod](https://camo.githubusercontent.com/598caa75c5ce213fbbb0a74e56cfa76af5fa4a12c19638f3273311f7274c1bea/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5a6f642d3345363742313f7374796c653d666c61742d737175617265266c6f676f3d7a6f64266c6f676f436f6c6f723d7768697465) ![OAuth](https://img.shields.io/badge/OAuth-4285F4?style=flat-square&logo=oauth&logoColor=white) | [카카오 들어가기 어렵다](카카오%20들어가기%20어렵다) |
+| **외부 SDK**              | ![Address Lookup](https://img.shields.io/badge/Address%20Lookup%20SDK-FF6600?style=flat-square) ![Map SDK](https://img.shields.io/badge/Map%20SDK-1E90FF?style=flat-square) |  |
+| **배포 & 인프라**          | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) |  |
+
+
+
 ## <br> 🤝 팀 문화
 #### 원활한 프로젝트 진행을 위해 다음과 같은 팀 문화를 함께 만들어가기로 했어요.
 1. 의사결정은 합의제 우선, 필요시 다수결
