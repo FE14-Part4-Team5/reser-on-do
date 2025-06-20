@@ -72,25 +72,49 @@ export const CalendarModal = ({
     }
   }, [reservationCount]);
 
-  // 활성 탭 상태의 예약 목록 조회
+  // 탭 상태에 따라 예약 목록 가져오기
   useEffect(() => {
     if (!selectedScheduleId) return;
+    fetchReservationsForTab(selectedScheduleId, activeTab);
+  }, [selectedScheduleId, activeTab]);
 
-    const fetchReservations = async () => {
-      try {
-        const data = await myActivitiesService.getReservations({
-          activityId,
-          scheduleId: selectedScheduleId,
-          status: activeTab,
-        });
-        setReservations(data.reservations);
-      } catch (e) {
-        console.error(e);
-      }
+  const fetchReservationsForTab = async (scheduleId: number, status: StatusType) => {
+    try {
+      const data = await myActivitiesService.getReservations({
+        activityId,
+        scheduleId,
+        status,
+      });
+      setReservations(data.reservations);
+    } catch (e) {
+      console.error(`[ERROR] 예약 목록 조회 실패:`, e);
+    }
+  };
+
+  const fetchCountsForAllStatuses = async (scheduleId: number) => {
+    const counts: Record<StatusType, number> = {
+      pending: 0,
+      confirmed: 0,
+      declined: 0,
     };
 
-    fetchReservations();
-  }, [selectedScheduleId, activeTab]);
+    try {
+      await Promise.all(
+        STATUS_TABS.map(async status => {
+          const data = await myActivitiesService.getReservations({
+            activityId,
+            scheduleId,
+            status,
+          });
+          counts[status] = data.reservations.length;
+        })
+      );
+
+      setTabCounts(counts);
+    } catch (e) {
+      console.error('[ERROR] 예약 카운트 조회 실패:', e);
+    }
+  };
 
   const handleUpdateReservation = async (
     reservationId: number,
@@ -99,16 +123,11 @@ export const CalendarModal = ({
     try {
       await myActivitiesService.updateReservation({ activityId, reservationId }, { status });
 
-      // 현재 탭이 'pending'일 때 목록에서 제거
-      const updated = reservations.filter(r => r.id !== reservationId);
-      setReservations(updated);
-
-      // 탭 카운트 반영
-      setTabCounts(prev => ({
-        ...prev,
-        pending: prev.pending - 1,
-        [status]: prev[status] + 1,
-      }));
+      // 예약 목록 다시 가져오기
+      if (selectedScheduleId) {
+        await fetchReservationsForTab(selectedScheduleId, activeTab);
+        await fetchCountsForAllStatuses(selectedScheduleId);
+      }
 
       onRefreshDashboard();
     } catch (e) {
@@ -130,7 +149,13 @@ export const CalendarModal = ({
             className={activeTab === status ? styles.activeTab : ''}
             onClick={() => setActiveTab(status)}
           >
-            {status === 'pending' ? '예약' : status === 'confirmed' ? '승인' : '거절'}{' '}
+            {
+              {
+                pending: '예약',
+                confirmed: '승인',
+                declined: '거절',
+              }[status]
+            }{' '}
             {tabCounts[status]}
           </button>
         ))}
@@ -172,11 +197,13 @@ export const CalendarModal = ({
                 </div>
               ) : (
                 <div className={styles.statusTag}>
-                  {activeTab === 'confirmed' ? (
-                    <span className={styles.confirmed}>예약 승인</span>
-                  ) : (
-                    <span className={styles.declined}>예약 거절</span>
-                  )}
+                  {
+                    {
+                      confirmed: <span className={styles.confirmed}>예약 승인</span>,
+                      declined: <span className={styles.declined}>예약 거절</span>,
+                      completed: <span className={styles.completed}>예약 완료</span>,
+                    }[activeTab]
+                  }
                 </div>
               )}
             </div>

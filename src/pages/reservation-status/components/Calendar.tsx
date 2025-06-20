@@ -40,7 +40,6 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
         year: year.toString(),
         month: month.toString().padStart(2, '0'),
       });
-      console.log('📅 예약 현황:', response);
       setReservationDashboard(response);
     } catch (e) {
       console.error(e);
@@ -102,6 +101,10 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
           {confirmedCount > 0 && (
             <div className={`${styles.badge} ${styles.confirmed}`}>승인 {confirmedCount}</div>
           )}
+
+          {completedCount === 0 && pendingCount === 0 && confirmedCount === 0 && (
+            <div className={`${styles.badge} ${styles.placeholder}`}>&nbsp;</div>
+          )}
         </div>
       </div>
     );
@@ -128,8 +131,8 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
         <button onClick={moveNextMonth}>{'▶'}</button>
       </div>
       <div className={styles.grid}>
-        {days.map(d => (
-          <div key={d} className={styles.dayLabel}>
+        {days.map((d, i) => (
+          <div key={`${d}-${i}`} className={styles.dayLabel}>
             {d}
           </div>
         ))}
