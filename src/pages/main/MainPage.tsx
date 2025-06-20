@@ -15,6 +15,7 @@ import { CATEGORY_LIST } from './components/category/CategoryList';
 import type { Category } from '@/types/api/sharedType';
 import type { GetActivitiesParams } from '@/types/api/activitiesType';
 import { useGetActivitiesQuery, usePopularActivitiesInfiniteQuery } from '@/hooks/useActivities';
+import { MainCardLoadingUI, PopularCardLoadingUI } from './components/loading/MainLodingUI';
 
 type SortOption = NonNullable<GetActivitiesParams['sort']>;
 const DROPDOWN_OPTIONS = ['가격 낮은순', '가격 높은순'];
@@ -42,10 +43,13 @@ const MainPage = () => {
     CATEGORY_LIST.find(item => item.key === isSelectedCategory)?.title ?? '🛼 모든 체험';
 
   const currentSortLabel = Object.keys(sortMap).find(label => sortMap[label] === sort);
-  const dropDownLabels =
-    sort === 'latest' ? DROPDOWN_OPTIONS : [DEFAULT_OPTION, ...DROPDOWN_OPTIONS];
+  const dropDownLabels = [DEFAULT_OPTION, ...DROPDOWN_OPTIONS];
 
-  const { data: activitiesData } = useGetActivitiesQuery({
+  const {
+    data: activitiesData,
+    isLoading: isActivitiesLoading,
+    isFetching: isActivitiesFetchting,
+  } = useGetActivitiesQuery({
     page: currentPage,
     size: itemsPerPage,
     sort,
@@ -65,6 +69,8 @@ const MainPage = () => {
 
   const {
     data: popularActivitiesData,
+    isLoading: isPopularActiLoading,
+
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -132,12 +138,16 @@ const MainPage = () => {
         {!showSearchResult && (
           <div className={styles.horizontalCardListContainer}>
             <div className={styles.title}>🔥 인기 체험</div>
-            <HorizontalCardList
-              cardList={popularCardList}
-              onLoadMore={fetchNextPage}
-              hasNext={hasNextPage}
-              isLoading={isFetchingNextPage}
-            />
+            {isPopularActiLoading ? (
+              <PopularCardLoadingUI />
+            ) : (
+              <HorizontalCardList
+                cardList={popularCardList}
+                onLoadMore={fetchNextPage}
+                hasNext={hasNextPage}
+                isLoading={isFetchingNextPage}
+              />
+            )}
           </div>
         )}
 
@@ -173,16 +183,28 @@ const MainPage = () => {
                   width={24}
                   height={24}
                 />
-                <span className={styles.SearchItem}>{keyword}</span>(으)로 검색 결과 입니다.
+                <span className={styles.SearchItem}>{submittedKeyword}</span>(으)로 검색 결과
+                입니다.
               </div>
               <div className={styles.ResultTotalCount}>총 {totalItem}의 결과</div>
             </div>
           )}
 
-          <ExperiencesCardList cardList={pagedCardData} />
-          <div className={styles.paginationWrapper}>
-            <Pagination totalItems={totalItem} itemsPerPage={itemsPerPage} />
-          </div>
+          {isActivitiesLoading ? (
+            <MainCardLoadingUI />
+          ) : (
+            <>
+              <ExperiencesCardList cardList={pagedCardData} />
+              {isActivitiesFetchting && (
+                <div className={styles.fetchOverlay}>
+                  <span className={styles.spinner} />
+                </div>
+              )}
+              <div className={styles.paginationWrapper}>
+                <Pagination totalItems={totalItem} itemsPerPage={itemsPerPage} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

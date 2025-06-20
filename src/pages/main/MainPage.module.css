@@ -41,6 +41,7 @@
 }
 
 .experiencesCardListContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,6 +94,31 @@
   display: flex;
   justify-content: center;
   margin-top: 2.4rem;
+}
+
+.fetchOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spinner {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 3px solid var(--gray-300);
+  border-top-color: var(--gray-900);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (min-width: 768px) {
