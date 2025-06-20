@@ -18,18 +18,7 @@ const MainLoadingUI = () => {
         {/* 인기 체험 */}
         <div className={styles.section}>
           <div className={styles.sectionTitle}>🔥 인기 체험</div>
-          <div className={styles.popularCard}>
-            {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className={styles.card}>
-                <div className={`${styles.image} ${styles.skeleton}`}></div>
-                <div className={styles.cardText}>
-                  <div className={`${styles.title} ${styles.skeleton}`}></div>
-                  <div className={`${styles.rating} ${styles.skeleton}`}></div>
-                  <div className={`${styles.price} ${styles.skeleton}`}></div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <PopularCardLoadingUI />
         </div>
 
         {/* 모든 체험 */}
@@ -47,23 +36,44 @@ const MainLoadingUI = () => {
           </div>
 
           {/* 전체 체험 카드 */}
-          <div className={styles.mainCard}>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className={styles.card}>
-                <div className={`${styles.image} ${styles.skeleton}`}></div>
-                <div className={styles.cardText}>
-                  <div className={`${styles.title} ${styles.skeleton}`}></div>
-                  <div className={`${styles.rating} ${styles.skeleton}`}></div>
-                  <div className={`${styles.price} ${styles.skeleton}`}></div>
-                </div>
-              </div>
-            ))}
-          </div>
-
+          <MainCardLoadingUI />
           {/* 페이지네이션 */}
           <div className={`${styles.pagination} ${styles.skeleton}`}></div>
         </div>
       </div>
+    </div>
+  );
+};
+export const PopularCardLoadingUI = () => {
+  return (
+    <div className={styles.popularCard}>
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className={styles.card}>
+          <div className={`${styles.image} ${styles.skeleton}`}></div>
+          <div className={styles.cardText}>
+            <div className={`${styles.title} ${styles.skeleton}`}></div>
+            <div className={`${styles.rating} ${styles.skeleton}`}></div>
+            <div className={`${styles.price} ${styles.skeleton}`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const MainCardLoadingUI = () => {
+  return (
+    <div className={styles.mainCard}>
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className={styles.card}>
+          <div className={`${styles.image} ${styles.skeleton}`}></div>
+          <div className={styles.cardText}>
+            <div className={`${styles.title} ${styles.skeleton}`}></div>
+            <div className={`${styles.rating} ${styles.skeleton}`}></div>
+            <div className={`${styles.price} ${styles.skeleton}`}></div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
