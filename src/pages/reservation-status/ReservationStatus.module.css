@@ -10,7 +10,7 @@
 
 .navContainer {
   display: none;
-  margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 .header {
@@ -81,5 +81,9 @@
 @media (min-width: 1024px) {
   .container {
     gap: 5rem;
+  }
+
+  .navContainer {
+    margin-top: 4rem;
   }
 }
