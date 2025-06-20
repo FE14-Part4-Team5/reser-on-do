@@ -12,7 +12,7 @@
 }
 
 .gnbLogo {
-  width: 2.8rem;
+  width: 17.4rem;
   height: 2.8rem;
   flex-shrink: 0;
   display: inline-block;
@@ -134,10 +134,8 @@
   }
 
   .gnbLogo {
-    width: 17.4rem;
-    height: 2.8rem;
+    height: 3.2rem;
   }
-
   .authWrapper {
     gap: 1.2rem;
   }

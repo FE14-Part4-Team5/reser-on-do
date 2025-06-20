@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Header.module.css';
-import smallLogo from '@/assets/icons/logo_earth.svg';
-import gnbLogo from '@/assets/icons/logo_vertical.svg';
+import gnbLogo from '@/assets/icons/logo_gnb.svg';
 import NotiIcon from '@/assets/icons/icon_bell.svg?react';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -81,10 +80,7 @@ const Header = () => {
     <div className={styles.container}>
       <div className={styles.gnbLogo}>
         <Link to="/" type="button" onClick={handleLogoClick}>
-          <picture>
-            <source srcSet={gnbLogo} media="(min-width:768px)" />
-            <img src={smallLogo} alt="logo" className={styles.gnbLogoIcon} />
-          </picture>
+          <img src={gnbLogo} alt="logo" className={styles.gnbLogoIcon} />
         </Link>
       </div>
 
