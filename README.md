@@ -1,7 +1,4 @@
-## 프로젝트 아키텍쳐
-
-![프로젝트 구조화](https://github.com/user-attachments/assets/60469d14-49a0-43ef-8d18-ebffc14ed91f)
-
+서비스 gif 소개 -> 기술 스텍 -> 프로젝트 아키텍쳐 -> 프로젝트 타임라인 -> 팀원 소개 -> 팀 문화
 
 ## 🛠️ 기술 스택
 | 구분                     | 기술 | 참고 |
@@ -12,7 +9,18 @@
 | **외부 SDK**              | ![Address Lookup](https://img.shields.io/badge/Address%20Lookup%20SDK-FF6600?style=flat-square) ![Map SDK](https://img.shields.io/badge/Map%20SDK-1E90FF?style=flat-square) |  |
 | **배포 & 인프라**          | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) |  |
 
+## 프로젝트 아키텍쳐
 
+![프로젝트 구조화](https://github.com/user-attachments/assets/60469d14-49a0-43ef-8d18-ebffc14ed91f)
+
+## 프로젝트 타임라인
+![프로젝트 타임라인](https://github.com/user-attachments/assets/fe5e0a2c-8738-40ef-a426-68a9696eb222)
+
+## <br>💁🏻 팀원 소개
+[🔗 wiki 팀원소개 바로가기](팀원%20소개)
+| <a href="https://github.com/jihoon135"><img src="https://github.com/jihoon135.png" width="100"></a> | <a href="https://github.com/ShiroUsagi25"><img src="https://github.com/ShiroUsagi25.png" width="100"></a> | <a href="https://github.com/BANGHoYeong"><img src="https://github.com/BANGHoYeong.png" width="100"></a> | <a href="https://github.com/Jiwon42"><img src="https://github.com/Jiwon42.png" width="100"></a> | <a href="https://github.com/kwonjin2"><img src="https://github.com/kwonjin2.png" width="100"></a> | <a href="https://github.com/ghdtnals"><img src="https://github.com/ghdtnals.png" width="100"></a> |
+| ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **[FE] [곽지훈](https://github.com/jihoon135)**                                                        | **[FE] [이윤승](https://github.com/ShiroUsagi25)**                                                        | **[FE] [방호영](https://github.com/BANGHoYeong)**                                                          | **[FE] [정지원](https://github.com/Jiwon42)**                                                    | **[FE] [최권진](https://github.com/kwonjin2)**                                                    | **[FE] [홍수민](https://github.com/ghdtnals)**                                                   |
 
 ## <br> 🤝 팀 문화
 #### 원활한 프로젝트 진행을 위해 다음과 같은 팀 문화를 함께 만들어가기로 했어요.
@@ -26,8 +34,3 @@
 <br> 생각이 떠오르면 고민하지 말고 바로 말해요. ( 아끼면 똥! 💩 )
 
 
-## <br>💁🏻 팀원 소개
-[🔗 wiki 팀원소개 바로가기](팀원%20소개)
-| <a href="https://github.com/jihoon135"><img src="https://github.com/jihoon135.png" width="100"></a> | <a href="https://github.com/ShiroUsagi25"><img src="https://github.com/ShiroUsagi25.png" width="100"></a> | <a href="https://github.com/BANGHoYeong"><img src="https://github.com/BANGHoYeong.png" width="100"></a> | <a href="https://github.com/Jiwon42"><img src="https://github.com/Jiwon42.png" width="100"></a> | <a href="https://github.com/kwonjin2"><img src="https://github.com/kwonjin2.png" width="100"></a> | <a href="https://github.com/ghdtnals"><img src="https://github.com/ghdtnals.png" width="100"></a> |
-| ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **[FE] [곽지훈](https://github.com/jihoon135)**                                                        | **[FE] [이윤승](https://github.com/ShiroUsagi25)**                                                        | **[FE] [방호영](https://github.com/BANGHoYeong)**                                                          | **[FE] [정지원](https://github.com/Jiwon42)**                                                    | **[FE] [최권진](https://github.com/kwonjin2)**                                                    | **[FE] [홍수민](https://github.com/ghdtnals)**                                                   |
