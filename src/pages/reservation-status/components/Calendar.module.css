@@ -30,7 +30,7 @@
 }
 
 .dateCell {
-  padding: 1rem 2rem 8rem;
+  padding: 1rem 0 8rem;
   font-size: var(--fs-12);
   color: var(--gray-900);
   font-weight: var(--font-weight-medium);
@@ -38,7 +38,7 @@
 }
 
 .adjacentMonthCell {
-  padding: 1rem 2rem 8rem;
+  padding: 0.8rem 0 7.8rem;
   font-size: var(--fs-12);
   color: var(--gray-400);
   font-weight: var(--font-weight-medium);
@@ -52,8 +52,8 @@
 
 .dot {
   position: absolute;
-  top: -1rem;
-  right: -1rem;
+  top: -0.5rem;
+  right: -0.5rem;
   width: 0.6rem;
   height: 0.6rem;
   border-radius: 50%;
@@ -70,9 +70,11 @@
 
 .badge {
   font-size: var(--fs-14);
-  padding: 0.4rem 0.8rem;
   border-radius: 0.4rem;
+  padding: 0.2rem 0.7rem;
+  margin: 0 0.4rem;
   font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
 }
 
 .completed {
@@ -88,6 +90,10 @@
 .confirmed {
   background-color: #fff1c9;
   color: #d68800;
+}
+
+.placeholder {
+  visibility: hidden;
 }
 
 @media (min-width: 768px) {
@@ -114,6 +120,17 @@
 
   .dateCell,
   .adjacentMonthCell {
-    padding: 1.8rem 3rem 8.7rem;
+    padding: 1.6rem 0 8.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .badge {
+    padding: 0.2rem 1.5rem;
+  }
+
+  .dateCell,
+  .adjacentMonthCell {
+    min-width: 8.3rem;
   }
 }

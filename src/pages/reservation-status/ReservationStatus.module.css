@@ -10,7 +10,7 @@
 
 .navContainer {
   display: none;
-  margin-top: 4.8rem;
+  margin-top: 4rem;
 }
 
 .header {
@@ -54,7 +54,10 @@
 
 @media (min-width: 768px) {
   .container {
-    gap: 3rem;
+    gap: 2.5rem;
+  }
+  .calendarWrapper {
+    padding: 0 3rem;
   }
 
   .header {
@@ -64,15 +67,14 @@
   .navContainer {
     display: block;
   }
-  .title {
-    font-size: var(--fs-20);
-  }
-  .explanation {
-    font-size: var(--fs-16);
-  }
 
   .dropdown {
     font-size: var(--fs-16);
+  }
+
+  .dropdownContainer {
+    margin-top: 3.4rem;
+    margin-bottom: 0.4rem;
   }
 }
 
