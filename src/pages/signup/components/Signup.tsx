@@ -2,9 +2,9 @@ import styles from './Signup.module.css';
 import Input from '../../../components/input/Input';
 import Button from '@/components/button/Button';
 import { Link } from 'react-router-dom';
-import Logo_horizontal from '@/assets/icons/logo_horizontal.svg';
 import KakaoIcon from '@/assets/icons/icon_kakao.svg';
-import Logo_mobile from '@/assets/icons/logo_earth.svg';
+import ReserOnDoLogomb from '@/assets/icons/ReserOnDoLogomb.svg';
+import ReserOnDoLogo from '@/assets/icons/ReserOnDoLogo.svg';
 
 interface SignupProps {
   email: string;
@@ -52,8 +52,8 @@ const Signup = ({
   return (
     <div className={styles.signupContainer}>
       <Link to="/">
-        <img src={Logo_horizontal} alt="로고" className={styles.logoDesktop} />
-        <img src={Logo_mobile} alt="로고" className={styles.logoMobile} />
+        <img src={ReserOnDoLogo} alt="로고" className={styles.logoDesktop} />
+        <img src={ReserOnDoLogomb} alt="로고" className={styles.logoMobile} />
       </Link>
       <div className={styles.inputWrapper}>
         <Input
