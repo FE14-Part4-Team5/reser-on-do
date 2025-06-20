@@ -6,7 +6,7 @@ import GeneralInfoSection from '../components/general-info-section/GeneralInfoSe
 import ScheduleSection from '../components/schedule-section/ScheduleSection';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
-import Button from '@/components/button/Button';
+import Button from '@/components/Button/Button';
 import { generalInfoSchema } from '../schema/schema';
 
 import { activitiesService } from '@/apis/activities';

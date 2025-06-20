@@ -10,7 +10,7 @@ interface ModalProps {
   children: React.ReactNode;
   isSecondary?: boolean;
   isThird?: boolean;
-  onActionClick?: () => void;
+  onActionClick?: (payload?: { rating: number; content: string }) => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -67,7 +67,15 @@ const Modal: React.FC<ModalProps> = ({
           <button
             className={styles.modalClose4}
             onClick={() => {
-              onActionClick();
+              if (isThird) {
+                const rating = ratings.filter(Boolean).length;
+                const content =
+                  (document.querySelector(`.${styles.commentbox}`) as HTMLTextAreaElement)?.value ??
+                  '';
+                onActionClick({ rating, content });
+              } else {
+                onActionClick();
+              }
               onClose();
             }}
           >

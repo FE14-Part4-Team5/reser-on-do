@@ -42,11 +42,14 @@ const createMyReservationReview = async (
   params: MyReservationsType.CreateMyReservationReviewParams
 ): Promise<MyReservationsType.CreateMyReservationReviewResponse> => {
   try {
-    const { reservationId } = params;
+    const { reservationId, rating, content } = params;
 
     const response = await axiosInstance.post<MyReservationsType.CreateMyReservationReviewResponse>(
       `/my-reservations/${reservationId}/reviews`,
-      {}
+      {
+        rating,
+        content,
+      }
     );
 
     return response.data;
