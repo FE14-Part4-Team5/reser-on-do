@@ -13,46 +13,87 @@ import emptyImg from '@/assets/images/img_empty.png';
 import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';
 
-// // const handleProfileImageUpload = (file: File) => {
-// //   console.log('이미지 업로드:', file);
-// // };
+import type { ReservationStatus } from '@/types/api/sharedType';
+import { useToast } from '@/hooks/useToast';
+import IconEarth from '@/assets/icons/logo_earth.svg';
+import IconError from '@/assets/icons/modalwarning.svg';
 
-// const ReservationList: React.FC = () => {
-//   const [activeState, setActiveState] = useState<string | null>(null);
-//   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-//   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
-//   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+const ReservationList: React.FC = () => {
+  const [activeState, setActiveState] = useState<ReservationStatus | undefined>(undefined);
 
-//   const navigate = useNavigate();
-//   const { data: userData } = useMyProfileQuery();
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
-//   // 예약 목록 조회 API 호출
-//   const {
-//     data: reservationsData,
-//     // isLoading,
-//     refetch,
-//   } = useQuery({
-//     queryKey: ['myReservations'],
-//     queryFn: () => myReservationsService.getMyReservations({}),
-//   });
+  const navigate = useNavigate();
+  const { data: userData } = useMyProfileQuery();
+  const { showToast } = useToast();
 
-//   // 예약 취소 API 호출
-//   const cancelReservationMutation = useMutation({
-//     mutationFn: (reservationId: number) =>
-//       myReservationsService.updateMyReservation({ reservationId }),
-//     onSuccess: () => {
-//       refetch(); // 예약 목록 갱신
-//       setIsCancelModalOpen(false);
-//     },
-//     onError: error => {
-//       console.error('예약 취소 실패:', error);
-//     },
-//   });
+  // 예약 목록 조회 API 호출
+  const {
+    data: reservationsData,
+    // isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['myReservations'],
+    queryFn: () => myReservationsService.getMyReservations({}),
+  });
 
-//   // 예약 취소 핸들러
-//   const handleCancelReservation = (reservationId: number) => {
-//     cancelReservationMutation.mutate(reservationId);
-//   };
+  // 예약 취소 API 호출
+  const cancelReservationMutation = useMutation({
+    mutationFn: (reservationId: number) =>
+      myReservationsService.updateMyReservation({ reservationId }),
+    onSuccess: () => {
+      refetch(); // 예약 목록 갱신
+      setIsCancelModalOpen(false);
+    },
+    onError: error => {
+      console.error('예약 취소 실패:', error);
+    },
+  });
+
+  const createReviewMutation = useMutation({
+    mutationFn: ({
+      reservationId,
+      teamId,
+      rating,
+      content,
+    }: {
+      reservationId: number;
+      teamId: string;
+      rating: number;
+      content: string;
+    }) =>
+      myReservationsService.createMyReservationReview({
+        reservationId,
+        teamId,
+        rating,
+        content,
+      }),
+    onSuccess: () => {
+      refetch();
+      setIsReviewModalOpen(false);
+      showToast({
+        label: '후기 작성 완료!',
+        iconSrc: IconEarth,
+      });
+    },
+    onError: () => {
+      showToast({
+        label: '후기 작성을 실패했어요.',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
+    },
+  });
+
+  // 예약 취소 핸들러
+  const handleCancelReservation = (reservationId: number) => {
+    cancelReservationMutation.mutate(reservationId);
+  };
+
+  const handleReviewSubmit = (payload?: { rating: number; content: string }) => {
+    if (!payload || !selectedReservation?.teamId) return;
 
     const { rating, content } = payload;
 
