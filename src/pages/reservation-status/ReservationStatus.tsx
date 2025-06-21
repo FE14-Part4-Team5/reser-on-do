@@ -18,7 +18,6 @@ const ReservationStatus = () => {
     const fetchActivities = async () => {
       try {
         const data = await myActivitiesService.getMyActivities({});
-        console.log('✅ 내 체험 API 응답:', data);
         setActivityList(data.activities);
         if (data.activities.length > 0) {
           setSelectedActivityId(data.activities[0].id);

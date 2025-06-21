@@ -14,7 +14,7 @@ const MainCard = ({
   onClick,
 }: MainCardProps) => {
   return (
-    <div role="button" className={styles.mainCard} onClick={onClick}>
+    <div role="button" className={`${styles.mainCard} ${styles.hoverableCard}`} onClick={onClick}>
       <img
         src={bannerImageUrl || fallbackImage}
         alt={`체험 배너 - ${title}`}

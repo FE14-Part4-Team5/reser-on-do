@@ -79,6 +79,30 @@
   color: var(--gray-400);
 }
 
+.hoverableCard {
+  border-radius: 1.8rem;
+  overflow: hidden;
+  background-color: var(--color-white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hoverableCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.img {
+  object-fit: cover;
+  width: 100%;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.hoverableCard:hover .img {
+  filter: brightness(0.95);
+}
+
 @media (min-width: 768px) {
   .mainCard {
     width: 33.1rem;
@@ -94,7 +118,9 @@
     border-top-left-radius: 3.2rem;
     border-top-right-radius: 3.2rem;
   }
-
+  .hoverableCard {
+    border-radius: 3.2rem;
+  }
   .img {
     width: 33.1rem;
     height: 34.7rem;

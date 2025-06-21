@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import styles from './Header.module.css';
-import smallLogo from '@/assets/icons/logo_earth.svg';
-import gnbLogo from '@/assets/icons/logo_vertical.svg';
+import gnbLogo from '@/assets/icons/logo_gnb.svg';
 import NotiIcon from '@/assets/icons/icon_bell.svg?react';
 import profileImg from '@/assets/icons/profile_size=lg.svg';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -81,10 +80,7 @@ const Header = () => {
     <div className={styles.container}>
       <div className={styles.gnbLogo}>
         <Link to="/" type="button" onClick={handleLogoClick}>
-          <picture>
-            <source srcSet={gnbLogo} media="(min-width:768px)" />
-            <img src={smallLogo} alt="logo" className={styles.gnbLogoIcon} />
-          </picture>
+          <img src={gnbLogo} alt="logo" className={styles.gnbLogoIcon} />
         </Link>
       </div>
 
@@ -112,20 +108,27 @@ const Header = () => {
           </div>
           <div className={styles.divider}></div>
           <div className={styles.userWrapper} ref={dropdownRef}>
-            <div className={styles.userProfile}>
-              <img
-                src={userProfileImage || profileImg}
-                alt="프로필"
-                className={styles.userProfileIcon}
-              />
-            </div>
-            <button className={styles.userName} type="button" onClick={handleDropdownToggle}>
+            <button className={styles.user} type="button" onClick={handleDropdownToggle}>
+              <div className={styles.userProfile}>
+                <img
+                  src={userProfileImage || profileImg}
+                  alt="프로필"
+                  className={styles.userProfileIcon}
+                />
+              </div>
+
               {userNickname}
             </button>
             <div className={clsx(styles.dropdownMenu, isDropdownOpen && styles.open)}>
-              <Link to="/my-profile" className={styles.dropdownItem}>
+              <button
+                onClick={() => {
+                  navigate('/my-profile');
+                  setIsDropdownOpen(false);
+                }}
+                className={styles.dropdownItem}
+              >
                 마이페이지
-              </Link>
+              </button>
               <button type="button" className={styles.dropdownItem} onClick={handleLogout}>
                 로그아웃
               </button>

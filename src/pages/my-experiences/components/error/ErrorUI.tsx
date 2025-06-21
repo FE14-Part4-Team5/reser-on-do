@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import cryImage from '@/assets/images/cry.png';
+import errorImage from '@/assets/images/error-image.png';
 
 import styles from './ErrorUI.module.css';
 
@@ -13,8 +13,11 @@ const ErrorUI = ({
 }) => {
   return (
     <div className={styles.error}>
-      <div className={styles.errorText}>{error.message}</div>
-      <img src={cryImage} alt="슬퍼하는 구름 이미지" className={styles.cryImage} />
+      <div className={styles.errorText}>
+        {' '}
+        {/[\u3131-\uD79D]/.test(error.message) ? error.message : '오류가 발생했습니다.'}
+      </div>
+      <img src={errorImage} alt="슬퍼하는 구름 이미지" className={styles.cryImage} />
       <div className={styles.button}>
         <Link onClick={resetErrorBoundary} to={'/'} className={styles.errorRetry}>
           홈으로

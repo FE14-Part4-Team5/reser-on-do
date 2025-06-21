@@ -24,6 +24,6 @@ export default Dropdown;
 
 type DropdownProps = {
   options: string[];
-  selected: string;
+  selected: string | number;
   onSelect: (option: string) => void;
 };
