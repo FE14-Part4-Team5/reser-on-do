@@ -1,145 +1,264 @@
 .modalContainer {
+  position: relative;
+  width: 100%;
   background-color: white;
-  border-radius: 20px;
-  padding: 24px;
-  width: 360px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-family: 'Pretendard', sans-serif;
+  border-top-left-radius: 3rem;
+  border-top-right-radius: 3rem;
+  padding: 2.4rem;
+  min-height: 60vh;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 1.6rem;
 }
 
 .modalHeader h3 {
-  font-size: 18px;
+  font-size: 1.6rem;
   font-weight: 600;
 }
 
 .modalHeader button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 2rem;
   cursor: pointer;
 }
 
 .tabContainer {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 1.6rem;
 }
 
 .tabContainer button {
   flex: 1;
-  padding: 8px 0;
+  padding: 0.8rem 0;
   border: none;
-  background-color: transparent;
-  font-weight: 500;
+  background: none;
+  font-size: 1.4rem;
   color: #999;
-  border-bottom: 2px solid transparent;
+  border-bottom: 0.2rem solid var(--gray-100);
   cursor: pointer;
-  transition: color 0.2s, border-bottom 0.2s;
 }
 
-.tabContainer button:hover {
-  color: #333;
-}
-
-.activeTab {
+.tabContainer .activeTab {
   color: #000;
-  border-bottom: 2px solid #2196f3;
+  border-bottom: 0.2rem solid #2196f3;
   font-weight: 600;
 }
 
 .modalSection {
-  margin-bottom: 16px;
+  margin-bottom: 1.6rem;
 }
 
 .modalSection strong {
   display: block;
-  margin-bottom: 8px;
-  font-size: 14px;
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
   color: #333;
 }
 
 .modalSection select {
   width: 100%;
-  padding: 10px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  border: 0.1rem solid #ccc;
+  font-size: 1.4rem;
   appearance: none;
-  background: #f9f9f9 url('/icons/arrow-down.svg') no-repeat right 10px center;
-  background-size: 16px;
+  background: var(--color-white) url('/src/assets/icons/icon_alt\ arrow_down.svg') no-repeat right
+    1rem center;
+  background-size: 1.6rem;
+}
+
+.modalText {
+  font-size: var(--fs-16);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 1.2rem;
+}
+
+.reservationItem .infoItem {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.reservationItem .label {
+  font-weight: 600;
+  color: var(--gray-500);
+}
+
+.reservationItem .value {
+  font-weight: 500;
+  color: var(--gray-900);
+  padding-right: 8rem;
 }
 
 .reservationItem {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
+  margin-top: 1.4rem;
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  background-color: var(--color-white);
+  border: 1px solid var(--gray-100);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fafafa;
+  min-width: 20rem;
 }
 
 .reservationItem div {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
+  font-size: 1.4rem;
   color: #333;
 }
 
 .actionButtons {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.8rem;
 }
 
 .actionButtons button {
-  padding: 6px 12px;
-  font-size: 13px;
-  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.3rem;
+  border-radius: 0.8rem;
   border: none;
   cursor: pointer;
 }
 
 .actionButtons button:first-of-type {
-  background-color: #e6f4f1;
-  color: #0a9486;
+  background-color: var(--color-white);
+  border: 1px solid var(--gray-100);
+  font-size: var(--fs-14);
+  color: var(--gray-600);
 }
 
 .actionButtons button:last-of-type {
-  background-color: #fdeeee;
-  color: #d23f3f;
+  background-color: var(--gray-50);
+  font-size: var(--fs-14);
+  color: var(--gray-600);
 }
 
 .statusTag {
-  font-size: 13px;
+  font-size: var(--fs-14);
   font-weight: 500;
 }
 
 .confirmed {
   background-color: #e6f4f1;
   color: #0a9486;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
 }
 
 .declined {
   background-color: #fdeeee;
   color: #d23f3f;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
 }
 
 .completed {
   background-color: #e9e9f9;
   color: #4445aa;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  border-radius: 0.8rem;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.spinnerCircle {
+  width: 4rem;
+  height: 4rem;
+  border: 0.4rem solid var(--gray-200);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.splitSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 768px) {
+  .splitSection {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .leftBlock {
+    width: 60%;
+  }
+
+  .rightBlock {
+    width: 60%;
+    margin-top: 0.02rem;
+  }
+
+  .leftBlock select {
+    margin-top: 0.7rem;
+    width: 100%;
+  }
+
+  .modalContainer {
+    min-height: 30vh;
+    max-height: 40vh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modalContainer {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 8rem);
+    width: 34rem;
+    height: auto;
+    min-height: auto;
+    max-height: none;
+    border-radius: 2rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    animation: none;
+  }
+
+  .splitSection {
+    flex-direction: column;
+  }
+
+  .leftBlock {
+    width: 100%;
+  }
+
+  .rightBlock {
+    width: 100%;
+    margin-top: 0;
+  }
 }
