@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import type { GeneralInfoFormValues } from '../../schema/schema';
 
 import { activitiesService } from '@/apis/activities';
+import { resizeImage } from '@/utils/resizeImage';
 
 import PlusIcon from '@/assets/icons/icon_plus.svg?react';
 import DeleteIcon from '@/assets/icons/icon_delete.svg?react';
@@ -104,8 +105,10 @@ const ImageUploadSection = ({
     const remainingSlots = maxCount - previews.length;
     const validFiles = fileArray.slice(0, remainingSlots);
 
+    const compressedFiles = await Promise.all(validFiles.map(file => resizeImage(file)));
+
     const newPreviews = await Promise.all(
-      validFiles.map(async file => {
+      compressedFiles.map(async file => {
         const id = `${file.name}-${file.size}-${Date.now()}`;
         const { activityImageUrl } = await activitiesService.getActivityImageUrl({ image: file });
         return { id, file, url: activityImageUrl };
