@@ -62,3 +62,30 @@ export const getTimeAgo = (timestamp: string) => {
   const days = Math.floor(hours / 24);
   return `${days}일 전`;
 };
+/**
+ * 'HH:MM' 형식의 시간을 분 단위 숫자로 변환합니다.
+ */
+export const timeToMinutes = (time: string): number => {
+  const [hStr, mStr] = time.split(':');
+  const h = parseInt(hStr, 10);
+  const m = parseInt(mStr, 10);
+  return h * 60 + m;
+};
+/**
+ * 시간 구간 배열에서 겹치는 구간이 있는지 확인합니다.
+ */
+export const hasOverlap = (intervals: { startTime: string; endTime: string }[]): boolean => {
+  const arr = intervals
+    .map(item => ({
+      start: timeToMinutes(item.startTime),
+      end: timeToMinutes(item.endTime),
+    }))
+    .filter(({ start, end }) => end > start)
+    .sort((a, b) => a.start - b.start);
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i - 1].end > arr[i].start) {
+      return true;
+    }
+  }
+  return false;
+};
