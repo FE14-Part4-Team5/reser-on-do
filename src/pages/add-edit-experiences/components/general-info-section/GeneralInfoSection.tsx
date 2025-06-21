@@ -1,11 +1,9 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
 import Input from '@/components/input/Input';
 import Dropdown from '../dropdown/Dropdown';
-
-import useDaumPostcode from '@/hooks/useDaumPostcode';
 
 import type { GeneralInfoFormValues } from '../../schema/schema';
 
@@ -13,6 +11,7 @@ import ArrowDownIcon from '@/assets/icons/icon_alt arrow_down.svg?react';
 
 import clsx from 'clsx';
 import styles from './GeneralInfoSection.module.css';
+import { useDaumPostcodeController } from '@/hooks/useDaumPostcodeController';
 
 const GeneralInfoSection = ({ title }: { title: string }) => {
   const {
@@ -23,32 +22,14 @@ const GeneralInfoSection = ({ title }: { title: string }) => {
     formState: { errors },
   } = useFormContext<GeneralInfoFormValues>();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [sdkOpen, setSdkOpen] = useState(false);
   const watchedAddress = watch('address');
   const handleClickDropdown = () => {
     setShowDropdown(prev => !prev);
   };
 
-  const postcodeRef = useRef<HTMLDivElement | null>(null);
-  const loaded = useDaumPostcode();
-  const detailRef = useRef<HTMLInputElement | null>(null);
-  const openPostcode = () => {
-    if (!loaded) return;
-    setSdkOpen(true);
-    const container = postcodeRef.current;
-    if (!container) return;
-
-    new window.daum.Postcode({
-      oncomplete: data => {
-        const selected = data.roadAddress || data.jibunAddress;
-        setValue('address', selected, { shouldValidate: true });
-        detailRef.current?.focus();
-        setSdkOpen(false);
-      },
-      width: '100%',
-      height: '100%',
-    }).embed(container);
-  };
+  const { postcodeRef, sdkOpen, setSdkOpen, openPostcode } = useDaumPostcodeController({
+    setValue,
+  });
 
   return (
     <div className={styles.formFields}>
