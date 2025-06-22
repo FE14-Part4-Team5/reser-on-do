@@ -8,7 +8,7 @@ import styles from './ReservationListPage.module.css';
 import ReservationCard from '../../components/reservation-card/ReservationCard';
 import Modal from '../../components/modal/modal';
 import WarningIcon from '../../assets/icons/modalwarning.svg';
-import Button from '../../components/Button/Button';
+import Button from '@/components/Button/Button';
 import emptyImg from '@/assets/images/img_empty.png';
 import type { MyReservation } from '@/types/api/myReservationsType';
 import { useQuery, useMutation } from '@tanstack/react-query';

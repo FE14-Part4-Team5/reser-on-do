@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import styles from './ActivityCategory.module.css';
-import Button from '@/components/button/Button';
+import Button from '@/components/Button/Button';
 import useViewPortSize from '@/hooks/useViewPortSize';
 import type { Category } from '@/types/api/sharedType';
 import { CATEGORY_LIST } from './CategoryList';

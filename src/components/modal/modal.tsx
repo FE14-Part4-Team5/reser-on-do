@@ -67,13 +67,13 @@ const Modal: React.FC<ModalProps> = ({
           <button
             className={styles.modalClose4}
             onClick={() => {
-              onActionClick?.({
+              onActionClick({
                 rating,
                 content: comment,
               });
 
               if (isThird) {
-                const rating = ratings.filter(Boolean).length;
+                const rating = rating.filter(Boolean).length;
                 const content =
                   (document.querySelector(`.${styles.commentbox}`) as HTMLTextAreaElement)?.value ??
                   '';

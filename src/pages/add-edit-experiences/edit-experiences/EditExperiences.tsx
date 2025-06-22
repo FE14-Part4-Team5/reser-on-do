@@ -14,7 +14,7 @@ import ConfirmModal from '@/components/modal/ConfirmModal';
 import GeneralInfoSection from '../components/general-info-section/GeneralInfoSection';
 import ScheduleSection from '../components/schedule-section/ScheduleSection';
 import ImageUploadSection from '../components/image-upload-section/ImageUploadSection';
-import Button from '@/components/button/Button';
+import Button from '@/components/Button/Button';
 
 import { activitiesService } from '@/apis/activities';
 import { myActivitiesService } from '@/apis/myActivities';

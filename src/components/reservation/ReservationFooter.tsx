@@ -2,7 +2,7 @@ import styles from './ReservationFooter.module.css';
 
 import { formatDateTime } from '@/utils/datetime';
 import type { ReservationFooterProps } from '@/types/reservation';
-import Button from '@/components/button/Button';
+import Button from '../Button/Button';
 
 export const ReservationFooter = ({
   price,

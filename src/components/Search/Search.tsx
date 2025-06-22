@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Search.module.css';
-import Button from '../button/Button';
+import Button from '../Button/Button';
 import SearchIcon from '../../assets/icons/icon_search.svg';
 
 interface SearchProps {

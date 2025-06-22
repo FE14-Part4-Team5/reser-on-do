@@ -1,6 +1,6 @@
 import styles from './Login.module.css';
-import Input from '@/components/input/Input';
-import Button from '@/components/button/Button';
+import Input from '@/components/Input/Input';
+import Button from '@/components/Button/Button';
 import { Link } from 'react-router-dom';
 import ReserOnDoLogomb from '@/assets/icons/ReserOnDoLogomb.svg';
 import ReserOnDoLogo from '@/assets/icons/ReserOnDoLogo.svg';
