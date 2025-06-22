@@ -20,7 +20,6 @@ import IconError from '@/assets/icons/modalwarning.svg';
 
 const ReservationList: React.FC = () => {
   const [activeState, setActiveState] = useState<ReservationStatus | undefined>(undefined);
-
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [selectedReservation, setSelectedReservation] = useState<MyReservation | null>(null);
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
@@ -36,7 +35,7 @@ const ReservationList: React.FC = () => {
     refetch,
   } = useQuery({
     queryKey: ['myReservations'],
-    queryFn: () => myReservationsService.getMyReservations({}),
+    queryFn: () => myReservationsService.getMyReservations({ status: activeState }),
   });
 
   // 예약 취소 API 호출
@@ -44,14 +43,23 @@ const ReservationList: React.FC = () => {
     mutationFn: (reservationId: number) =>
       myReservationsService.updateMyReservation({ reservationId }),
     onSuccess: () => {
-      refetch(); // 예약 목록 갱신
+      refetch();
       setIsCancelModalOpen(false);
+      showToast({
+        label: '예약 취소 성공!',
+        iconSrc: IconEarth,
+      });
     },
-    onError: error => {
-      console.error('예약 취소 실패:', error);
+    onError: () => {
+      showToast({
+        label: '예약 취소가 실패됐어요.',
+        iconSrc: IconError,
+        style: { color: 'pink' },
+      });
     },
   });
 
+  // 후기 작성 API 호출
   const createReviewMutation = useMutation({
     mutationFn: ({
       reservationId,
