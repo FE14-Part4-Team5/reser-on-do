@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './Calendar.module.css';
 import { CalendarModal } from './CalendarModal';
 import { myActivitiesService } from '@/apis/myActivities';
@@ -11,10 +11,9 @@ interface CalendarProps {
 const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 export const Calendar = ({ selectedActivityId }: CalendarProps) => {
+  const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
-  const [selectedReservationInfo, setSelectedReservationInfo] =
-    useState<MyActivitiesType.ReservationDashboardResponse | null>(null);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1;
   const [reservationDashboard, setReservationDashboard] = useState<
@@ -51,12 +50,7 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
   }, [selectedActivityId, year, month]);
 
   const handleDateClick = (day: number) => {
-    const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day
-      .toString()
-      .padStart(2, '0')}`;
-    const resInfo = reservationDashboard.find(item => item.date === dateStr) ?? null;
     setSelectedDate(day);
-    setSelectedReservationInfo(resInfo);
   };
 
   const dateCells = [];
@@ -85,7 +79,12 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
     const hasAnyReservation = pendingCount + confirmedCount + completedCount > 0;
 
     dateCells.push(
-      <div key={i} className={styles.dateCell} onClick={() => handleDateClick(i)}>
+      <div
+        key={i}
+        className={styles.dateCell}
+        onClick={() => handleDateClick(i)}
+        ref={el => void (cellRefs.current[i] = el)}
+      >
         <div className={styles.dateNumberWrapper}>
           <span>{i}</span>
           {hasAnyReservation && <span className={styles.dot} />}
@@ -139,21 +138,36 @@ export const Calendar = ({ selectedActivityId }: CalendarProps) => {
 
         {dateCells}
       </div>
-
       {selectedDate && selectedActivityId && (
-        <CalendarModal
-          year={year}
-          month={month}
-          day={selectedDate}
-          activityId={selectedActivityId}
-          onClose={() => setSelectedDate(null)}
-          onRefreshDashboard={fetchDashboard}
-          reservationCount={{
-            pending: selectedReservationInfo?.reservations.pending ?? 0,
-            confirmed: selectedReservationInfo?.reservations.confirmed ?? 0,
-            declined: selectedReservationInfo?.reservations.completed ?? 0,
-          }}
-        />
+        <>
+          <div className={styles.overlay}>
+            <CalendarModal
+              year={year}
+              month={month}
+              day={selectedDate}
+              activityId={selectedActivityId}
+              onClose={() => setSelectedDate(null)}
+              onRefreshDashboard={fetchDashboard}
+            />
+          </div>
+
+          <div
+            className={styles.modalAbsolutePC}
+            style={{
+              top: cellRefs.current[selectedDate]?.offsetTop ?? 0,
+              left: cellRefs.current[selectedDate]?.offsetLeft ?? 0,
+            }}
+          >
+            <CalendarModal
+              year={year}
+              month={month}
+              day={selectedDate}
+              activityId={selectedActivityId}
+              onClose={() => setSelectedDate(null)}
+              onRefreshDashboard={fetchDashboard}
+            />
+          </div>
+        </>
       )}
     </div>
   );

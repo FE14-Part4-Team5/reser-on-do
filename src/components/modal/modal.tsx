@@ -21,13 +21,13 @@ const Modal: React.FC<ModalProps> = ({
   isThird = false,
   onActionClick = () => {},
 }) => {
-  const [ratings, setRatings] = useState<boolean[]>(Array(5).fill(false));
+  const [rating, setRating] = useState(0);
   const [commentLength, setCommentLength] = useState(0); // 추가
+  const [comment, setComment] = useState('');
 
   // 별점 클릭 핸들러 수정
   const handleStarClick = (index: number) => {
-    const newRatings = ratings.map((_, i) => i <= index);
-    setRatings(newRatings);
+    setRating(index + 1);
   };
 
   if (!isOpen) return null;
@@ -67,6 +67,11 @@ const Modal: React.FC<ModalProps> = ({
           <button
             className={styles.modalClose4}
             onClick={() => {
+              onActionClick?.({
+                rating,
+                content: comment,
+              });
+
               if (isThird) {
                 const rating = ratings.filter(Boolean).length;
                 const content =
@@ -76,6 +81,7 @@ const Modal: React.FC<ModalProps> = ({
               } else {
                 onActionClick();
               }
+
               onClose();
             }}
           >
@@ -90,10 +96,10 @@ const Modal: React.FC<ModalProps> = ({
         {isThird && (
           <>
             <div className={styles.starContainer}>
-              {ratings.map((isActive, index) => (
+              {[0, 1, 2, 3, 4].map(index => (
                 <img
                   key={index}
-                  src={isActive ? activeon : activeoff}
+                  src={index < rating ? activeon : activeoff}
                   className={styles.star}
                   alt={`star${index + 1}`}
                   onClick={() => handleStarClick(index)}
@@ -106,7 +112,11 @@ const Modal: React.FC<ModalProps> = ({
               <textarea
                 className={styles.commentbox}
                 placeholder="체험에서 느낀 경험을 자유롭게 남겨주세요."
-                onChange={e => setCommentLength(e.target.value.length)}
+                value={comment}
+                onChange={e => {
+                  setComment(e.target.value);
+                  setCommentLength(e.target.value.length);
+                }}
                 maxLength={100}
               />
               <span className={styles.characterCount}>{commentLength}/100</span>
