@@ -21,24 +21,59 @@
 ### 회원가입 페이지
 ![회원가입](https://github.com/user-attachments/assets/174bf020-5f5f-45bf-a937-9cd61500628c)
 
+---
+
 ### 메인 페이지
 ![메인](https://github.com/user-attachments/assets/202c65ef-550b-4127-b335-cdfa042021b0)
+
+---
 
 ### 체험 상세 페이지
 ![상세](https://github.com/user-attachments/assets/1a55b2a8-eda6-4da1-9540-e028656349b4)
 
+---
+
 ### 내정보 페이지
 ![내정보](https://github.com/user-attachments/assets/2bc83ba4-10dc-43b2-b9d8-09b0d4538a92)
 
+---
+
 ### 예약내역 페이지
+![예약내역](https://github.com/user-attachments/assets/ffe8fb71-b7f5-4f59-9308-e50166c24eaf)
+
+---
 
 ### 내 체험관리 페이지
+> 이 페이지는 체험 등록, 체험 수정, 체험 상세 페이지로 이동할 수 있고,
+> 
+> 체험을 삭제할 수 있어요, 또 무한스크롤을 구현해서 스크롤을 내릴 때마다 체험 목록을 불러와요
+
+![체험관리](https://github.com/user-attachments/assets/d9f96e23-3e5e-4e0e-8d73-5aad945707a2)
+
+---
 
 ### 체험등록 페이지
+> 이 페이지에서 사용자가 새로운 체험을 등록할 수 있어요.
+> 
+> React Hook Form + Zod를 사용한 폼 상태 및 유효성 검사를 했어요.
+>
+> 카카오 주소 SDK를 사용해서 주소 입력을 할 수 있어요
+
+![체험등록](https://github.com/user-attachments/assets/17cc9838-6ca9-420c-9efd-56d4f0e4dabd)
 
 ### 체험수정 페이지
+> 이 페이지는 체험등록 페이지와 동일한 UI와 기능을 제공하지만,
+>
+> 기존 체험 정보가 자동으로 입력 필드에 불러와지는 점이 달라요.
+
+![체험수정](https://github.com/user-attachments/assets/8e06a1f4-8d03-4361-8017-5888f0a839ee)
+
+---
 
 ### 예약현황 페이지
+![예약현황](https://github.com/user-attachments/assets/20ed6e05-6ea0-443e-ac7d-052a4db43df8)
+
+---
 
 
 
