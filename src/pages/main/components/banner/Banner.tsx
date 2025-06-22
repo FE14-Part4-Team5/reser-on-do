@@ -8,7 +8,15 @@ interface BannerProps {
 const Banner = ({ bannerImg, bannerTitle, bannerDescription }: BannerProps) => {
   return (
     <>
-      <img src={bannerImg} alt="배너 이미지" className={styles.bannerImg} />
+      <img
+        src={bannerImg}
+        alt="배너 이미지"
+        className={styles.bannerImg}
+        loading="eager"
+        decoding="async"
+        width={684}
+        height={375}
+      />
       <div className={styles.overlay}></div>
       <div className={styles.bannerTextWrapper}>
         <p className={styles.bannerTitle}>{bannerTitle}</p>

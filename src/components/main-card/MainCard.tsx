@@ -19,6 +19,8 @@ const MainCard = ({
         src={bannerImageUrl || fallbackImage}
         alt={`체험 배너 - ${title}`}
         className={styles.img}
+        loading="lazy"
+        decoding="async"
         onError={e => (e.currentTarget.src = fallbackImage)}
       />
       <div className={styles.contentBox}>
