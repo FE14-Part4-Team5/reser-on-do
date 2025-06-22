@@ -2,7 +2,7 @@ import styles from './MainPage.module.css';
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import goBackIcon from '@/assets/icons/icon_arrow-left.svg';
-import defaultBannerImg from '@/assets/images/img_rectangle2.png';
+import defaultBannerImg from '@/assets/images/bannerImg.webp';
 import Search from '@/components/search/Search';
 import Dropdown from '@/components/dropdown/Dropdown';
 import Pagination from '@/components/pagination/Pagination';
@@ -126,8 +126,8 @@ const MainPage = () => {
         <div className={styles.bannerWrapper}>
           <Banner
             bannerImg={defaultBannerImg}
-            bannerTitle="함께 배우면 즐거운 스트릿 댄스"
-            bannerDescription="6월의 인기 체험 BSET 🔥"
+            bannerTitle="높은 곳에서 배우는 자신감"
+            bannerDescription="6월의 인기 체험 BEST 🔥"
           />
         </div>
 
