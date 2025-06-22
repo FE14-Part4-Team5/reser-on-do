@@ -11,7 +11,7 @@ import IconWarning from '@/assets/icons/modalwarning.svg';
 
 import Reservation from '@/components/reservation/Reservation';
 import ReviewCard from '@/pages/detail/components/ReviewCard';
-import Pagination from '@/components/pagination/Pagination';
+import Pagination from '@/components/Pagination/Pagination';
 import Modal from '@/components/modal/modal';
 import ModalExample from '../../components/modal/ConfirmModal';
 import DetailSkeleton from './components/loading/DetailSkeleton';
