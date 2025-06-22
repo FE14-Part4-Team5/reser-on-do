@@ -71,18 +71,6 @@ const Modal: React.FC<ModalProps> = ({
                 rating,
                 content: comment,
               });
-
-              if (isThird) {
-                const rating = rating.filter(Boolean).length;
-                const content =
-                  (document.querySelector(`.${styles.commentbox}`) as HTMLTextAreaElement)?.value ??
-                  '';
-                onActionClick({ rating, content });
-              } else {
-                onActionClick();
-              }
-
-              onClose();
             }}
           >
             작성하기

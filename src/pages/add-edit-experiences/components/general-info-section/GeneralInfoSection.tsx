@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import MyExperiencesHeader from '@/components/my-experiences-header/MyExperiencesHeader';
-import Input from '@/components/input/Input';
+import Input from '@/components/Input/Input';
 import Dropdown from '../dropdown/Dropdown';
 
 import type { GeneralInfoFormValues } from '../../schema/schema';
