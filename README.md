@@ -117,7 +117,7 @@ test1234
 
 ## 프로젝트 아키텍쳐
 
-![프로젝트 구조화](https://github.com/user-attachments/assets/60469d14-49a0-43ef-8d18-ebffc14ed91f)
+![KakaoTalk_Photo_2025-06-23-15-02-10](https://github.com/user-attachments/assets/98916925-d87c-4e24-9872-c32ab6bf0082)
 
 ## 프로젝트 타임라인
 ![프로젝트 타임라인](https://github.com/user-attachments/assets/fe5e0a2c-8738-40ef-a426-68a9696eb222)
