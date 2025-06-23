@@ -12,33 +12,60 @@
 ### 지금 바로 Reser On Do에서  
 **당신의 특별한 경험을 시작해보세요!**
 
+테스트용 계정  
+test@test.com  
+test1234
+
 ---
 
 ## 서비스 둘러보기
-### 로그인 페이지
+### 로그인 / 회원가입 페이지
+> 이 페이지는 회원 가입과 로그인을 진행해요. 
+> 
+> 유효성 검사 및 zustand를 통해 전역으로 액세스 토큰 및 상태를 관리해요.
+
 ![로그인](https://github.com/user-attachments/assets/fa7ada80-7469-4719-96c8-4912d1a79c77)
 
-### 회원가입 페이지
 ![회원가입](https://github.com/user-attachments/assets/174bf020-5f5f-45bf-a937-9cd61500628c)
 
 ---
 
 ### 메인 페이지
+> 이 페이지는 사용자가 키워드를 입력하거나, 카테고리와 정렬 옵션을 사용해 원하는 체험을 탐색할 수 있어요.
+>
+> 인기 체험은 무한스크롤 방식으로 가로로 넘기며 더 많은 체험을 불러오고,
+>
+> 전체 체험 목록은 페이지네이션을 통해 페이지 단위로 나누어 보여줘요.
+
 ![메인](https://github.com/user-attachments/assets/202c65ef-550b-4127-b335-cdfa042021b0)
 
 ---
 
 ### 체험 상세 페이지
+> 이 페이지는 체험에 대한 정보를 자세히 볼 수 있어요.
+>
+> 지도 SDK를 통해 체험 장소를 지도로 볼 수 있으며,
+>
+> 사용자는 예약 캘린더를 통해 체험을 예약할 수 있어요.
+
 ![상세](https://github.com/user-attachments/assets/1a55b2a8-eda6-4da1-9540-e028656349b4)
 
 ---
 
 ### 내정보 페이지
+> 이 페이지에서 사용자가 닉네임, 비밀번호, 프로필 이미지를 변경할 수 있어요.
+> 
+> React Hook Form + Zod를 사용한 폼 상태 및 유효성 검사를 했어요.
+
 ![내정보](https://github.com/user-attachments/assets/2bc83ba4-10dc-43b2-b9d8-09b0d4538a92)
 
 ---
 
 ### 예약내역 페이지
+> 이 페이지에서 사용자가 예약한 체험을 취소하거나,
+>
+> 체험을 완료하면 후기를 작성할 수 있어요.
+
 ![예약내역](https://github.com/user-attachments/assets/ffe8fb71-b7f5-4f59-9308-e50166c24eaf)
 
 ---
@@ -71,6 +98,8 @@
 ---
 
 ### 예약현황 페이지
+> 이 페이지는 캘린더에서 내 체험에 예약된 내역들을 모달로 승인하거나 거절할 수 있어요.
+
 ![예약현황](https://github.com/user-attachments/assets/20ed6e05-6ea0-443e-ac7d-052a4db43df8)
 
 ---
@@ -81,7 +110,7 @@
 | 구분                     | 기술 | 참고 |
 |--------------------------|------|------|
 | **언어 및 프레임워크**        | ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | [우리가 Next.js를 사용하지 않은 이유](https://github.com/FE14-Part4-Team5/global-nomad/wiki/%EC%9A%B0%EB%A6%AC%EA%B0%80-Next.js%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80-%EC%95%8A%EC%9D%80-%EC%9D%B4%EC%9C%A0) |
-| **상태 관리 & 데이터 페칭** | ![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=react-query&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=react&logoColor=white) |  |
+| **상태 관리 & 데이터 페칭** | ![TanStack Query](https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=react-query&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=react&logoColor=white) | [로딩은 Suspense에게, 에러는 ErrorBoundary에게](https://github.com/FE14-Part4-Team5/reser-on-do/wiki/%EB%A1%9C%EB%94%A9%EC%9D%80-Suspense%EC%97%90%EA%B2%8C,-%EC%97%90%EB%9F%AC%EB%8A%94-ErrorBoundary%EC%97%90%EA%B2%8C) |
 | **폼 / 유효성 / 인증**     | ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat-square&logo=reacthookform&logoColor=white) ![Zod](https://camo.githubusercontent.com/598caa75c5ce213fbbb0a74e56cfa76af5fa4a12c19638f3273311f7274c1bea/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f5a6f642d3345363742313f7374796c653d666c61742d737175617265266c6f676f3d7a6f64266c6f676f436f6c6f723d7768697465) ![OAuth](https://img.shields.io/badge/OAuth-4285F4?style=flat-square&logo=oauth&logoColor=white) | [카카오 들어가기 어렵다](https://github.com/FE14-Part4-Team5/global-nomad/wiki/%EC%B9%B4%EC%B9%B4%EC%98%A4-%EB%93%A4%EC%96%B4%EA%B0%80%EA%B8%B0-%EC%96%B4%EB%A0%B5%EB%8B%A4) |
 | **외부 SDK**              | ![Address Lookup](https://img.shields.io/badge/Address%20Lookup%20SDK-FF6600?style=flat-square) ![Map SDK](https://img.shields.io/badge/Map%20SDK-1E90FF?style=flat-square) |  |
 | **배포 & 인프라**          | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white) |  |
